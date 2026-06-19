@@ -1,0 +1,101 @@
+---
+// Header component with desktop + mobile navigation
+---
+
+<header id="site-header" class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
+  <div class="max-w-(--container-max) mx-auto px-6 h-16 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="/" class="font-display font-bold text-xl text-text no-underline" aria-label="Melany Martínez — inicio">
+      Melany<span class="text-primary">.</span>
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav class="hidden md:flex items-center gap-8" aria-label="Navegación principal">
+      <a href="#sobre-mi" class="text-text-muted hover:text-text text-sm font-medium transition-colors duration-200 no-underline">Sobre mí</a>
+      <a href="#proyectos" class="text-text-muted hover:text-text text-sm font-medium transition-colors duration-200 no-underline">Proyectos</a>
+      <a href="#blog" class="text-text-muted hover:text-text text-sm font-medium transition-colors duration-200 no-underline">Blog</a>
+      <a href="#contacto" class="text-text-muted hover:text-text text-sm font-medium transition-colors duration-200 no-underline">Contacto</a>
+    </nav>
+
+    <!-- CTA + Burger -->
+    <div class="flex items-center gap-4">
+      <a
+        href="#contacto"
+        class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 text-primary text-sm font-medium border border-primary/20 hover:bg-primary/20 transition-all duration-200 no-underline"
+      >
+        Hablemos
+      </a>
+      <button
+        id="burger-btn"
+        class="md:hidden flex flex-col gap-[5px] w-6 h-5 bg-transparent border-none cursor-pointer p-0"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+      >
+        <span class="block w-full h-[2px] bg-text-muted rounded transition-all duration-300 origin-center"></span>
+        <span class="block w-full h-[2px] bg-text-muted rounded transition-all duration-300 origin-center"></span>
+        <span class="block w-full h-[2px] bg-text-muted rounded transition-all duration-300 origin-center"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Nav -->
+  <div id="mobile-nav" class="hidden md:hidden fixed inset-0 top-16 bg-bg/95 backdrop-blur-md z-40">
+    <nav class="flex flex-col items-center justify-center gap-8 h-full" aria-label="Menú móvil">
+      <a href="#sobre-mi" class="text-text text-2xl font-display font-semibold no-underline" data-mobile-link>Sobre mí</a>
+      <a href="#proyectos" class="text-text text-2xl font-display font-semibold no-underline" data-mobile-link>Proyectos</a>
+      <a href="#blog" class="text-text text-2xl font-display font-semibold no-underline" data-mobile-link>Blog</a>
+      <a href="#contacto" class="text-text text-2xl font-display font-semibold no-underline" data-mobile-link>Contacto</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  // Header scroll effect
+  const header = document.getElementById('site-header');
+  let lastScrollY = 0;
+
+  function onScroll() {
+    const y = window.scrollY;
+    if (!header) return;
+
+    if (y > 60) {
+      header.classList.add('bg-bg/80', 'backdrop-blur-md', 'border-b', 'border-border');
+    } else {
+      header.classList.remove('bg-bg/80', 'backdrop-blur-md', 'border-b', 'border-border');
+    }
+    lastScrollY = y;
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Burger menu
+  const burger = document.getElementById('burger-btn');
+  const mobileNav = document.getElementById('mobile-nav');
+  const mobileLinks = document.querySelectorAll('[data-mobile-link]');
+
+  burger?.addEventListener('click', () => {
+    const isOpen = mobileNav?.classList.toggle('hidden') === false;
+    burger.setAttribute('aria-expanded', String(isOpen));
+
+    const spans = burger.querySelectorAll('span');
+    if (isOpen) {
+      spans[0]?.classList.add('rotate-45', 'translate-y-[7px]');
+      spans[1]?.classList.add('opacity-0');
+      spans[2]?.classList.add('-rotate-45', '-translate-y-[7px]');
+    } else {
+      spans[0]?.classList.remove('rotate-45', 'translate-y-[7px]');
+      spans[1]?.classList.remove('opacity-0');
+      spans[2]?.classList.remove('-rotate-45', '-translate-y-[7px]');
+    }
+  });
+
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      mobileNav?.classList.add('hidden');
+      burger?.setAttribute('aria-expanded', 'false');
+      const spans = burger?.querySelectorAll('span');
+      spans?.forEach(s => s.classList.remove('rotate-45', 'translate-y-[7px]', 'opacity-0', '-rotate-45', '-translate-y-[7px]'));
+    });
+  });
+</script>

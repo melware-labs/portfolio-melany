@@ -1,0 +1,135 @@
+---
+// Blog section with category filters
+const posts = [
+  {
+    title: 'LLMs en 2026: qué ha cambiado y hacia dónde vamos',
+    excerpt: 'Un repaso honesto de cómo han evolucionado los modelos de lenguaje, qué promesas se han cumplido y qué sigue siendo un reto sin resolver.',
+    tag: 'IA & ML',
+    tagKey: 'ia',
+    tagColor: 'text-purple bg-purple/10',
+    date: '12 Jun 2026',
+    readTime: '8 min',
+    featured: true,
+  },
+  {
+    title: 'React 19: las novedades que realmente importan',
+    excerpt: 'Server Components, Actions y el nuevo compilador de React. Lo que cada desarrollador debería entender antes de migrar.',
+    tag: 'Web Dev',
+    tagKey: 'web',
+    tagColor: 'text-primary bg-primary/10',
+    date: '3 Jun 2026',
+    readTime: '5 min',
+    featured: false,
+  },
+  {
+    title: 'Docker desde cero: guía práctica para estudiantes',
+    excerpt: 'Aprende a containerizar tus apps universitarias y deja de sufrir con el "en mi máquina funciona". Todo lo que necesitas saber.',
+    tag: 'DevOps',
+    tagKey: 'devops',
+    tagColor: 'text-green bg-green/10',
+    date: '25 May 2026',
+    readTime: '6 min',
+    featured: false,
+  },
+  {
+    title: 'Cómo construir tu portfolio como estudiante de ingeniería',
+    excerpt: 'No necesitas experiencia laboral para tener un portfolio impresionante. Te cuento qué proyectos hacer y cómo presentarlos.',
+    tag: 'Carrera',
+    tagKey: 'carrera',
+    tagColor: 'text-amber bg-amber/10',
+    date: '15 May 2026',
+    readTime: '4 min',
+    featured: false,
+  },
+];
+
+const blogFilters = [
+  { label: 'Todos', value: 'all' },
+  { label: 'IA & ML', value: 'ia' },
+  { label: 'Web Dev', value: 'web' },
+  { label: 'DevOps', value: 'devops' },
+  { label: 'Carrera', value: 'carrera' },
+];
+---
+
+<section id="blog" class="py-(--section-padding) scroll-mt-20">
+  <div class="max-w-(--container-max) mx-auto px-6">
+    <!-- Header -->
+    <header class="text-center mb-12" data-reveal>
+      <p class="text-primary text-sm font-mono font-medium uppercase tracking-wider mb-3">Blog</p>
+      <h2 class="font-display font-bold text-3xl md:text-4xl text-text mb-4">Tendencias &amp; conocimiento tech</h2>
+      <p class="text-text-muted max-w-xl mx-auto">Escribo sobre lo que aprendo, lo que experimento y lo que está pasando en el mundo de la tecnología.</p>
+    </header>
+
+    <!-- Filters -->
+    <div class="flex flex-wrap items-center justify-center gap-2 mb-10" data-reveal data-reveal-delay="1">
+      {blogFilters.map((f, i) => (
+        <button
+          class={`px-4 py-1.5 rounded-full text-sm font-medium border transition-all duration-200 cursor-pointer ${
+            i === 0
+              ? 'bg-primary/10 text-primary border-primary/30'
+              : 'bg-transparent text-text-muted border-border hover:border-border-hover hover:text-text'
+          }`}
+          data-blog-filter={f.value}
+        >
+          {f.label}
+        </button>
+      ))}
+    </div>
+
+    <!-- Posts grid -->
+    <div class="grid sm:grid-cols-2 gap-5" id="blog-grid">
+      {posts.map((post, i) => (
+        <article
+          class={`rounded-xl border bg-bg-card hover:bg-bg-card-hover transition-all duration-300 group ${
+            post.featured ? 'border-purple/20 sm:col-span-2' : 'border-border hover:border-border-hover'
+          }`}
+          data-blog-tags={post.tagKey}
+          data-reveal
+          data-reveal-delay={String(i % 3)}
+        >
+          <div class="p-6">
+            <div class="flex flex-wrap items-center gap-3 mb-3">
+              <span class={`text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded ${post.tagColor}`}>{post.tag}</span>
+              <span class="text-text-dim text-xs">{post.date}</span>
+              <span class="text-text-dim text-xs">· {post.readTime}</span>
+            </div>
+            <h3 class="font-display font-semibold text-text text-lg mb-2 group-hover:text-primary transition-colors">{post.title}</h3>
+            <p class="text-text-muted text-sm leading-relaxed mb-4">{post.excerpt}</p>
+            <a href="#" class="inline-flex items-center gap-1.5 text-primary text-sm font-medium hover:gap-3 transition-all duration-200 no-underline">
+              Leer artículo
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  // Blog filter
+  const blogBtns = document.querySelectorAll<HTMLButtonElement>('[data-blog-filter]');
+  const blogCards = document.querySelectorAll<HTMLElement>('#blog-grid article');
+
+  blogBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      blogBtns.forEach(b => {
+        b.classList.remove('bg-primary/10', 'text-primary', 'border-primary/30');
+        b.classList.add('bg-transparent', 'text-text-muted', 'border-border');
+      });
+      btn.classList.add('bg-primary/10', 'text-primary', 'border-primary/30');
+      btn.classList.remove('bg-transparent', 'text-text-muted', 'border-border');
+
+      const filter = btn.dataset.blogFilter;
+      blogCards.forEach(card => {
+        const tags = card.dataset.blogTags || '';
+        if (filter === 'all' || tags.includes(filter!)) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
