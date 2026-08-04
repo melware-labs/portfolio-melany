@@ -47,29 +47,46 @@ Rama: `rebuild/v2`
       en una entrevista. Si algo no suena a ella o no lo sabría explicar,
       fuera.
 
-## Estética — rechazada y en modo comparación (2026-07-31)
+## Estética — degradado elegido, ahora comparando paletas (2026-07-31)
 
-Melany rechazó el tema sobrio en cuanto lo vio: "sigue conservando lo de
-Daria". Tenía razón — papel cálido + tinta + terracota apagado + sombras
-duras es la paleta de Daria con otro nombre, no una ruptura real. Van
-siete rondas fallando por describir la estética en vez de enseñarla.
+Historial: rechazó el tema sobrio "Daria otra vez", luego probó 4 temas
+con personalidades distintas (Pop/Arcade/Zine/Gradiente) y le gustó el
+**Gradiente**. Pidió variar la paleta dentro de esa dirección y añadir
+animación. Van ocho rondas — el método de enseñar en vivo en vez de
+describir está funcionando, sigue así para lo que falte.
 
-Nuevo método: `src/styles/tokens.css` tiene ahora 4 temas completos detrás
-de `[data-theme]`, y `ThemePicker.astro` (temporal) deja cambiar entre
-ellos con un clic desde la propia web, en `http://localhost:4321`:
+`tokens.css` tiene ahora 4 PALETAS de la familia gradiente (misma mecánica:
+fondo en degradado, tarjetas de cristal, texto en degradado — sólo cambia
+el color), elegibles desde `ThemePicker.astro` en `http://localhost:4321`:
 
-- **A · Terminal** — oscuro, monoespaciado, verde de fósforo
-- **B · Editorial** — blanco y negro duro, un rojo, tipografía enorme
-- **C · Consola** — azul noche, rosa y cian saturados
-- **D · Plano técnico** — papel frío gris azulado, azul de plano
+- **A · Aurora** — violeta noche, rosa y cian (la que vio primero)
+- **B · Sunset** — ciruela oscuro, coral y magenta cálidos
+- **C · Cyber** — casi negro azulado, lima ácido y teal neón (con tirón
+  arcade/videojuego, encaja con lo que dijo que le gusta)
+- **D · Candy** — la única clara: lavanda pálido, magenta y azul
 
-Las cuatro probadas en el navegador, sin errores de consola.
+Animación añadida en `theme-flourishes.css`, bajo `[data-theme^='gradiente']`:
+fondo que respira muy despacio (28s), dos manchas de luz flotando detrás
+del hero, el nombre con degradado deslizante, y aparición de tarjetas al
+hacer scroll vía `animation-timeline: view()` (sólo Chromium, se degrada
+bien — sin JS, el contenido ya es visible por defecto donde no hay soporte).
+Todo cae dentro del `prefers-reduced-motion` ya forzado en `base.css`, así
+que nada de esto necesita su propio interruptor.
 
-**Siguiente paso: que Melany elija una (o pida ajustes).** Cuando lo haga:
+Verificado en el navegador: las 4 paletas, las 3 animaciones activas
+comprobadas por `animationName` en JS, sin errores de consola. Contraste
+de cada acento calculado antes de fijar el color (Candy necesitó
+oscurecerse: fallaba 3.82 y 2.67, quedó en 5.43 y 5.04).
+
+**Siguiente paso: que Melany elija una paleta (o pida más cambios).**
+Cuando lo haga, limpieza pendiente:
 - Borrar `ThemePicker.astro` y su import/uso en `Base.astro`
 - Borrar el script inline de tema en el `<head>` de `Base.astro`
-- Dejar en `tokens.css` sólo el bloque del tema elegido, ya como `:root`
-  normal sin `[data-theme]`
+- Dejar en `tokens.css` sólo el bloque de la paleta elegida, ya como
+  `:root` normal sin `[data-theme]`
+- Repasar si las tres animaciones continuas (fondo, manchas, brillo del
+  nombre) siguen pareciendo bien tras vivir con ellas un rato, o si alguna
+  cansa y hay que apagarla o hacerla más lenta
 
 ## Siguiente (fase 2)
 

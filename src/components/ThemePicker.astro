@@ -5,15 +5,15 @@
  * demás bloques de tokens.css y la web se queda con uno solo.
  */
 const themes = [
-  { id: 'terminal', label: 'A · Terminal', hint: 'Oscuro, monoespaciado, verde de fósforo' },
-  { id: 'editorial', label: 'B · Editorial', hint: 'Blanco y negro duro, rojo, tipografía enorme' },
-  { id: 'consola', label: 'C · Consola', hint: 'Azul noche, rosa y cian de videojuego' },
-  { id: 'plano', label: 'D · Plano técnico', hint: 'Papel frío, azul de plano, sobrio' },
+  { id: 'gradiente-aurora', label: 'A · Aurora', hint: 'Violeta noche, rosa y cian — la que ya viste' },
+  { id: 'gradiente-sunset', label: 'B · Sunset', hint: 'Ciruela oscuro, coral y magenta cálidos' },
+  { id: 'gradiente-cyber', label: 'C · Cyber', hint: 'Casi negro azulado, lima ácido y teal neón' },
+  { id: 'gradiente-candy', label: 'D · Candy', hint: 'La única clara: lavanda pálido, magenta y azul' },
 ];
 ---
 
 <aside class="picker" aria-label="Elegir estética">
-  <p class="picker-title">Probando estéticas</p>
+  <p class="picker-title">Probando paletas del degradado</p>
   <div class="picker-options">
     {
       themes.map((theme) => (
@@ -110,7 +110,7 @@ const themes = [
   };
 
   // Recuerda la elección al navegar entre páginas
-  apply(localStorage.getItem(STORAGE_KEY) ?? 'terminal');
+  apply(localStorage.getItem(STORAGE_KEY) ?? 'gradiente-aurora');
 
   buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.themeBtn!)));
 </script>
