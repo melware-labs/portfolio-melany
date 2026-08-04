@@ -121,12 +121,42 @@ límite de sesiones anteriores) — la regla CSS sigue el patrón mobile-first
 ya probado en el resto de la web, pero no se ha visto con los ojos a
 390px; conviene comprobarlo en un móvil real.
 
-**Siguiente paso: que Melany elija un ambiente (o pida ajustes al
-retrato).** Cuando lo haga, limpieza pendiente:
-- Borrar `ThemePicker.astro` y su import/uso en `Base.astro`
-- Borrar el script inline de tema en el `<head>` de `Base.astro`
-- Dejar en `tokens.css` sólo el bloque del ambiente elegido, ya como
-  `:root` normal sin `[data-theme]`
+**Ambiente elegido: Noche.** Confirmado. Limpieza ya hecha:
+`ThemePicker.astro` borrado, script inline de bootstrap quitado de
+`Base.astro`, `tokens.css` reducido a un único bloque `:root` sin
+`[data-theme]`, `theme-flourishes.css` sin el prefijo de atributo
+(aplica directo, ya no hay nada que elegir).
+
+**Segunda ronda de feedback sobre el retrato (mismo día):** "el avatar
+está horrible, no tiene efectos, animaciones en el background". Dos
+arreglos:
+
+1. **Avatar rehecho.** El fallo real: la primera versión usaba sombreado
+   degradado pero sin contorno de tinta unificador — cualquier imperfección
+   de proporción se notaba mucho porque no había un estilo que la
+   "excusara". La avatar Daria-era anterior (bien recibida: "se ve genial")
+   sí llevaba contorno grueso en cada forma. Solución: mismo enfoque de
+   sombreado suave + contorno fino (3px, `#241b14`) unificando cabeza, pelo,
+   sudadera, cuello, orejas, auriculares. Cuello ensanchado y con esquinas
+   redondeadas para que la sudadera lo tape sin dejar hueco (antes se veía
+   un rectángulo flotando). Añadido: mofletes sutiles, brillo en los ojos,
+   sonrisa más cálida.
+
+2. **Fondo con movimiento real**, en `theme-flourishes.css`:
+   - `body`: degradado que respira (22s, posición animada)
+   - Dos capas de estrellas parpadeando (`::before`/`::after`, puntos por
+     `radial-gradient`, sin imágenes ni JS), encaja con el nombre "Noche"
+   - Los dos resplandores detrás del avatar ahora pulsan (`ap-glow-pulse`)
+
+Todo verificado por `animationName` en el navegador (6 animaciones activas
+a la vez: fondo, 2 capas de estrellas, avatar, 2 resplandores), sin
+errores de consola, recorrido visual de Inicio → Sobre mí → Proyectos
+sin roturas.
+
+**Sigue pendiente:** confirmar el móvil a 390px en un dispositivo real
+(la herramienta de esta sesión no fuerza el viewport). Y falta que
+Melany confirme si el retrato nuevo ya se parece a ella o necesita más
+ajuste (color de piel, forma del pelo, etc.).
 
 ## Siguiente (fase 2)
 
