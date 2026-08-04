@@ -1,0 +1,11 @@
+---
+import Base from '../layouts/Base.astro';
+import AboutPage from '../components/AboutPage.astro';
+import { useTranslations } from '../i18n/ui';
+
+const t = useTranslations('es');
+---
+
+<Base title={`${t('about.heading')} — Melany Martínez`} description={t('about.p1')}>
+  <AboutPage />
+</Base>
