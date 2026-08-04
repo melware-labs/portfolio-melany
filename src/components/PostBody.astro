@@ -93,8 +93,9 @@ const formattedDate = post.data.date.toLocaleDateString(lang === 'es' ? 'es-ES' 
     border-radius: var(--radius);
   }
   .post-body :global(pre) {
-    background: var(--ink);
-    color: var(--paper);
+    background: var(--surface);
+    color: var(--ink);
+    border: var(--border-width) solid color-mix(in srgb, var(--ink) 14%, transparent);
     padding: var(--space-4);
     border-radius: var(--radius);
     overflow-x: auto;

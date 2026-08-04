@@ -1,0 +1,24 @@
+name: Build
+
+# Comprueba que la web sigue compilando sin errores en cada cambio.
+# No despliega a ningún sitio todavía — eso se añade cuando haya un
+# hosting elegido.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npx astro check
+      - run: npm run build
