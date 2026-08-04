@@ -1,0 +1,63 @@
+/* ═══════════════════════════════════════════════════════════════
+   TOKENS — las decisiones de diseño, en un solo sitio.
+   Cambia un valor aquí y cambia en toda la web.
+═══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Color ───────────────────────────────────────────────────
+     Paleta apagada, sin brillos ni degradados.
+     Todos los colores de texto pasan contraste AA sobre --paper:
+     ink 14.8:1 · ink-soft 8.4:1 · ink-muted 5.2:1
+     accent 5.5:1 · accent-cool 5.4:1                            */
+  --paper:      #f4efe4;   /* fondo general, papel cálido */
+  --paper-2:    #eae3d3;   /* fondo alterno para separar secciones */
+  --surface:    #fbf8f1;   /* tarjetas y superficies elevadas */
+
+  --ink:        #1f1c18;   /* texto principal y bordes */
+  --ink-soft:   #443e35;   /* texto secundario */
+  --ink-muted:  #6b6355;   /* metadatos, etiquetas */
+
+  --accent:      #9e4526;  /* terracota — acción principal */
+  --accent-cool: #2f6b66;  /* verde azulado — acción secundaria */
+
+  --focus:      #2f6b66;   /* anillo de foco, siempre visible */
+
+  /* ── Tipografía ──────────────────────────────────────────────
+     Una sola fuente web (Space Grotesk, para titulares).
+     El cuerpo y el monoespaciado usan fuentes del sistema:
+     cargan al instante y no cuestan ni un byte.                 */
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Escala fluida: se adapta al ancho sin saltos bruscos */
+  --step--1: clamp(0.83rem, 0.8rem + 0.15vw, 0.9rem);
+  --step-0:  clamp(1rem, 0.96rem + 0.2vw, 1.1rem);
+  --step-1:  clamp(1.2rem, 1.1rem + 0.5vw, 1.45rem);
+  --step-2:  clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  --step-3:  clamp(1.9rem, 1.5rem + 2vw, 2.8rem);
+  --step-4:  clamp(2.3rem, 1.7rem + 3vw, 3.8rem);
+
+  /* ── Espaciado ───────────────────────────────────────────── */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-section: clamp(3.5rem, 8vw, 6rem);
+
+  /* ── Formas ──────────────────────────────────────────────────
+     Bordes gruesos y sombras duras sin desenfoque: es lo que da
+     el aire de software de escritorio antiguo sin recargar.     */
+  --border-width: 2px;
+  --radius: 4px;
+  --radius-lg: 8px;
+  --shadow: 3px 3px 0 var(--ink);
+  --shadow-sm: 2px 2px 0 var(--ink);
+
+  --measure: 62ch;          /* ancho máximo cómodo de lectura */
+  --container: 68rem;
+}

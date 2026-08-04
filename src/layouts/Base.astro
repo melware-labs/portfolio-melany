@@ -1,0 +1,72 @@
+---
+import '../styles/tokens.css';
+import '../styles/base.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getLangFromUrl, useTranslations, alternatePath } from '../i18n/ui';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const { title = t('site.title'), description = t('site.description') } = Astro.props;
+
+const otherLang = lang === 'es' ? 'en' : 'es';
+const otherHref = alternatePath(Astro.url, lang);
+
+// Astro.site sale de astro.config.mjs. Sin él las URLs absolutas no se
+// pueden construir, así que canonical y hreflang se omiten en local.
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : null;
+const otherCanonical = Astro.site ? new URL(otherHref, Astro.site) : null;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Melany Martínez" />
+    <meta name="theme-color" content="#f4efe4" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    {canonical && <link rel="canonical" href={canonical.href} />}
+    {
+      otherCanonical && (
+        <>
+          <link rel="alternate" hreflang={otherLang} href={otherCanonical.href} />
+          <link rel="alternate" hreflang={lang} href={canonical!.href} />
+        </>
+      )
+    }
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_GB'} />
+    <meta name="twitter:card" content="summary" />
+
+    {/* Una sola fuente web. preconnect acelera la conexión;
+        display=swap evita que el texto quede invisible mientras carga. */}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap"
+    />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">{t('nav.skip')}</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

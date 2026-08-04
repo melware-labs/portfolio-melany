@@ -1,101 +1,265 @@
 ---
-// Header component with desktop + mobile navigation
+import { getLangFromUrl, useTranslations, localizedPath, alternatePath, languages } from '../i18n/ui';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const home = localizedPath('/', lang);
+const otherLang = lang === 'es' ? 'en' : 'es';
+const otherHref = alternatePath(Astro.url, lang);
+
+// Los enlaces apuntan al inicio del idioma actual + ancla, para que
+// también funcionen desde una página de artículo.
+const links = [
+  { href: `${home}#sobre-mi`, label: t('nav.about') },
+  { href: `${home}#proyectos`, label: t('nav.projects') },
+  { href: `${home}#blog`, label: t('nav.blog') },
+  { href: `${home}#contacto`, label: t('nav.contact') },
+];
 ---
 
-<header id="site-header" class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
-  <div class="max-w-(--container-max) mx-auto px-6 h-16 flex items-center justify-between">
-    <!-- Logo -->
-    <a href="/" class="font-display font-bold text-xl text-text no-underline" aria-label="Melany Martínez — inicio">
-      Melany<span class="text-primary">.</span>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href={home}>
+      <span class="brand-name">Melany</span>
+      <span class="brand-labs">Melware Labs</span>
     </a>
 
-    <!-- Desktop Nav -->
-    <nav class="hidden md:flex items-center gap-8" aria-label="Navegación principal">
-      <a href="#sobre-mi" class="text-text-muted hover:text-text text-sm font-medium transition-colors duration-200 no-underline">Sobre mí</a>
-      <a href="#proyectos" class="text-text-muted hover:text-text text-sm font-medium transition-colors duration-200 no-underline">Proyectos</a>
-      <a href="#blog" class="text-text-muted hover:text-text text-sm font-medium transition-colors duration-200 no-underline">Blog</a>
-      <a href="#contacto" class="text-text-muted hover:text-text text-sm font-medium transition-colors duration-200 no-underline">Contacto</a>
+    <nav class="nav-desktop" aria-label={t('nav.menu')}>
+      {links.map((l) => <a href={l.href}>{l.label}</a>)}
     </nav>
 
-    <!-- CTA + Burger -->
-    <div class="flex items-center gap-4">
-      <a
-        href="#contacto"
-        class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 text-primary text-sm font-medium border border-primary/20 hover:bg-primary/20 transition-all duration-200 no-underline"
-      >
-        Hablemos
+    <div class="header-actions">
+      <a class="lang-switch" href={otherHref} lang={otherLang} hreflang={otherLang} aria-label={t('nav.switchTo')}>
+        {languages[otherLang]}
       </a>
+
       <button
-        id="burger-btn"
-        class="md:hidden flex flex-col gap-[5px] w-6 h-5 bg-transparent border-none cursor-pointer p-0"
-        aria-label="Abrir menú"
+        id="menu-toggle"
+        class="menu-toggle"
+        type="button"
         aria-expanded="false"
         aria-controls="mobile-nav"
       >
-        <span class="block w-full h-[2px] bg-text-muted rounded transition-all duration-300 origin-center"></span>
-        <span class="block w-full h-[2px] bg-text-muted rounded transition-all duration-300 origin-center"></span>
-        <span class="block w-full h-[2px] bg-text-muted rounded transition-all duration-300 origin-center"></span>
+        <span class="visually-hidden">{t('nav.openMenu')}</span>
+        <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
       </button>
     </div>
   </div>
 
-  <!-- Mobile Nav -->
-  <div id="mobile-nav" class="hidden md:hidden fixed inset-0 top-16 bg-bg/95 backdrop-blur-md z-40">
-    <nav class="flex flex-col items-center justify-center gap-8 h-full" aria-label="Menú móvil">
-      <a href="#sobre-mi" class="text-text text-2xl font-display font-semibold no-underline" data-mobile-link>Sobre mí</a>
-      <a href="#proyectos" class="text-text text-2xl font-display font-semibold no-underline" data-mobile-link>Proyectos</a>
-      <a href="#blog" class="text-text text-2xl font-display font-semibold no-underline" data-mobile-link>Blog</a>
-      <a href="#contacto" class="text-text text-2xl font-display font-semibold no-underline" data-mobile-link>Contacto</a>
-    </nav>
-  </div>
+  <nav id="mobile-nav" class="nav-mobile" aria-label={t('nav.menu')} hidden>
+    {links.map((l) => <a href={l.href}>{l.label}</a>)}
+  </nav>
 </header>
 
-<script>
-  // Header scroll effect
-  const header = document.getElementById('site-header');
-  let lastScrollY = 0;
-
-  function onScroll() {
-    const y = window.scrollY;
-    if (!header) return;
-
-    if (y > 60) {
-      header.classList.add('bg-bg/80', 'backdrop-blur-md', 'border-b', 'border-border');
-    } else {
-      header.classList.remove('bg-bg/80', 'backdrop-blur-md', 'border-b', 'border-border');
-    }
-    lastScrollY = y;
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--paper);
+    border-bottom: var(--border-width) solid var(--ink);
   }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
 
-  // Burger menu
-  const burger = document.getElementById('burger-btn');
-  const mobileNav = document.getElementById('mobile-nav');
-  const mobileLinks = document.querySelectorAll('[data-mobile-link]');
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    min-height: 4rem;
+  }
 
-  burger?.addEventListener('click', () => {
-    const isOpen = mobileNav?.classList.toggle('hidden') === false;
-    burger.setAttribute('aria-expanded', String(isOpen));
+  .brand {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .brand-name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step-1);
+  }
+  .brand-labs {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
 
-    const spans = burger.querySelectorAll('span');
-    if (isOpen) {
-      spans[0]?.classList.add('rotate-45', 'translate-y-[7px]');
-      spans[1]?.classList.add('opacity-0');
-      spans[2]?.classList.add('-rotate-45', '-translate-y-[7px]');
-    } else {
-      spans[0]?.classList.remove('rotate-45', 'translate-y-[7px]');
-      spans[1]?.classList.remove('opacity-0');
-      spans[2]?.classList.remove('-rotate-45', '-translate-y-[7px]');
+  .nav-desktop {
+    display: none;
+    margin-inline-start: auto;
+    gap: var(--space-5);
+  }
+  .nav-desktop a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-weight: 500;
+    padding-block: var(--space-2);
+    border-bottom: 2px solid transparent;
+  }
+  .nav-desktop a:hover {
+    color: var(--ink);
+    border-bottom-color: var(--accent);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-inline-start: auto;
+  }
+
+  .lang-switch {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding: var(--space-2) var(--space-3);
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    border: var(--border-width) solid var(--ink);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+  .lang-switch:hover {
+    background: var(--paper-2);
+    color: var(--ink);
+  }
+
+  /* ── Botón hamburguesa ─────────────────────────────────────── */
+  .menu-toggle {
+    /* 44x44: objetivo táctil mínimo cómodo */
+    width: 2.75rem;
+    height: 2.75rem;
+    display: grid;
+    place-items: center;
+    background: var(--surface);
+    border: var(--border-width) solid var(--ink);
+    border-radius: var(--radius);
+    cursor: pointer;
+  }
+  .bars {
+    display: grid;
+    gap: 4px;
+  }
+  .bars span {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: var(--ink);
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+  .menu-toggle[aria-expanded='true'] .bars span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+  .menu-toggle[aria-expanded='true'] .bars span:nth-child(2) {
+    opacity: 0;
+  }
+  .menu-toggle[aria-expanded='true'] .bars span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  /* ── Menú desplegable ──────────────────────────────────────── */
+  .nav-mobile {
+    display: grid;
+    border-top: var(--border-width) solid var(--ink);
+    background: var(--surface);
+  }
+  .nav-mobile[hidden] {
+    display: none;
+  }
+  .nav-mobile a {
+    padding: var(--space-4) var(--space-5);
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid var(--paper-2);
+  }
+  .nav-mobile a:last-child {
+    border-bottom: none;
+  }
+  .nav-mobile a:hover {
+    background: var(--paper-2);
+  }
+
+  /* A partir de tablet: navegación completa y fuera la hamburguesa */
+  @media (min-width: 48rem) {
+    .nav-desktop {
+      display: flex;
     }
-  });
+    .header-actions {
+      margin-inline-start: 0;
+    }
+    .menu-toggle {
+      display: none;
+    }
+    .nav-mobile {
+      display: none !important;
+    }
+  }
+</style>
 
-  mobileLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      mobileNav?.classList.add('hidden');
-      burger?.setAttribute('aria-expanded', 'false');
-      const spans = burger?.querySelectorAll('span');
-      spans?.forEach(s => s.classList.remove('rotate-45', 'translate-y-[7px]', 'opacity-0', '-rotate-45', '-translate-y-[7px]'));
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const nav = document.getElementById('mobile-nav');
+
+  if (toggle && nav) {
+    const open = () => {
+      nav.hidden = false;
+      toggle.setAttribute('aria-expanded', 'true');
+      // Evita que el fondo haga scroll mientras el menú está abierto
+      document.body.style.overflow = 'hidden';
+    };
+
+    const close = ({ refocus = false } = {}) => {
+      nav.hidden = true;
+      toggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      if (refocus) toggle.focus();
+    };
+
+    toggle.addEventListener('click', () => {
+      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+      isOpen ? close() : open();
     });
-  });
+
+    // Al pulsar un enlace el menú debe desaparecer, si no tapa la sección
+    nav.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) close();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+
+      if (e.key === 'Escape') {
+        close({ refocus: true });
+        return;
+      }
+
+      // Mientras está abierto, el tabulador se queda dentro del menú
+      if (e.key === 'Tab') {
+        const items = [toggle, ...Array.from(nav.querySelectorAll('a'))];
+        const first = items[0];
+        const last = items[items.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          (last as HTMLElement).focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          (first as HTMLElement).focus();
+        }
+      }
+    });
+
+    // Si se ensancha la ventana hasta escritorio, el menú sobra
+    const desktop = window.matchMedia('(min-width: 48rem)');
+    desktop.addEventListener('change', (e) => {
+      if (e.matches) close();
+    });
+  }
 </script>

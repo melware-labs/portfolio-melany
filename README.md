@@ -1,43 +1,74 @@
-# Astro Starter Kit: Minimal
+# Melware Labs — portfolio de Melany Martínez
 
-```sh
-npm create astro@latest -- --template minimal
+Mi web personal: proyectos, blog y algo de contexto sobre quién soy.
+Hecha desde cero con [Astro](https://astro.build), en español e inglés.
+
+## Cómo levantarla
+
+Hace falta tener [Node.js](https://nodejs.org) 22.12 o superior.
+
+```bash
+npm install
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Luego abrir <http://localhost:4321>.
 
-## 🚀 Project Structure
+| Comando           | Qué hace                                            |
+| ----------------- | --------------------------------------------------- |
+| `npm run dev`     | Servidor de desarrollo, recarga sola al guardar     |
+| `npm run build`   | Genera la web lista para publicar en `dist/`        |
+| `npm run preview` | Muestra el resultado del build, tal como se verá    |
 
-Inside of your Astro project, you'll see the following folders and files:
+## Cómo escribir un artículo
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+1. Copia `src/content/blog/plantilla.es.md` y ponle otro nombre,
+   por ejemplo `mi-primer-post.es.md`.
+2. Cambia el título, la descripción y la fecha de arriba.
+3. Pon `draft: false` cuando quieras que se publique.
+4. Escribe debajo. Es texto normal con [markdown](https://commonmark.org/help/).
+
+El nombre del archivo es la dirección: `mi-primer-post.es.md` se ve en
+`/blog/mi-primer-post`. Para la versión en inglés, el mismo nombre acabado
+en `.en.md`.
+
+Los proyectos funcionan igual, en `src/content/projects/`.
+
+## Cómo está organizada
+
+```
+src/
+├── content/           Los artículos y proyectos, en markdown
+│   ├── blog/
+│   └── projects/
+├── components/        Las piezas reutilizables (cabecera, tarjetas…)
+├── layouts/           El esqueleto común de todas las páginas
+├── pages/             Cada archivo aquí es una página de la web
+│   ├── index.astro    Inicio en español  →  /
+│   ├── blog/
+│   └── en/            Todo lo anterior en inglés  →  /en/
+├── i18n/ui.ts         Todos los textos de la interfaz, en los dos idiomas
+└── styles/
+    ├── tokens.css     Colores, tipografías y espaciados
+    └── base.css       Estilos comunes
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Decisiones
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+- **Sin frameworks de CSS.** CSS normal con variables. Una pieza menos que
+  mantener y una cosa más que entiendo.
+- **Casi sin JavaScript.** Sólo el menú del móvil. La web funciona igual
+  con JavaScript desactivado.
+- **Una sola fuente web.** El resto son fuentes del sistema, que cargan
+  al instante.
+- **Accesible a propósito:** se navega entera con el teclado, el foco
+  siempre se ve, los colores cumplen el contraste AA y se respeta la
+  preferencia de reducir el movimiento.
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Pendiente
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- [ ] Publicarla (falta elegir dónde y poner `site` en `astro.config.mjs`,
+      que hace falta para las URLs canónicas y las etiquetas de idioma)
+- [ ] Escribir el primer artículo
+- [ ] Avatar ilustrado
+- [ ] Formulario de contacto de verdad (ahora es un enlace de correo)

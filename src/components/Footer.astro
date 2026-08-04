@@ -1,19 +1,57 @@
 ---
-// Footer component
+import { getLangFromUrl, useTranslations } from '../i18n/ui';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
 ---
 
-<footer class="border-t border-border py-10">
-  <div class="max-w-(--container-max) mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
-    <div>
-      <span class="font-display font-bold text-lg text-text">Melany<span class="text-primary">.</span></span>
-      <p class="text-text-dim text-xs mt-0.5">Software Engineer</p>
-    </div>
-    <nav class="flex items-center gap-6" aria-label="Footer">
-      <a href="#sobre-mi" class="text-text-dim text-sm hover:text-text transition-colors no-underline">Sobre mí</a>
-      <a href="#proyectos" class="text-text-dim text-sm hover:text-text transition-colors no-underline">Proyectos</a>
-      <a href="#blog" class="text-text-dim text-sm hover:text-text transition-colors no-underline">Blog</a>
-      <a href="#contacto" class="text-text-dim text-sm hover:text-text transition-colors no-underline">Contacto</a>
-    </nav>
-    <p class="text-text-dim text-xs">© 2026 Melany Martínez.</p>
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p class="footer-brand">
+      <strong>Melware Labs</strong>
+      <span>© {year} {t('footer.rights')}</span>
+    </p>
+    <p class="footer-built">{t('footer.built')}</p>
   </div>
 </footer>
+
+<style>
+  .site-footer {
+    border-top: var(--border-width) solid var(--ink);
+    background: var(--paper-2);
+    padding-block: var(--space-6);
+    margin-top: var(--space-8);
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .footer-brand strong {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .footer-brand span,
+  .footer-built {
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+  }
+
+  @media (min-width: 40rem) {
+    .footer-inner {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+  }
+</style>
