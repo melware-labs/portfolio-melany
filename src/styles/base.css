@@ -65,10 +65,10 @@ svg {
   position: absolute;
   top: var(--space-3);
   left: var(--space-3);
-  z-index: 200;
+  z-index: 300;
   padding: var(--space-3) var(--space-4);
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--accent);
+  color: var(--btn-primary-fg);
   font-weight: 600;
   text-decoration: none;
   border-radius: var(--radius);
@@ -124,7 +124,7 @@ a:hover {
 
 ::selection {
   background: var(--accent);
-  color: var(--paper);
+  color: var(--btn-primary-fg);
 }
 
 /* ── Estructura ───────────────────────────────────────────────── */
@@ -185,21 +185,21 @@ a:hover {
     background-color 0.12s ease;
 }
 .btn:hover {
-  transform: translate(-2px, -2px);
+  transform: translate(var(--btn-hover-shift, 0), var(--btn-hover-shift, 0));
   box-shadow: var(--shadow);
 }
 .btn:active {
-  transform: translate(0, 0);
+  transform: none;
   box-shadow: var(--shadow-sm);
 }
 
 .btn--primary {
   background: var(--accent);
-  color: var(--paper);
+  color: var(--btn-primary-fg);
 }
 .btn--primary:hover {
-  background: #8b3c21;
-  color: var(--paper);
+  background: var(--accent-hover);
+  color: var(--btn-primary-fg);
 }
 
 .btn--secondary {

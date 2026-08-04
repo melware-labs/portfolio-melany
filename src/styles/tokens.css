@@ -1,36 +1,16 @@
 /* ═══════════════════════════════════════════════════════════════
    TOKENS — las decisiones de diseño, en un solo sitio.
-   Cambia un valor aquí y cambia en toda la web.
+
+   Ahora mismo hay VARIOS TEMAS para poder compararlos en pantalla.
+   Cuando elijas uno, se borran los demás y esto vuelve a ser un
+   único bloque.
 ═══════════════════════════════════════════════════════════════ */
 
 :root {
-  /* ── Color ───────────────────────────────────────────────────
-     Paleta apagada, sin brillos ni degradados.
-     Todos los colores de texto pasan contraste AA sobre --paper:
-     ink 14.8:1 · ink-soft 8.4:1 · ink-muted 5.2:1
-     accent 5.5:1 · accent-cool 5.4:1                            */
-  --paper:      #f4efe4;   /* fondo general, papel cálido */
-  --paper-2:    #eae3d3;   /* fondo alterno para separar secciones */
-  --surface:    #fbf8f1;   /* tarjetas y superficies elevadas */
-
-  --ink:        #1f1c18;   /* texto principal y bordes */
-  --ink-soft:   #443e35;   /* texto secundario */
-  --ink-muted:  #6b6355;   /* metadatos, etiquetas */
-
-  --accent:      #9e4526;  /* terracota — acción principal */
-  --accent-cool: #2f6b66;  /* verde azulado — acción secundaria */
-
-  --focus:      #2f6b66;   /* anillo de foco, siempre visible */
-
-  /* ── Tipografía ──────────────────────────────────────────────
-     Una sola fuente web (Space Grotesk, para titulares).
-     El cuerpo y el monoespaciado usan fuentes del sistema:
-     cargan al instante y no cuestan ni un byte.                 */
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  /* ── Lo que no cambia entre temas ─────────────────────────── */
   --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
-  /* Escala fluida: se adapta al ancho sin saltos bruscos */
   --step--1: clamp(0.83rem, 0.8rem + 0.15vw, 0.9rem);
   --step-0:  clamp(1rem, 0.96rem + 0.2vw, 1.1rem);
   --step-1:  clamp(1.2rem, 1.1rem + 0.5vw, 1.45rem);
@@ -38,7 +18,6 @@
   --step-3:  clamp(1.9rem, 1.5rem + 2vw, 2.8rem);
   --step-4:  clamp(2.3rem, 1.7rem + 3vw, 3.8rem);
 
-  /* ── Espaciado ───────────────────────────────────────────── */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -49,15 +28,144 @@
   --space-8: 4rem;
   --space-section: clamp(3.5rem, 8vw, 6rem);
 
-  /* ── Formas ──────────────────────────────────────────────────
-     Bordes gruesos y sombras duras sin desenfoque: es lo que da
-     el aire de software de escritorio antiguo sin recargar.     */
-  --border-width: 2px;
-  --radius: 4px;
-  --radius-lg: 8px;
-  --shadow: 3px 3px 0 var(--ink);
-  --shadow-sm: 2px 2px 0 var(--ink);
-
-  --measure: 62ch;          /* ancho máximo cómodo de lectura */
+  --measure: 62ch;
   --container: 68rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   A · TERMINAL — oscuro, monoespaciado, un verde de fósforo.
+   Sin adornos. Aire de consola de desarrollo.
+═══════════════════════════════════════════════════════════════ */
+:root[data-theme='terminal'] {
+  --paper:     #0d1117;
+  --paper-2:   #131920;
+  --surface:   #161d26;
+
+  --ink:       #e6edf3;
+  --ink-soft:  #b6c2cf;
+  --ink-muted: #8b98a5;
+
+  --accent:       #4ade80;
+  --accent-cool:  #56b6ff;
+  --accent-hover: #86efac;
+  --focus:        #4ade80;
+
+  --font-display: var(--font-mono);
+
+  --border-width: 1px;
+  --radius: 2px;
+  --radius-lg: 3px;
+  --shadow: none;
+  --shadow-sm: none;
+  --btn-primary-fg: #0d1117;
+  --btn-hover-shift: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   B · EDITORIAL — blanco y negro duro, tipografía enorme,
+   un solo rojo. Contundente y muy actual.
+═══════════════════════════════════════════════════════════════ */
+:root[data-theme='editorial'] {
+  --paper:     #ffffff;
+  --paper-2:   #f2f2f2;
+  --surface:   #ffffff;
+
+  --ink:       #000000;
+  --ink-soft:  #2b2b2b;
+  --ink-muted: #5c5c5c;
+
+  --accent:       #d10a2f;
+  --accent-cool:  #000000;
+  --accent-hover: #a80825;
+  --focus:        #d10a2f;
+
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+
+  --border-width: 3px;
+  --radius: 0;
+  --radius-lg: 0;
+  --shadow: 6px 6px 0 var(--ink);
+  --shadow-sm: 4px 4px 0 var(--ink);
+  --btn-primary-fg: #ffffff;
+  --btn-hover-shift: -3px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   C · CONSOLA — azul noche con colores saturados de videojuego.
+   Retro de consola, pero limpio.
+═══════════════════════════════════════════════════════════════ */
+:root[data-theme='consola'] {
+  --paper:     #14162b;
+  --paper-2:   #1b1e3a;
+  --surface:   #232748;
+
+  --ink:       #edeefb;
+  --ink-soft:  #c2c5e8;
+  --ink-muted: #9297c4;
+
+  --accent:       #ff5d8f;
+  --accent-cool:  #58cced;
+  --accent-hover: #ff85ac;
+  --focus:        #58cced;
+
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+
+  --border-width: 2px;
+  --radius: 8px;
+  --radius-lg: 14px;
+  --shadow: none;
+  --shadow-sm: none;
+  --btn-primary-fg: #14162b;
+  --btn-hover-shift: -2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   D · PLANO TÉCNICO — papel frío gris azulado, azul de plano.
+   Aire de documentación técnica y dibujo de ingeniería.
+═══════════════════════════════════════════════════════════════ */
+:root[data-theme='plano'] {
+  --paper:     #eef1f4;
+  --paper-2:   #e2e7ec;
+  --surface:   #ffffff;
+
+  --ink:       #16212b;
+  --ink-soft:  #3b4a58;
+  --ink-muted: #5d6b78;
+
+  --accent:       #0b5fa5;
+  --accent-cool:  #0b7a6b;
+  --accent-hover: #0a4d85;
+  --focus:        #0b5fa5;
+
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+
+  --border-width: 1px;
+  --radius: 3px;
+  --radius-lg: 4px;
+  --shadow: none;
+  --shadow-sm: none;
+  --btn-primary-fg: #ffffff;
+  --btn-hover-shift: 0;
+}
+
+/* Por defecto, mientras eliges: el terminal. */
+:root:not([data-theme]) {
+  --paper:     #0d1117;
+  --paper-2:   #131920;
+  --surface:   #161d26;
+  --ink:       #e6edf3;
+  --ink-soft:  #b6c2cf;
+  --ink-muted: #8b98a5;
+  --accent:      #4ade80;
+  --accent-cool: #56b6ff;
+  --accent-hover: #86efac;
+  --focus:       #4ade80;
+  --font-display: var(--font-mono);
+  --border-width: 1px;
+  --radius: 2px;
+  --radius-lg: 3px;
+  --shadow: none;
+  --shadow-sm: none;
+  --btn-primary-fg: #0d1117;
+  --btn-hover-shift: 0;
 }
