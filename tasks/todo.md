@@ -78,15 +78,55 @@ comprobadas por `animationName` en JS, sin errores de consola. Contraste
 de cada acento calculado antes de fijar el color (Candy necesitó
 oscurecerse: fallaba 3.82 y 2.67, quedó en 5.43 y 5.04).
 
-**Siguiente paso: que Melany elija una paleta (o pida más cambios).**
-Cuando lo haga, limpieza pendiente:
+Ese intento se descartó: "ahora que lo veo no me gusta ninguna, no
+transmite nada sobre mí". Diagnóstico — eran estilos de tendencia
+genéricos (podría ser la web de cualquiera), nada anclado a ella de
+verdad. Le pedí algo concreto y mandó una referencia real:
+https://www.redoyanulhaque.me/ — un personaje 3D grande como protagonista
+del hero, sobre fondo casi negro con resplandor de color, cabecera mínima.
+
+**Nueva dirección: retrato de Melany como protagonista.**
+No se copió el sitio (ni su texto, ni su modelo 3D — eso además
+necesitaría modelado real en Blender, no se puede escribir a mano). Se
+construyó `src/components/AvatarPortrait.astro`: ilustración SVG propia
+con sombreado degradado (estilo "emoji 3D/gomoso") a partir de los rasgos
+que ella describió: pelo castaño/rojizo con raya en medio, gafas grandes
+de pasta negra, auriculares de diadema color crema, sudadera negra. Parpadea
+sola, sin seguir el cursor (es la protagonista fija del hero, no una
+mascota flotante).
+
+`Home.astro`: hero reorganizado a dos columnas (texto + retrato) en
+escritorio, apilado con el retrato arriba en móvil.
+
+`tokens.css` / `theme-flourishes.css`: 3 ambientes que comparten el mismo
+retrato — el resplandor del personaje usa `var(--accent)`/`var(--accent-cool)`,
+así que se adapta solo:
+- **A · Noche** — casi negro, violeta y cian (el más cercano a la referencia)
+- **B · Terminal** — negro verdoso, verde ácido y alarma rosa-rojo (el
+  chiste de Melware Labs, literal)
+- **C · Synth** — azul noche, magenta y cian (un guiño contenido a los 80
+  sin saturar la pantalla, distinto del neón que ya se descartó antes)
+
+**Bug encontrado y arreglado:** al cambiar de familia de temas quedó en
+`localStorage` un id de la ronda anterior (`gradiente-aurora`) que ya no
+existía en `tokens.css` — la web cargaba sin tema aplicado (blanco y
+negro por defecto, sin fallback). Corregido en `Base.astro` y
+`ThemePicker.astro` para validar el valor guardado contra la lista de
+temas actual antes de usarlo.
+
+Verificado: las 3 variantes en el navegador, sin errores de consola,
+contraste de cada acento calculado antes de fijarlo. **Pendiente:** el
+panel de Chrome de esta sesión no permite forzar el viewport móvil (mismo
+límite de sesiones anteriores) — la regla CSS sigue el patrón mobile-first
+ya probado en el resto de la web, pero no se ha visto con los ojos a
+390px; conviene comprobarlo en un móvil real.
+
+**Siguiente paso: que Melany elija un ambiente (o pida ajustes al
+retrato).** Cuando lo haga, limpieza pendiente:
 - Borrar `ThemePicker.astro` y su import/uso en `Base.astro`
 - Borrar el script inline de tema en el `<head>` de `Base.astro`
-- Dejar en `tokens.css` sólo el bloque de la paleta elegida, ya como
+- Dejar en `tokens.css` sólo el bloque del ambiente elegido, ya como
   `:root` normal sin `[data-theme]`
-- Repasar si las tres animaciones continuas (fondo, manchas, brillo del
-  nombre) siguen pareciendo bien tras vivir con ellas un rato, o si alguna
-  cansa y hay que apagarla o hacerla más lenta
 
 ## Siguiente (fase 2)
 

@@ -1,14 +1,14 @@
 /* ═══════════════════════════════════════════════════════════════
    TOKENS — las decisiones de diseño, en un solo sitio.
 
-   Ganó el degradado. Ahora hay 4 PALETAS de esa misma familia para
-   comparar en pantalla — misma mecánica (fondo en degradado,
-   tarjetas de cristal, texto en degradado), distinto color.
-   Los efectos compartidos (incluidas las animaciones) están en
-   theme-flourishes.css, bajo [data-theme^='gradiente'].
+   Ahora el centro es el retrato (src/components/AvatarPortrait.astro):
+   fondo casi negro, el personaje protagonista, un resplandor de color
+   detrás. Hay 3 ambientes que comparten el mismo retrato y sólo
+   cambian el color del resplandor — para elegir el tono sin tener
+   que rehacer la ilustración cada vez.
 
-   Cuando elijas una paleta, se borran las demás y esto vuelve a
-   ser un único bloque :root.
+   Cuando elijas uno, se borran los demás y esto vuelve a ser un
+   único bloque :root.
 ═══════════════════════════════════════════════════════════════ */
 
 :root {
@@ -21,7 +21,7 @@
   --step-1:  clamp(1.2rem, 1.1rem + 0.5vw, 1.45rem);
   --step-2:  clamp(1.5rem, 1.3rem + 1vw, 2rem);
   --step-3:  clamp(1.9rem, 1.5rem + 2vw, 2.8rem);
-  --step-4:  clamp(2.4rem, 1.6rem + 4vw, 4.4rem);
+  --step-4:  clamp(2.4rem, 1.6rem + 4vw, 4.2rem);
 
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -36,138 +36,97 @@
   --measure: 62ch;
   --container: 68rem;
 
-  /* Formas comunes a las cuatro paletas */
-  --border-width: 0px;
-  --radius: 18px;
-  --radius-lg: 26px;
+  --border-width: 1px;
+  --radius: 14px;
+  --radius-lg: 20px;
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   A · AURORA — violeta noche, rosa y cian. La que ya viste.
+   A · NOCHE — casi negro, resplandor violeta y cian. El ambiente
+   más parecido a la referencia que enviaste.
 ═══════════════════════════════════════════════════════════════ */
-:root[data-theme='gradiente-aurora'] {
-  --bg-1: #150e33;
-  --bg-2: #1c1345;
-  --bg-3: #2a1550;
+:root[data-theme='retrato-noche'] {
+  --paper:     #0d0a12;
+  --paper-2:   #16111e;
+  --surface:   #191420;
 
-  --paper:     var(--bg-1);
-  --paper-2:   var(--bg-2);
-  --surface:   rgb(255 255 255 / 8%);
+  --ink:       #f5f2ee;
+  --ink-soft:  #c9c2d4;
+  --ink-muted: #948da4;
 
-  --ink:       #ffffff;
-  --ink-soft:  #dcd6f7;
-  --ink-muted: #a89fd6;
+  --accent:       #c34fef;
+  --accent-cool:  #46d9e6;
+  --accent-hover: #d576f5;
+  --focus:        #46d9e6;
 
-  --accent:       #ff7ad9;
-  --accent-cool:  #6ee7ff;
-  --accent-hover: #ffa0e6;
-  --focus:        #6ee7ff;
-
-  --shadow: 0 18px 50px rgb(110 231 255 / 22%), 0 6px 20px rgb(0 0 0 / 35%);
-  --shadow-sm: 0 10px 26px rgb(110 231 255 / 16%);
-  --btn-primary-fg: var(--bg-1);
+  --shadow: 0 20px 60px rgb(195 79 239 / 20%);
+  --shadow-sm: 0 10px 30px rgb(195 79 239 / 14%);
+  --btn-primary-fg: #0d0a12;
   --btn-hover-shift: -2px;
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   B · SUNSET — ciruela oscuro, coral y magenta cálidos.
+   B · TERMINAL — negro con tinte verde, resplandor verde ácido y
+   una alarma rosa-rojo. El chiste de Melware Labs, literal.
 ═══════════════════════════════════════════════════════════════ */
-:root[data-theme='gradiente-sunset'] {
-  --bg-1: #2b0f2e;
-  --bg-2: #3a1638;
-  --bg-3: #4d1a3f;
+:root[data-theme='retrato-terminal'] {
+  --paper:     #070907;
+  --paper-2:   #0e130e;
+  --surface:   #10160f;
 
-  --paper:     var(--bg-1);
-  --paper-2:   var(--bg-2);
-  --surface:   rgb(255 255 255 / 8%);
+  --ink:       #eafbea;
+  --ink-soft:  #bdd9bc;
+  --ink-muted: #86a385;
 
-  --ink:       #fff3ea;
-  --ink-soft:  #f0d9df;
-  --ink-muted: #c9a3b3;
+  --accent:       #4fd863;
+  --accent-cool:  #ff5470;
+  --accent-hover: #74e885;
+  --focus:        #4fd863;
 
-  --accent:       #ff8a5c;
-  --accent-cool:  #ff5ca8;
-  --accent-hover: #ffab85;
-  --focus:        #ff5ca8;
-
-  --shadow: 0 18px 50px rgb(255 92 168 / 22%), 0 6px 20px rgb(0 0 0 / 35%);
-  --shadow-sm: 0 10px 26px rgb(255 92 168 / 16%);
-  --btn-primary-fg: var(--bg-1);
+  --shadow: 0 20px 60px rgb(79 216 99 / 18%);
+  --shadow-sm: 0 10px 30px rgb(79 216 99 / 12%);
+  --btn-primary-fg: #070907;
   --btn-hover-shift: -2px;
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   C · CYBER — casi negro azulado, lima ácido y teal neón.
+   C · SYNTH — azul noche profundo, magenta y cian. Un guiño
+   contenido a los 80 que ya te gustaban, sin saturar la pantalla.
 ═══════════════════════════════════════════════════════════════ */
-:root[data-theme='gradiente-cyber'] {
-  --bg-1: #041014;
-  --bg-2: #06181c;
-  --bg-3: #082226;
+:root[data-theme='retrato-synth'] {
+  --paper:     #0b0c1f;
+  --paper-2:   #131530;
+  --surface:   #161938;
 
-  --paper:     var(--bg-1);
-  --paper-2:   var(--bg-2);
-  --surface:   rgb(255 255 255 / 7%);
+  --ink:       #f1f1fb;
+  --ink-soft:  #c7c8e6;
+  --ink-muted: #8f90ba;
 
-  --ink:       #eafff6;
-  --ink-soft:  #b9e8dc;
-  --ink-muted: #7fb3a6;
+  --accent:       #ff4fa3;
+  --accent-cool:  #3fd0ff;
+  --accent-hover: #ff77b8;
+  --focus:        #3fd0ff;
 
-  --accent:       #baff29;
-  --accent-cool:  #17e6c8;
-  --accent-hover: #d0ff70;
-  --focus:        #17e6c8;
-
-  --shadow: 0 18px 50px rgb(23 230 200 / 22%), 0 6px 20px rgb(0 0 0 / 40%);
-  --shadow-sm: 0 10px 26px rgb(23 230 200 / 16%);
-  --btn-primary-fg: var(--bg-1);
+  --shadow: 0 20px 60px rgb(255 79 163 / 18%);
+  --shadow-sm: 0 10px 30px rgb(255 79 163 / 12%);
+  --btn-primary-fg: #0b0c1f;
   --btn-hover-shift: -2px;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   D · CANDY — la única clara: lavanda muy pálido, magenta y azul.
-   Misma mecánica de cristal y degradado, en versión luminosa.
-═══════════════════════════════════════════════════════════════ */
-:root[data-theme='gradiente-candy'] {
-  --bg-1: #fdf3ff;
-  --bg-2: #f6e6ff;
-  --bg-3: #eadcff;
-
-  --paper:     var(--bg-1);
-  --paper-2:   var(--bg-2);
-  --surface:   rgb(255 255 255 / 55%);
-
-  --ink:       #241436;
-  --ink-soft:  #4a3565;
-  --ink-muted: #7c6a95;
-
-  --accent:       #a91f74;
-  --accent-cool:  #0a5f96;
-  --accent-hover: #c73a90;
-  --focus:        #0a5f96;
-
-  --shadow: 0 18px 40px rgb(169 31 116 / 14%), 0 6px 16px rgb(36 20 54 / 10%);
-  --shadow-sm: 0 10px 22px rgb(169 31 116 / 10%);
-  --btn-primary-fg: #fffbff;
-  --btn-hover-shift: -2px;
-}
-
-/* Por defecto, mientras eliges: aurora. */
+/* Por defecto, mientras eliges: noche. */
 :root:not([data-theme]) {
-  --bg-1: #150e33;
-  --bg-2: #1c1345;
-  --bg-3: #2a1550;
-  --paper:     var(--bg-1);
-  --paper-2:   var(--bg-2);
-  --surface:   rgb(255 255 255 / 8%);
-  --ink:       #ffffff;
-  --ink-soft:  #dcd6f7;
-  --ink-muted: #a89fd6;
-  --accent:       #ff7ad9;
-  --accent-cool:  #6ee7ff;
-  --accent-hover: #ffa0e6;
-  --focus:        #6ee7ff;
-  --shadow: 0 18px 50px rgb(110 231 255 / 22%), 0 6px 20px rgb(0 0 0 / 35%);
-  --shadow-sm: 0 10px 26px rgb(110 231 255 / 16%);
-  --btn-primary-fg: var(--bg-1);
+  --paper:     #0d0a12;
+  --paper-2:   #16111e;
+  --surface:   #191420;
+  --ink:       #f5f2ee;
+  --ink-soft:  #c9c2d4;
+  --ink-muted: #948da4;
+  --accent:       #c34fef;
+  --accent-cool:  #46d9e6;
+  --accent-hover: #d576f5;
+  --focus:        #46d9e6;
+  --shadow: 0 20px 60px rgb(195 79 239 / 20%);
+  --shadow-sm: 0 10px 30px rgb(195 79 239 / 14%);
+  --btn-primary-fg: #0d0a12;
   --btn-hover-shift: -2px;
 }
