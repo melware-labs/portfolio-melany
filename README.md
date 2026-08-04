@@ -22,15 +22,15 @@ Luego abrir <http://localhost:4321>.
 
 ## Cómo escribir un artículo
 
-1. Copia `src/content/blog/plantilla.es.md` y ponle otro nombre,
-   por ejemplo `mi-primer-post.es.md`.
+1. Copia `src/content/blog/es/plantilla.md` y ponle otro nombre,
+   por ejemplo `mi-primer-post.md`.
 2. Cambia el título, la descripción y la fecha de arriba.
 3. Pon `draft: false` cuando quieras que se publique.
 4. Escribe debajo. Es texto normal con [markdown](https://commonmark.org/help/).
 
-El nombre del archivo es la dirección: `mi-primer-post.es.md` se ve en
-`/blog/mi-primer-post`. Para la versión en inglés, el mismo nombre acabado
-en `.en.md`.
+El nombre del archivo es la dirección: `es/mi-primer-post.md` se ve en
+`/blog/mi-primer-post`. La versión en inglés va en `en/` y puede tener otro
+nombre, para que la dirección también esté en inglés.
 
 Los proyectos funcionan igual, en `src/content/projects/`.
 
@@ -40,7 +40,9 @@ Los proyectos funcionan igual, en `src/content/projects/`.
 src/
 ├── content/           Los artículos y proyectos, en markdown
 │   ├── blog/
-│   └── projects/
+│   │   ├── es/        Artículos en español  →  /blog/…
+│   │   └── en/        Artículos en inglés   →  /en/blog/…
+│   └── projects/      Misma estructura: es/ y en/
 ├── components/        Las piezas reutilizables (cabecera, tarjetas…)
 ├── layouts/           El esqueleto común de todas las páginas
 ├── pages/             Cada archivo aquí es una página de la web

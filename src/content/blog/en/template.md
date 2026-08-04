@@ -1,8 +1,9 @@
 ---
 # ── TEMPLATE ─────────────────────────────────────────────────
-# To write a post: copy this file, rename it (for example
-# "my-first-post.en.md") and set `draft` to false.
-# The filename becomes the URL: my-first-post.en.md -> /en/blog/my-first-post
+# To write a post: copy this file inside this same folder (blog/en/),
+# rename it, and set `draft` to false.
+# The filename becomes the URL:
+#   blog/en/my-first-post.md  ->  /en/blog/my-first-post
 # ─────────────────────────────────────────────────────────────
 title: Post title
 description: A one or two sentence summary. This is what shows in the blog list and in Google.
