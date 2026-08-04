@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import { getLangFromUrl, useTranslations, localizedPath } from '../i18n/ui';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<Base title={`404 — ${t('404.heading')}`}>
+  <section class="section notfound">
+    <div class="container">
+      <p class="eyebrow">Error 404</p>
+      <h1>{t('404.heading')}</h1>
+      <p class="prose">{t('404.text')}</p>
+      <a class="btn btn--primary" href={localizedPath('/', lang)}>{t('404.back')}</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .notfound p {
+    margin-top: var(--space-3);
+    font-size: var(--step-1);
+    color: var(--ink-soft);
+  }
+  .notfound .btn {
+    margin-top: var(--space-6);
+  }
+</style>

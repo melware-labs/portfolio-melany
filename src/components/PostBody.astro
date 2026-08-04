@@ -1,0 +1,111 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getLangFromUrl, useTranslations, localizedPath } from '../i18n/ui';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const formattedDate = post.data.date.toLocaleDateString(lang === 'es' ? 'es-ES' : 'en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<article class="section">
+  <div class="container">
+    <a class="back" href={`${localizedPath('/', lang)}#blog`}>&larr; {t('blog.backToList')}</a>
+
+    <header class="post-header">
+      <p class="eyebrow">
+        {t('blog.publishedOn')}
+        <time datetime={post.data.date.toISOString()}>{formattedDate}</time>
+      </p>
+      <h1>{post.data.title}</h1>
+      <p class="lede">{post.data.description}</p>
+    </header>
+
+    <div class="post-body">
+      <slot />
+    </div>
+  </div>
+</article>
+
+<style>
+  .back {
+    display: inline-block;
+    margin-bottom: var(--space-5);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+  }
+
+  .post-header {
+    max-width: var(--measure);
+    padding-bottom: var(--space-5);
+    border-bottom: var(--border-width) solid var(--ink);
+  }
+  .lede {
+    margin-top: var(--space-3);
+    font-size: var(--step-1);
+    color: var(--ink-soft);
+  }
+
+  .post-body {
+    max-width: var(--measure);
+    margin-top: var(--space-6);
+  }
+
+  /* Estilos del markdown. Van con :global porque el HTML lo genera
+     Astro al compilar el artículo, no este componente. */
+  .post-body :global(> * + *) {
+    margin-top: var(--space-4);
+  }
+  .post-body :global(h2) {
+    font-size: var(--step-2);
+    margin-top: var(--space-7);
+  }
+  .post-body :global(h3) {
+    margin-top: var(--space-6);
+  }
+  .post-body :global(ul),
+  .post-body :global(ol) {
+    padding-inline-start: var(--space-5);
+  }
+  .post-body :global(li + li) {
+    margin-top: var(--space-2);
+  }
+  .post-body :global(blockquote) {
+    border-inline-start: 4px solid var(--accent);
+    padding-inline-start: var(--space-4);
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .post-body :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--paper-2);
+    padding: 0.1em 0.35em;
+    border-radius: var(--radius);
+  }
+  .post-body :global(pre) {
+    background: var(--ink);
+    color: var(--paper);
+    padding: var(--space-4);
+    border-radius: var(--radius);
+    overflow-x: auto;
+  }
+  .post-body :global(pre code) {
+    background: none;
+    padding: 0;
+    color: inherit;
+  }
+  .post-body :global(img) {
+    border: var(--border-width) solid var(--ink);
+    border-radius: var(--radius);
+  }
+</style>
