@@ -72,6 +72,15 @@ export const ui = {
     'contact.intro':
       'Si quieres contarme algo, corregirme algo o darme una oportunidad, escríbeme. Respondo siempre.',
     'contact.email': 'Escríbeme un correo',
+    'contact.formName': 'Nombre',
+    'contact.formEmail': 'Tu correo',
+    'contact.formSubject': 'Asunto',
+    'contact.formMessage': 'Mensaje',
+    'contact.formSubmit': 'Enviar mensaje',
+    'contact.formNote': 'Se abrirá tu programa de correo con el mensaje ya escrito.',
+    'contact.formError': 'Rellena tu correo y el mensaje antes de enviar.',
+    'contact.or': 'o',
+    'contact.social': 'También ando por aquí',
 
     'footer.built': 'Hecha desde cero con Astro',
     'footer.rights': 'Melany Martínez',
@@ -138,6 +147,15 @@ export const ui = {
     'contact.intro':
       'If you want to tell me something, correct me, or give me a shot — send me an email. I always reply.',
     'contact.email': 'Send me an email',
+    'contact.formName': 'Name',
+    'contact.formEmail': 'Your email',
+    'contact.formSubject': 'Subject',
+    'contact.formMessage': 'Message',
+    'contact.formSubmit': 'Send message',
+    'contact.formNote': 'This will open your email app with the message already written.',
+    'contact.formError': 'Fill in your email and a message before sending.',
+    'contact.or': 'or',
+    'contact.social': 'Also around here',
 
     'footer.built': 'Built from scratch with Astro',
     'footer.rights': 'Melany Martínez',

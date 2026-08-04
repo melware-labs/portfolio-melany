@@ -153,10 +153,53 @@ a la vez: fondo, 2 capas de estrellas, avatar, 2 resplandores), sin
 errores de consola, recorrido visual de Inicio → Sobre mí → Proyectos
 sin roturas.
 
-**Sigue pendiente:** confirmar el móvil a 390px en un dispositivo real
-(la herramienta de esta sesión no fuerza el viewport). Y falta que
-Melany confirme si el retrato nuevo ya se parece a ella o necesita más
-ajuste (color de piel, forma del pelo, etc.).
+**Avatar descartado del todo (mismo día).** "Quita ese avatar culero,
+está horrible" — segunda vez que falla. Aceptado como límite real, no
+como algo a resolver a la tercera: dibujar una cara a mano con SVG sin
+poder ver el resultado e iterar visualmente no es viable para mí. Se
+borró `AvatarPortrait.astro`, el hero volvió a una sola columna
+centrada (texto only), se quedó el ambiente "Noche" (fondo, estrellas,
+resplandores) que no había recibido queja. Si más adelante quiere una
+imagen suya en la web, las vías realistas son: una foto real con
+tratamiento (duotono, grano), o una ilustración de verdad encargada
+fuera (Fiverr, alguien que dibuje, un generador de avatares) que yo
+integre — no volver a intentar dibujarla a mano.
+
+## Formulario de contacto + redes sociales + "Sobre mí" aparte (mismo día)
+
+Pidió tres cosas más: formulario de contacto de verdad, enlaces a
+Instagram/GitHub/LinkedIn, y mover "Sobre mí" fuera de la página
+principal a su propio enlace.
+
+- **`src/pages/sobre-mi.astro`** (ES) y **`src/pages/en/about.astro`**
+  (EN) — página propia, con `src/components/AboutPage.astro` compartiendo
+  el contenido. Quitada del todo de `Home.astro`. `Header.astro` ya
+  enlaza directo a la página en vez de a un ancla.
+- **Formulario de contacto real** en la sección Contacto: nombre, correo,
+  asunto, mensaje. Sin backend propio (aún no hay hosting elegido), así
+  que al enviar arma un `mailto:` con lo escrito y abre el programa de
+  correo — funciona ya, hoy, sin cuentas ni claves de terceros. Validado
+  en el navegador: con datos válidos no muestra error, con campos vacíos
+  sí. Si más adelante quiere un envío real sin salir de la página
+  (Web3Forms o similar), es un paso aparte que necesita que ella cree la
+  cuenta — eso no lo puedo hacer yo.
+- **Redes sociales**: añadida la tarjeta con GitHub/LinkedIn/Instagram
+  junto al formulario, con iconos. **Los enlaces son placeholders**
+  (`github.com/`, `linkedin.com/`, `instagram.com/` — las portadas, no
+  perfiles) porque no tengo sus usuarios reales y no me los puedo
+  inventar. Pendiente: que dé sus URLs o usuarios reales para poner los
+  enlaces definitivos.
+
+Verificado: build limpio (7 páginas), sin errores de consola, `/sobre-mi`
+y `/en/about` confirmados por `fetch` (200, `h1` e idioma correctos —
+la navegación del panel de esta sesión tuvo problemas para cambiar de
+URL, así que se verificó pidiendo el HTML directamente en vez de fiarse
+de la captura de pantalla).
+
+**Sigue pendiente:**
+- Confirmar el móvil a 390px en un dispositivo real (la herramienta de
+  esta sesión no fuerza el viewport, arrastra desde varias rondas).
+- Que Melany dé sus usuarios/URLs reales de GitHub, LinkedIn e Instagram.
 
 ## Siguiente (fase 2)
 

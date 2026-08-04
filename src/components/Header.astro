@@ -8,10 +8,12 @@ const home = localizedPath('/', lang);
 const otherLang = lang === 'es' ? 'en' : 'es';
 const otherHref = alternatePath(Astro.url, lang);
 
-// Los enlaces apuntan al inicio del idioma actual + ancla, para que
-// también funcionen desde una página de artículo.
+// "Sobre mí" es una página aparte, con su propio slug por idioma (igual
+// que los artículos del blog). El resto son anclas al inicio, así que
+// funcionan también desde una página de artículo o desde "Sobre mí".
+const aboutHref = lang === 'es' ? '/sobre-mi' : '/en/about';
 const links = [
-  { href: `${home}#sobre-mi`, label: t('nav.about') },
+  { href: aboutHref, label: t('nav.about') },
   { href: `${home}#proyectos`, label: t('nav.projects') },
   { href: `${home}#blog`, label: t('nav.blog') },
   { href: `${home}#contacto`, label: t('nav.contact') },
