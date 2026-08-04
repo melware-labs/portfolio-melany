@@ -1,6 +1,7 @@
 ---
 import '../styles/tokens.css';
 import '../styles/base.css';
+import '../styles/theme-flourishes.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import ThemePicker from '../components/ThemePicker.astro';
@@ -40,7 +41,7 @@ const otherCanonical = Astro.site ? new URL(otherHref, Astro.site) : null;
         parpadee al cargar la página. Se borra junto con ThemePicker. */}
     <script is:inline>
       document.documentElement.dataset.theme =
-        localStorage.getItem('preview-theme') || 'terminal';
+        localStorage.getItem('preview-theme') || 'gradiente-aurora';
     </script>
 
     {canonical && <link rel="canonical" href={canonical.href} />}
