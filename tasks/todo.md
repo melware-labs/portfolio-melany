@@ -47,6 +47,30 @@ Rama: `rebuild/v2`
       en una entrevista. Si algo no suena a ella o no lo sabría explicar,
       fuera.
 
+## Estética — rechazada y en modo comparación (2026-07-31)
+
+Melany rechazó el tema sobrio en cuanto lo vio: "sigue conservando lo de
+Daria". Tenía razón — papel cálido + tinta + terracota apagado + sombras
+duras es la paleta de Daria con otro nombre, no una ruptura real. Van
+siete rondas fallando por describir la estética en vez de enseñarla.
+
+Nuevo método: `src/styles/tokens.css` tiene ahora 4 temas completos detrás
+de `[data-theme]`, y `ThemePicker.astro` (temporal) deja cambiar entre
+ellos con un clic desde la propia web, en `http://localhost:4321`:
+
+- **A · Terminal** — oscuro, monoespaciado, verde de fósforo
+- **B · Editorial** — blanco y negro duro, un rojo, tipografía enorme
+- **C · Consola** — azul noche, rosa y cian saturados
+- **D · Plano técnico** — papel frío gris azulado, azul de plano
+
+Las cuatro probadas en el navegador, sin errores de consola.
+
+**Siguiente paso: que Melany elija una (o pida ajustes).** Cuando lo haga:
+- Borrar `ThemePicker.astro` y su import/uso en `Base.astro`
+- Borrar el script inline de tema en el `<head>` de `Base.astro`
+- Dejar en `tokens.css` sólo el bloque del tema elegido, ya como `:root`
+  normal sin `[data-theme]`
+
 ## Siguiente (fase 2)
 
 - [ ] Publicar y poner `site` en `astro.config.mjs`

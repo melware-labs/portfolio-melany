@@ -3,6 +3,7 @@ import '../styles/tokens.css';
 import '../styles/base.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import ThemePicker from '../components/ThemePicker.astro';
 import { getLangFromUrl, useTranslations, alternatePath } from '../i18n/ui';
 
 interface Props {
@@ -34,6 +35,13 @@ const otherCanonical = Astro.site ? new URL(otherHref, Astro.site) : null;
     <meta name="author" content="Melany Martínez" />
     <meta name="theme-color" content="#f4efe4" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    {/* TEMPORAL: aplica el tema elegido antes de pintar, para que no
+        parpadee al cargar la página. Se borra junto con ThemePicker. */}
+    <script is:inline>
+      document.documentElement.dataset.theme =
+        localStorage.getItem('preview-theme') || 'terminal';
+    </script>
 
     {canonical && <link rel="canonical" href={canonical.href} />}
     {
@@ -68,5 +76,6 @@ const otherCanonical = Astro.site ? new URL(otherHref, Astro.site) : null;
       <slot />
     </main>
     <Footer />
+    <ThemePicker />
   </body>
 </html>

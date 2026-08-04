@@ -1,0 +1,116 @@
+---
+/**
+ * TEMPORAL — sólo para elegir estética.
+ * Cuando Melany elija un tema, este componente se borra, se quitan los
+ * demás bloques de tokens.css y la web se queda con uno solo.
+ */
+const themes = [
+  { id: 'terminal', label: 'A · Terminal', hint: 'Oscuro, monoespaciado, verde de fósforo' },
+  { id: 'editorial', label: 'B · Editorial', hint: 'Blanco y negro duro, rojo, tipografía enorme' },
+  { id: 'consola', label: 'C · Consola', hint: 'Azul noche, rosa y cian de videojuego' },
+  { id: 'plano', label: 'D · Plano técnico', hint: 'Papel frío, azul de plano, sobrio' },
+];
+---
+
+<aside class="picker" aria-label="Elegir estética">
+  <p class="picker-title">Probando estéticas</p>
+  <div class="picker-options">
+    {
+      themes.map((theme) => (
+        <button type="button" data-theme-btn={theme.id} title={theme.hint}>
+          {theme.label}
+        </button>
+      ))
+    }
+  </div>
+  <p class="picker-note">Elige una y dímela. Luego borro el resto.</p>
+</aside>
+
+<style>
+  /* Estilos propios y fijos: este panel no debe cambiar con el tema,
+     si no, no se distingue de la web que estás juzgando. */
+  .picker {
+    position: fixed;
+    left: 50%;
+    bottom: 1rem;
+    transform: translateX(-50%);
+    z-index: 250;
+    width: min(92vw, 30rem);
+    padding: 0.75rem 1rem 0.6rem;
+    background: #101010;
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgb(0 0 0 / 45%);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    text-align: center;
+  }
+
+  .picker-title {
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #9aa0a6;
+    margin-bottom: 0.5rem;
+  }
+
+  .picker-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem;
+  }
+  @media (min-width: 34rem) {
+    .picker-options {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .picker button {
+    min-height: 2.6rem;
+    padding: 0.35rem 0.4rem;
+    font-family: inherit;
+    font-size: 0.72rem;
+    color: #fff;
+    background: #1e1e1e;
+    border: 1px solid #4a4a4a;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .picker button:hover {
+    background: #2c2c2c;
+  }
+  .picker button[aria-pressed='true'] {
+    background: #fff;
+    color: #101010;
+    border-color: #fff;
+    font-weight: 700;
+  }
+  .picker button:focus-visible {
+    outline: 3px solid #6ea8fe;
+    outline-offset: 2px;
+  }
+
+  .picker-note {
+    margin-top: 0.5rem;
+    font-size: 0.65rem;
+    color: #9aa0a6;
+  }
+</style>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-theme-btn]');
+  const STORAGE_KEY = 'preview-theme';
+
+  const apply = (theme: string) => {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem(STORAGE_KEY, theme);
+    buttons.forEach((b) =>
+      b.setAttribute('aria-pressed', String(b.dataset.themeBtn === theme))
+    );
+  };
+
+  // Recuerda la elección al navegar entre páginas
+  apply(localStorage.getItem(STORAGE_KEY) ?? 'terminal');
+
+  buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.themeBtn!)));
+</script>
