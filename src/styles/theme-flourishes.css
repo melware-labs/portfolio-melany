@@ -74,14 +74,8 @@ body::after {
   border-bottom-color: color-mix(in srgb, var(--ink) 12%, transparent);
 }
 
-.card,
-.form-input,
-.form-textarea {
+.card {
   border-color: color-mix(in srgb, var(--ink) 14%, transparent);
-}
-
-.hero-name {
-  color: var(--accent);
 }
 
 /* Aparecer al hacer scroll — sólo donde el navegador lo soporta;
