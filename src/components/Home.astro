@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import { getLangFromUrl, useTranslations } from '../i18n/ui';
 import ProjectCard from './ProjectCard.astro';
 import PostCard from './PostCard.astro';
+import AvatarPortrait from './AvatarPortrait.astro';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -20,15 +21,20 @@ const email = 'melanymartinez667@gmail.com';
 
 <!-- ── Portada ──────────────────────────────────────────────── -->
 <section class="hero">
-  <div class="container">
-    <p class="eyebrow">{t('hero.tagline')}</p>
-    <h1>
-      {t('hero.greeting')} <span class="hero-name">{t('hero.name')}</span>
-    </h1>
-    <p class="hero-intro prose">{t('hero.intro')}</p>
-    <div class="hero-actions">
-      <a class="btn btn--primary" href="#proyectos">{t('hero.ctaProjects')}</a>
-      <a class="btn btn--secondary" href="#blog">{t('hero.ctaBlog')}</a>
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">{t('hero.tagline')}</p>
+      <h1>
+        {t('hero.greeting')} <span class="hero-name">{t('hero.name')}</span>
+      </h1>
+      <p class="hero-intro prose">{t('hero.intro')}</p>
+      <div class="hero-actions">
+        <a class="btn btn--primary" href="#proyectos">{t('hero.ctaProjects')}</a>
+        <a class="btn btn--secondary" href="#blog">{t('hero.ctaBlog')}</a>
+      </div>
+    </div>
+    <div class="hero-figure">
+      <AvatarPortrait />
     </div>
   </div>
 </section>
@@ -111,7 +117,21 @@ const email = 'melanymartinez667@gmail.com';
 
 <style>
   .hero {
-    padding-block: clamp(3rem, 10vw, 6rem);
+    padding-block: clamp(2.5rem, 8vw, 5rem);
+    overflow: clip;
+  }
+  .hero-grid {
+    display: grid;
+    gap: var(--space-7);
+    align-items: center;
+  }
+  .hero-figure {
+    order: -1;
+    max-width: 20rem;
+    margin-inline: auto;
+  }
+  .hero-copy {
+    text-align: center;
   }
   .hero-name {
     color: var(--accent);
@@ -120,12 +140,33 @@ const email = 'melanymartinez667@gmail.com';
     margin-top: var(--space-4);
     font-size: var(--step-1);
     color: var(--ink-soft);
+    margin-inline: auto;
   }
   .hero-actions {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: var(--space-3);
     margin-top: var(--space-6);
+  }
+
+  @media (min-width: 60rem) {
+    .hero-grid {
+      grid-template-columns: 1.1fr 1fr;
+    }
+    .hero-figure {
+      order: 1;
+      max-width: none;
+    }
+    .hero-copy {
+      text-align: left;
+    }
+    .hero-intro {
+      margin-inline: 0;
+    }
+    .hero-actions {
+      justify-content: flex-start;
+    }
   }
 
   .section-intro {

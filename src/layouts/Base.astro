@@ -40,8 +40,13 @@ const otherCanonical = Astro.site ? new URL(otherHref, Astro.site) : null;
     {/* TEMPORAL: aplica el tema elegido antes de pintar, para que no
         parpadee al cargar la página. Se borra junto con ThemePicker. */}
     <script is:inline>
+      // Valida contra la lista actual: si queda guardado un tema de una
+      // ronda anterior que ya no existe, no se aplica ninguno y la web
+      // se ve sin estilos. Mejor comprobar antes de confiar en lo guardado.
+      var VALID_THEMES = ['retrato-noche', 'retrato-terminal', 'retrato-synth'];
+      var saved = localStorage.getItem('preview-theme');
       document.documentElement.dataset.theme =
-        localStorage.getItem('preview-theme') || 'gradiente-aurora';
+        VALID_THEMES.indexOf(saved) !== -1 ? saved : 'retrato-noche';
     </script>
 
     {canonical && <link rel="canonical" href={canonical.href} />}

@@ -1,0 +1,162 @@
+---
+/**
+ * Retrato grande de Melany, protagonista del hero. Ilustración plana
+ * con sombreado suave (tipo "emoji 3D") para dar volumen sin necesitar
+ * un modelo 3D real — eso habría que modelarlo en Blender o similar,
+ * no se puede escribir a mano en código de forma creíble.
+ *
+ * Rasgos a partir de su propia descripción: pelo castaño/rojizo con
+ * raya en medio, gafas grandes de pasta negra, auriculares de diadema
+ * color crema, sudadera negra. Original, no copia de ninguna imagen.
+ */
+---
+
+<div class="avatar-portrait" aria-hidden="true">
+  <svg viewBox="0 0 480 620" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="ap-skin" cx="35%" cy="28%" r="80%">
+        <stop offset="0%" stop-color="#f3c9a3" />
+        <stop offset="55%" stop-color="#e3ab7c" />
+        <stop offset="100%" stop-color="#c88f61" />
+      </radialGradient>
+      <linearGradient id="ap-hair" x1="0" y1="0" x2="0.15" y2="1">
+        <stop offset="0%" stop-color="#93543f" />
+        <stop offset="100%" stop-color="#5b2e22" />
+      </linearGradient>
+      <linearGradient id="ap-hoodie" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#2a2830" />
+        <stop offset="100%" stop-color="#121116" />
+      </linearGradient>
+      <linearGradient id="ap-cushion" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#fbf3e4" />
+        <stop offset="100%" stop-color="#e8d9bd" />
+      </linearGradient>
+      <filter id="ap-soft" x="-40%" y="-40%" width="180%" height="180%">
+        <feGaussianBlur stdDeviation="7" />
+      </filter>
+    </defs>
+
+    <!-- resplandor ambiental detrás del personaje -->
+    <ellipse class="ap-glow ap-glow--a" cx="220" cy="230" rx="170" ry="170" filter="url(#ap-soft)" />
+    <ellipse class="ap-glow ap-glow--b" cx="330" cy="380" rx="150" ry="150" filter="url(#ap-soft)" />
+
+    <!-- sudadera / hombros -->
+    <path class="ap-hoodie" d="M96 620 C96 520 150 470 240 470 C330 470 384 520 384 620 Z" fill="url(#ap-hoodie)" />
+    <path class="ap-hood" d="M150 470 C170 500 210 512 240 512 C270 512 310 500 330 470 C312 496 278 508 240 508 C202 508 168 496 150 470 Z" fill="#1a1920" />
+    <path class="ap-strings" d="M222 480 L216 540 M258 480 L264 540" stroke="#0c0b0f" stroke-width="5" stroke-linecap="round" />
+    <circle cx="216" cy="544" r="4" fill="#0c0b0f" />
+    <circle cx="264" cy="544" r="4" fill="#0c0b0f" />
+
+    <!-- cuello -->
+    <rect x="210" y="430" width="60" height="70" fill="url(#ap-skin)" />
+
+    <!-- orejas -->
+    <ellipse cx="132" cy="300" rx="16" ry="24" fill="url(#ap-skin)" />
+    <ellipse cx="348" cy="300" rx="16" ry="24" fill="url(#ap-skin)" />
+
+    <!-- cabeza -->
+    <path
+      class="ap-head"
+      d="M240 120 C304 120 340 168 340 245 C340 322 300 392 240 402 C180 392 140 322 140 245 C140 168 176 120 240 120 Z"
+      fill="url(#ap-skin)"
+    />
+    <!-- luz de borde de color, sólo en el lado derecho -->
+    <path
+      class="ap-rim"
+      d="M240 120 C304 120 340 168 340 245 C340 322 300 392 240 402"
+      fill="none"
+    />
+
+    <!-- pelo -->
+    <path
+      class="ap-hair"
+      d="M140 248 C140 178 182 128 240 128 C298 128 340 178 340 248
+         C340 270 334 286 322 298 C316 254 292 210 258 196
+         C250 218 244 232 240 232 C236 232 230 218 222 196
+         C188 210 164 254 158 298 C146 286 140 270 140 248 Z"
+      fill="url(#ap-hair)"
+    />
+    <path class="ap-hair-side" d="M156 296 C150 330 154 366 168 392 C180 364 182 326 176 292 Z" fill="url(#ap-hair)" />
+    <path class="ap-hair-side" d="M324 296 C330 330 326 366 312 392 C300 364 298 326 304 292 Z" fill="url(#ap-hair)" />
+
+    <!-- diadema de los auriculares -->
+    <path class="ap-band" d="M158 210 C176 138 304 138 322 210" fill="none" stroke="url(#ap-cushion)" stroke-width="16" stroke-linecap="round" />
+    <ellipse class="ap-cup" cx="150" cy="292" rx="24" ry="32" fill="url(#ap-cushion)" />
+    <ellipse cx="150" cy="292" rx="13" ry="19" fill="#2a2830" />
+    <ellipse class="ap-cup" cx="330" cy="292" rx="24" ry="32" fill="url(#ap-cushion)" />
+    <ellipse cx="330" cy="292" rx="13" ry="19" fill="#2a2830" />
+
+    <!-- cejas -->
+    <path d="M182 262 Q198 252 216 258" fill="none" stroke="#4a2a1e" stroke-width="5" stroke-linecap="round" />
+    <path d="M264 258 Q282 252 298 262" fill="none" stroke="#4a2a1e" stroke-width="5" stroke-linecap="round" />
+
+    <!-- gafas -->
+    <g class="ap-glasses">
+      <rect x="170" y="270" width="72" height="58" rx="18" fill="none" stroke="#141318" stroke-width="9" />
+      <rect x="238" y="270" width="72" height="58" rx="18" fill="none" stroke="#141318" stroke-width="9" />
+      <path d="M242 296 L238 296" stroke="#141318" stroke-width="9" stroke-linecap="round" />
+      <path d="M170 284 L146 292" stroke="#141318" stroke-width="7" stroke-linecap="round" />
+      <path d="M310 284 L334 292" stroke="#141318" stroke-width="7" stroke-linecap="round" />
+    </g>
+
+    <!-- ojos (parpadean) -->
+    <g class="ap-eyes">
+      <ellipse cx="206" cy="299" rx="7" ry="8" fill="#241a14" />
+      <ellipse cx="274" cy="299" rx="7" ry="8" fill="#241a14" />
+    </g>
+
+    <!-- nariz y boca -->
+    <path d="M240 300 C238 316 236 328 240 334" fill="none" stroke="#b57a52" stroke-width="4" stroke-linecap="round" />
+    <path class="ap-mouth" d="M218 356 Q240 368 262 356" fill="none" stroke="#9a5c42" stroke-width="5" stroke-linecap="round" />
+  </svg>
+</div>
+
+<style>
+  .avatar-portrait {
+    position: relative;
+    width: 100%;
+    max-width: 26rem;
+    margin-inline: auto;
+  }
+  .avatar-portrait svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    animation: ap-bob 6s ease-in-out infinite;
+  }
+
+  .ap-glow--a { fill: var(--accent); opacity: 0.35; }
+  .ap-glow--b { fill: var(--accent-cool); opacity: 0.28; }
+
+  .ap-rim {
+    stroke: var(--accent-cool);
+    stroke-width: 6;
+    opacity: 0.55;
+    filter: blur(2px);
+  }
+
+  .ap-eyes {
+    transition: transform 0.09s ease;
+    transform-origin: 240px 299px;
+  }
+  .avatar-portrait.blink .ap-eyes {
+    transform: scaleY(0.12);
+  }
+
+  @keyframes ap-bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+</style>
+
+<script>
+  const root = document.querySelector('.avatar-portrait');
+  if (root && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const blink = () => {
+      root.classList.add('blink');
+      setTimeout(() => root.classList.remove('blink'), 130);
+      setTimeout(blink, 2600 + Math.random() * 2600);
+    };
+    setTimeout(blink, 1400);
+  }
+</script>

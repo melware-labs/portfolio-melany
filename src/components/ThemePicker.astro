@@ -5,15 +5,14 @@
  * demás bloques de tokens.css y la web se queda con uno solo.
  */
 const themes = [
-  { id: 'gradiente-aurora', label: 'A · Aurora', hint: 'Violeta noche, rosa y cian — la que ya viste' },
-  { id: 'gradiente-sunset', label: 'B · Sunset', hint: 'Ciruela oscuro, coral y magenta cálidos' },
-  { id: 'gradiente-cyber', label: 'C · Cyber', hint: 'Casi negro azulado, lima ácido y teal neón' },
-  { id: 'gradiente-candy', label: 'D · Candy', hint: 'La única clara: lavanda pálido, magenta y azul' },
+  { id: 'retrato-noche', label: 'A · Noche', hint: 'Casi negro, resplandor violeta y cian' },
+  { id: 'retrato-terminal', label: 'B · Terminal', hint: 'Negro verdoso, verde ácido y alarma rosa-rojo' },
+  { id: 'retrato-synth', label: 'C · Synth', hint: 'Azul noche profundo, magenta y cian' },
 ];
 ---
 
 <aside class="picker" aria-label="Elegir estética">
-  <p class="picker-title">Probando paletas del degradado</p>
+  <p class="picker-title">Probando ambientes del retrato</p>
   <div class="picker-options">
     {
       themes.map((theme) => (
@@ -59,9 +58,9 @@ const themes = [
     grid-template-columns: 1fr 1fr;
     gap: 0.4rem;
   }
-  @media (min-width: 34rem) {
+  @media (min-width: 30rem) {
     .picker-options {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 
@@ -101,6 +100,8 @@ const themes = [
   const buttons = document.querySelectorAll<HTMLButtonElement>('[data-theme-btn]');
   const STORAGE_KEY = 'preview-theme';
 
+  const validIds = Array.from(buttons, (b) => b.dataset.themeBtn);
+
   const apply = (theme: string) => {
     document.documentElement.dataset.theme = theme;
     localStorage.setItem(STORAGE_KEY, theme);
@@ -109,8 +110,10 @@ const themes = [
     );
   };
 
-  // Recuerda la elección al navegar entre páginas
-  apply(localStorage.getItem(STORAGE_KEY) ?? 'gradiente-aurora');
+  // Recuerda la elección al navegar entre páginas — pero si es de una
+  // ronda anterior y ya no existe, no la usamos (ver Base.astro).
+  const saved = localStorage.getItem(STORAGE_KEY);
+  apply(saved && validIds.includes(saved) ? saved : 'retrato-noche');
 
   buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.themeBtn!)));
 </script>
