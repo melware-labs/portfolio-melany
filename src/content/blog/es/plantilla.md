@@ -1,8 +1,9 @@
 ---
 # ── PLANTILLA ────────────────────────────────────────────────
-# Para escribir un artículo: copia este archivo, ponle otro nombre
-# (por ejemplo "mi-primer-post.es.md") y cambia `draft` a false.
-# El nombre del archivo es la URL: mi-primer-post.es.md -> /blog/mi-primer-post
+# Para escribir un artículo: copia este archivo dentro de esta misma
+# carpeta (blog/es/), ponle otro nombre y cambia `draft` a false.
+# El nombre del archivo es la URL:
+#   blog/es/mi-primer-post.md  ->  /blog/mi-primer-post
 # ─────────────────────────────────────────────────────────────
 title: Título del artículo
 description: Un resumen de una o dos frases. Es lo que se ve en la lista del blog y en Google.

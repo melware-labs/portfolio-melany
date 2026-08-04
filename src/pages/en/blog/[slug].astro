@@ -6,7 +6,8 @@ import PostBody from '../../../components/PostBody.astro';
 export async function getStaticPaths() {
   const posts = await getCollection('blog', (p) => p.data.lang === 'en' && !p.data.draft);
   return posts.map((post) => ({
-    params: { slug: post.id.replace(/\.(es|en)$/, '') },
+    // post.id es "en/my-post"; la URL sólo lleva la última parte
+    params: { slug: post.id.split('/').pop()! },
     props: { post },
   }));
 }

@@ -9,8 +9,8 @@ interface Props {
 const { post } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 
-// El id del archivo es "slug.es" o "slug.en"; la URL sólo lleva el slug.
-const slug = post.id.replace(/\.(es|en)$/, '');
+// El id incluye la carpeta de idioma ("es/mi-post"); la URL sólo el slug.
+const slug = post.id.split('/').pop()!;
 const href = localizedPath(`/blog/${slug}`, lang);
 
 const formattedDate = post.data.date.toLocaleDateString(lang === 'es' ? 'es-ES' : 'en-GB', {

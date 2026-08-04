@@ -35,9 +35,20 @@ Rama: `rebuild/v2`
       DOM pero el aspecto a 390px no lo he visto. Conviene abrirlo en un
       móvil de verdad o con las herramientas de desarrollo del navegador.
 
+## Primer artículo — hecho, pendiente de que ella lo revise
+
+- [x] Borrador escrito en los dos idiomas sobre montar esta web
+- [x] Contenido reestructurado en carpetas por idioma (`blog/es/`, `blog/en/`)
+      tras descubrir que Astro genera el id quitando el punto: el archivo
+      `post.es.md` daba la URL `/blog/postes`. Con carpetas cada idioma
+      puede además tener su propio slug.
+- [ ] **Que Melany lo lea y lo haga suyo.** Está escrito en su voz y sobre
+      cosas que pasaron de verdad, pero tiene que poder defender cada frase
+      en una entrevista. Si algo no suena a ella o no lo sabría explicar,
+      fuera.
+
 ## Siguiente (fase 2)
 
 - [ ] Publicar y poner `site` en `astro.config.mjs`
-- [ ] Primer artículo del blog
 - [ ] Avatar ilustrado con su cara real
 - [ ] Formulario de contacto funcional
