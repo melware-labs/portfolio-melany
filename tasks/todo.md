@@ -274,9 +274,30 @@ Revertido:
 Verificado: `npx astro check` y `npm run build` sin errores (7 páginas,
 antes 9), nav y ancla probados en el navegador.
 
+## Formulario de contacto conectado a Web3Forms (2026-08-07)
+
+El formulario ya no depende de que quien escribe le dé a "enviar" en
+su propio correo: ahora hace un `fetch` POST a
+`https://api.web3forms.com/submit` con la access key de Melany, y
+Web3Forms reenvía el mensaje directo a su bandeja de entrada. Se
+añadieron los campos "Asunto" (obligatorio) y "Teléfono" (opcional);
+nombre, email, asunto y mensaje siguen siendo obligatorios.
+
+El estado de éxito/error se muestra en `#contact-status`, con un
+`<span>` de texto que cambia según la respuesta y un bloque de
+respaldo (mailto directo + botón de copiar) que sólo aparece si el
+envío falla. Se encontró y arregló un bug real en el camino: el
+bloque de respaldo tenía `hidden` puesto por JS pero seguía
+visible, porque `.contact-email-row { display: flex }` tenía la
+misma especificidad que la regla `[hidden]` del navegador y ganaba
+por ir después en la cascada — se corrigió añadiendo
+`.contact-email-row[hidden] { display: none; }` explícito, mismo
+patrón ya usado en `.contact-status[hidden]` y `.nav-mobile[hidden]`.
+
+Verificado con dos envíos de prueba reales contra la API (ambos
+`200 OK`, `success: true`), confirmando que el mensaje llega de
+verdad al correo y no sólo que el código "se ve bien".
+
 ## Siguiente (fase 2)
 
 - [ ] Publicar y poner `site` en `astro.config.mjs`
-- [ ] Conectar el formulario de contacto a un backend real (Formspree,
-      Netlify Forms…) cuando haya hosting elegido — hoy abre un
-      `mailto:` porque no hay dónde recibir el envío

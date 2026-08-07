@@ -77,11 +77,13 @@ export const ui = {
     'contact.formPhoneOptional': 'Teléfono (opcional)',
     'contact.formMessage': 'Mensaje',
     'contact.formSend': 'Enviar',
+    'contact.formSending': 'Enviando…',
     'contact.formSubjectPrefix': 'Contacto desde el portfolio',
     'contact.noscript':
       'Este formulario necesita JavaScript. Si lo tienes desactivado, escríbeme directamente:',
-    'contact.sentMessage':
-      'Debería habérsete abierto el correo con todo ya escrito. Si no ha pasado nada (pasa más de lo que crees), escríbeme directo:',
+    'contact.sentMessage': '¡Mensaje enviado! Te responderé en cuanto lo vea.',
+    'contact.errorMessage':
+      'Uy, algo ha fallado al enviarlo. Escríbeme directo mientras lo reviso:',
     'contact.copyEmail': 'Copiar email',
     'contact.copied': '¡Copiado!',
 
@@ -155,11 +157,13 @@ export const ui = {
     'contact.formPhoneOptional': 'Phone (optional)',
     'contact.formMessage': 'Message',
     'contact.formSend': 'Send',
+    'contact.formSending': 'Sending…',
     'contact.formSubjectPrefix': 'Portfolio contact',
     'contact.noscript':
       "This form needs JavaScript. If yours is off, email me directly:",
-    'contact.sentMessage':
-      "Your email app should have opened with everything filled in. If nothing happened (it happens more than you'd think), just email me directly:",
+    'contact.sentMessage': "Message sent! I'll reply as soon as I see it.",
+    'contact.errorMessage':
+      "Ugh, something went wrong sending that. Email me directly while I look into it:",
     'contact.copyEmail': 'Copy email',
     'contact.copied': 'Copied!',
 
