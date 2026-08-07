@@ -19,8 +19,10 @@ const links = [
 <header class="site-header">
   <div class="container header-inner">
     <a class="brand" href={home}>
+      {/* El chevrón es decorativo: oculto a lectores de pantalla para que
+          el enlace se anuncie "Melany" y no "menor que Melany". */}
+      <span class="brand-mark" aria-hidden="true">&lt;</span>
       <span class="brand-name">Melany</span>
-      <span class="brand-labs">Melware Labs</span>
     </a>
 
     <nav class="nav-desktop" aria-label={t('nav.menu')}>
@@ -74,23 +76,25 @@ const links = [
 
   .brand {
     display: flex;
-    flex-direction: column;
+    align-items: baseline;
+    gap: 0.15em;
     text-decoration: none;
     color: var(--ink);
     line-height: 1.1;
+  }
+  /* El chevrón rojo hace de marca, en el sitio donde la referencia pone
+     su cuadradito de color antes del nombre. */
+  .brand-mark {
+    font-family: var(--font-mono);
+    font-size: var(--step-1);
+    font-weight: 700;
+    color: var(--accent);
   }
   .brand-name {
     font-family: var(--font-display);
     font-weight: 700;
     font-size: var(--step-1);
     letter-spacing: -0.03em;
-  }
-  .brand-labs {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink-muted);
   }
 
   .nav-desktop {
