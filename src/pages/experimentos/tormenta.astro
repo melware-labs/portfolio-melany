@@ -1,0 +1,331 @@
+---
+/**
+ * Experimento con Three.js: una esfera de partículas incandescente.
+ * Página autocontenida a propósito — no usa el layout del sitio (sin
+ * cabecera fija ni CSS del resto de la web) porque el efecto necesita
+ * el viewport entero y el scroll libre para el zoom de cámara.
+ *
+ * Original: la distribución de puntos usa el método de Marsaglia (un
+ * algoritmo estándar de muestreo uniforme en una esfera, de dominio
+ * público), y los shaders están escritos aquí desde cero.
+ */
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tormenta — un experimento con Three.js | Melany Martínez</title>
+    <meta
+      name="description"
+      content="Una esfera de partículas hecha con Three.js y shaders propios: respira, gira despacio y reacciona al cursor y al scroll."
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: #12081a;
+        color: #f2ece8;
+        font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        height: 100%;
+      }
+      #scene {
+        position: fixed;
+        inset: 0;
+        display: block;
+        width: 100vw;
+        height: 100vh;
+      }
+      .chrome {
+        position: fixed;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 1.5rem;
+      }
+      .chrome a,
+      .chrome button {
+        pointer-events: auto;
+      }
+      .back {
+        display: inline-block;
+        width: fit-content;
+        color: #f2ece8;
+        text-decoration: none;
+        font-size: 0.85rem;
+        padding: 0.6rem 1rem;
+        border: 1px solid rgba(242, 236, 232, 0.35);
+        border-radius: 8px;
+        background: rgba(18, 8, 26, 0.55);
+        backdrop-filter: blur(8px);
+      }
+      .back:hover {
+        border-color: #f2ece8;
+      }
+      .caption {
+        max-width: 26rem;
+        font-size: 0.78rem;
+        line-height: 1.5;
+        color: rgba(242, 236, 232, 0.7);
+      }
+      .hint {
+        align-self: center;
+        font-size: 0.7rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: rgba(242, 236, 232, 0.5);
+        animation: bob 2s ease-in-out infinite;
+      }
+      @keyframes bob {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(6px); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .hint { animation: none; }
+      }
+      #scroll-host {
+        position: relative;
+        height: 260vh;
+      }
+      noscript {
+        position: fixed;
+        inset: 0;
+        z-index: 3;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        padding: 2rem;
+        background: #12081a;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="scene"></canvas>
+
+    <div class="chrome">
+      <a class="back" href="/sobre-mi">&larr; Volver al portfolio</a>
+      <p class="hint" id="hint">Desplázate ↓</p>
+      <p class="caption">
+        Experimento con Three.js: una nube de 9.000 puntos con shaders propios
+        (vértice y fragmento escritos a mano). Mueve el cursor y desplázate
+        por la página.
+      </p>
+    </div>
+
+    <noscript>
+      <p>Este experimento necesita JavaScript y WebGL para verse. El resto del portfolio funciona sin ninguno de los dos.</p>
+    </noscript>
+
+    <div id="scroll-host"></div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+        }
+      }
+    </script>
+
+    <script type="module">
+      import * as THREE from 'three';
+
+      const canvas = document.getElementById('scene');
+      const hint = document.getElementById('hint');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // ── Escena ────────────────────────────────────────────────────
+      const scene = new THREE.Scene();
+      scene.fog = new THREE.FogExp2(0x12081a, 0.05);
+
+      const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 60);
+      camera.position.set(0, 0, 6);
+
+      let renderer;
+      try {
+        renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+      } catch {
+        renderer = null;
+      }
+
+      if (!renderer) {
+        document.querySelector('.chrome').insertAdjacentHTML(
+          'afterbegin',
+          '<p style="pointer-events:none">Tu navegador no soporta WebGL, así que este experimento no se puede mostrar.</p>'
+        );
+      } else {
+        renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+        renderer.setSize(innerWidth, innerHeight);
+        renderer.setClearColor(0x12081a, 1);
+
+        // ── Geometría: muestreo uniforme en una esfera (Marsaglia) ───
+        const COUNT = 9000;
+        const RADIUS = 1.7;
+        const positions = new Float32Array(COUNT * 3);
+        const scales = new Float32Array(COUNT);
+        const seeds = new Float32Array(COUNT);
+        const radii = new Float32Array(COUNT);
+
+        for (let i = 0; i < COUNT; i++) {
+          let x, y, z, lenSq;
+          do {
+            x = Math.random() * 2 - 1;
+            y = Math.random() * 2 - 1;
+            z = Math.random() * 2 - 1;
+            lenSq = x * x + y * y + z * z;
+          } while (lenSq > 1 || lenSq === 0);
+          const len = Math.sqrt(lenSq);
+          x /= len;
+          y /= len;
+          z /= len;
+
+          // Más densidad hacia la cáscara exterior que hacia el centro.
+          const rNorm = Math.pow(Math.random(), 0.5);
+          const r = RADIUS * (0.45 + rNorm * 0.55);
+
+          positions[i * 3] = x * r;
+          positions[i * 3 + 1] = y * r;
+          positions[i * 3 + 2] = z * r;
+          scales[i] = 0.5 + Math.random() * 0.9;
+          seeds[i] = Math.random();
+          radii[i] = rNorm;
+        }
+
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('aScale', new THREE.BufferAttribute(scales, 1));
+        geometry.setAttribute('aSeed', new THREE.BufferAttribute(seeds, 1));
+        geometry.setAttribute('aRadius', new THREE.BufferAttribute(radii, 1));
+
+        const material = new THREE.ShaderMaterial({
+          transparent: true,
+          depthWrite: false,
+          blending: THREE.AdditiveBlending,
+          uniforms: {
+            uTime: { value: 0 },
+            uSize: { value: 42 },
+            uPixelRatio: { value: Math.min(devicePixelRatio, 2) },
+            uCore: { value: new THREE.Color('#4a0e2e') },
+            uMid: { value: new THREE.Color('#e8265f') },
+            uRim: { value: new THREE.Color('#f4c65a') },
+            uBrightness: { value: 1.25 },
+          },
+          vertexShader: `
+            uniform float uTime;
+            uniform float uSize;
+            uniform float uPixelRatio;
+            attribute float aScale;
+            attribute float aSeed;
+            attribute float aRadius;
+            varying float vRadius;
+
+            void main() {
+              vec3 pos = position;
+
+              // Respiración: cada punto se expande y contrae a su ritmo.
+              float phase = uTime * 0.6 + aSeed * 6.2831853;
+              pos *= 1.0 + 0.07 * sin(phase);
+
+              // Giro lento en el plano xz.
+              float swirl = uTime * 0.08 + aSeed * 6.2831853 * 0.3;
+              float c = cos(swirl);
+              float s = sin(swirl);
+              pos.xz = mat2(c, -s, s, c) * pos.xz;
+
+              vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+              gl_Position = projectionMatrix * mvPosition;
+              gl_PointSize = uSize * aScale * uPixelRatio * (1.0 / -mvPosition.z);
+              vRadius = aRadius;
+            }
+          `,
+          fragmentShader: `
+            uniform vec3 uCore;
+            uniform vec3 uMid;
+            uniform vec3 uRim;
+            uniform float uBrightness;
+            varying float vRadius;
+
+            void main() {
+              vec2 uv = gl_PointCoord - 0.5;
+              float d = length(uv);
+              if (d > 0.5) discard;
+              float strength = pow(1.0 - d * 2.0, 3.0);
+
+              vec3 col = mix(uCore, uMid, smoothstep(0.15, 0.75, vRadius));
+              col = mix(col, uRim, smoothstep(0.78, 1.0, vRadius));
+
+              gl_FragColor = vec4(col * uBrightness, strength);
+            }
+          `,
+        });
+
+        const points = new THREE.Points(geometry, material);
+        scene.add(points);
+
+        // ── Interacción: cursor (paralaje) y scroll (zoom) ───────────
+        let mouseX = 0;
+        let mouseY = 0;
+        let smoothX = 0;
+        let smoothY = 0;
+        let scrollTarget = 0;
+        let scrollSmooth = 0;
+
+        const lerp = (a, b, t) => a + (b - a) * t;
+
+        window.addEventListener(
+          'pointermove',
+          (e) => {
+            mouseX = (e.clientX / innerWidth) * 2 - 1;
+            mouseY = -((e.clientY / innerHeight) * 2 - 1);
+          },
+          { passive: true }
+        );
+
+        function updateScroll() {
+          const max = document.documentElement.scrollHeight - innerHeight;
+          scrollTarget = max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 0;
+          if (scrollTarget > 0.02) hint.style.opacity = '0';
+        }
+        window.addEventListener('scroll', updateScroll, { passive: true });
+        updateScroll();
+
+        window.addEventListener('resize', () => {
+          camera.aspect = innerWidth / innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(innerWidth, innerHeight);
+          const pr = Math.min(devicePixelRatio, 2);
+          renderer.setPixelRatio(pr);
+          material.uniforms.uPixelRatio.value = pr;
+        });
+
+        // ── Bucle de animación ────────────────────────────────────────
+        const clock = new THREE.Clock();
+
+        function frame() {
+          if (!reduceMotion) requestAnimationFrame(frame);
+
+          const t = clock.getElapsedTime();
+          if (!reduceMotion) {
+            material.uniforms.uTime.value = t;
+            smoothX = lerp(smoothX, mouseX, 0.05);
+            smoothY = lerp(smoothY, mouseY, 0.05);
+            scrollSmooth = lerp(scrollSmooth, scrollTarget, 0.08);
+
+            points.rotation.y += 0.0015;
+            camera.position.x = smoothX * 0.5;
+            camera.position.y = smoothY * 0.5;
+            camera.position.z = 6 - scrollSmooth * 3.2;
+            camera.lookAt(0, 0, 0);
+          }
+
+          renderer.render(scene, camera);
+        }
+        frame();
+      }
+    </script>
+  </body>
+</html>

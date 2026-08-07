@@ -31,7 +31,10 @@ const projects = defineCollection({
     // 'live' si se puede visitar, 'wip' si sigue en construcción
     status: z.enum(['live', 'wip']).default('wip'),
     repo: z.string().url().optional(),
-    url: z.string().url().optional(),
+    // Puede ser una URL externa o una ruta interna del propio sitio
+    // (ej. un experimento en su propia página), así que no se exige
+    // formato de URL completa aquí.
+    url: z.string().optional(),
     tech: z.array(z.string()).default([]),
     // Cuanto menor sea el número, más arriba sale
     order: z.number().default(99),

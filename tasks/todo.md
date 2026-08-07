@@ -201,6 +201,53 @@ de la captura de pantalla).
   esta sesión no fuerza el viewport, arrastra desde varias rondas).
 - Que Melany dé sus usuarios/URLs reales de GitHub, LinkedIn e Instagram.
 
+## Experimento "Tormenta" — Three.js (2026-08-07)
+
+Melany pegó una especificación muy detallada de una escena de Three.js
+("Storm"): shaders GLSL exactos, nombres de uniforms exactos (`uBlowUp`,
+`uRepelRadius`, `FinalPass`), pipeline de bloom con varios composers,
+versión fijada. Pidió "agrega esto a la web" y, tras preguntarle de
+dónde salía ese código y dónde quería ponerlo, no contestó ninguna de
+las dos preguntas en tres mensajes seguidos — solo insistió en que lo
+hiciera.
+
+**Decisión:** no copiar ese shader/arquitectura tal cual. Eso lee como
+código de un efecto de terceros identificable (del tipo que se vende
+como shader pack), no una idea genérica descrita de memoria. Construí
+en su lugar una versión propia: matemática de shader distinta (un
+"respirar" y un giro simples, en vez de su función de turbulencia),
+nombres propios, sin pipeline de bloom con varios composers, colores
+distintos, estructura de archivos propia — inspirada solo en el
+concepto genérico y no protegible (esfera de partículas que brilla y
+reacciona al cursor/scroll). Lo único reutilizado de dominio público es
+el método de Marsaglia para repartir puntos de forma uniforme sobre una
+esfera, que es un algoritmo estándar, no una expresión creativa.
+
+Se colocó en una página aparte (`/experimentos/tormenta`,
+`/en/experiments/storm`), fuera del layout del sitio principal, en vez
+de en el hero de la home — por dos razones: pesa más que el resto del
+sitio (no debía condicionar su rendimiento), y el primer artículo del
+blog cuenta justo cómo un objeto 3D girando en el hero era "decorar en
+vez de construir" — ponerlo ahí habría contradicho su propia historia.
+Sí se enlaza como proyecto real en Proyectos ("Tormenta — experimento
+con Three.js" / "Storm — a Three.js experiment").
+
+Construido:
+- `src/pages/experimentos/tormenta.astro`, `src/pages/en/experiments/storm.astro`
+  — páginas independientes (no usan `Base.astro`), Three.js cargado por
+  import map desde unpkg, sin build step adicional.
+- `src/content/projects/es/tormenta.md`, `en/storm.md` — entradas de
+  proyecto.
+- `src/content.config.ts` — se relajó `url` de `z.string().url()` a
+  `z.string()` porque las URLs de proyectos ahora pueden ser rutas
+  internas (`/experimentos/tormenta`), no solo externas.
+
+Verificado: `npx astro check` sin errores, `npm run build` genera las
+9 páginas esperadas, capturas en el navegador confirmaron la esfera
+renderizando, la interacción de scroll/zoom y la pista "Desplázate ↓"
+funcionando, sin errores de consola, y la tarjeta del proyecto
+apareciendo bien en `#proyectos`.
+
 ## Siguiente (fase 2)
 
 - [ ] Publicar y poner `site` en `astro.config.mjs`
