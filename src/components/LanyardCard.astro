@@ -43,7 +43,6 @@ const photo = await getImage({ src: melanyPhoto, width: 720, format: 'webp' });
     </div>
   </div>
 
-  <p class="lanyard-hint" data-lanyard-hint hidden>{t('about.lanyardHint')}</p>
 </div>
 
 <script>
@@ -52,7 +51,6 @@ const photo = await getImage({ src: melanyPhoto, width: 720, format: 'webp' });
   const root = document.querySelector<HTMLElement>('[data-lanyard]');
   const canvas = root?.querySelector<HTMLCanvasElement>('[data-lanyard-canvas]');
   const flat = root?.querySelector<HTMLElement>('[data-lanyard-flat]');
-  const hint = root?.querySelector<HTMLElement>('[data-lanyard-hint]');
 
   if (root && canvas && flat) {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -74,12 +72,10 @@ const photo = await getImage({ src: melanyPhoto, width: 720, format: 'webp' });
           links: socialLinks,
           backText: 'Melware Labs',
           reducedMotion,
-          onFirstDrag: () => hint?.setAttribute('hidden', ''),
         });
         // Sólo se releva a la versión plana cuando la escena ya está montada:
         // si algo falla por el camino, no se queda un hueco vacío.
         root!.dataset.ready = 'true';
-        if (!reducedMotion && hint) hint.hidden = false;
         handle.start();
       } catch (error) {
         // Sin WebGL, o si three no llega: se queda la versión plana.
@@ -116,7 +112,7 @@ const photo = await getImage({ src: melanyPhoto, width: 720, format: 'webp' });
   .lanyard-canvas {
     display: none;
     width: 100%;
-    height: 32rem;
+    height: 38rem;
     /* Deja pasar el scroll vertical de la página y quédate sólo con el
        arrastre lateral: en móvil, si no, la tarjeta secuestra el dedo. */
     touch-action: pan-y;
@@ -181,17 +177,4 @@ const photo = await getImage({ src: melanyPhoto, width: 720, format: 'webp' });
     gap: var(--space-2);
   }
 
-  .lanyard-hint {
-    margin-top: var(--space-2);
-    font-family: var(--font-mono);
-    font-size: var(--step--1);
-    text-align: center;
-    color: var(--ink-muted);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .lanyard-hint {
-      display: none;
-    }
-  }
 </style>
