@@ -115,11 +115,21 @@
         uMid: { value: new THREE.Color(mid) },
         uRim: { value: new THREE.Color(rim) },
         uBrightness: { value: 1.1 },
+        // Interactividad: punto del cursor en el espacio de la escena,
+        // más un pulso que se dispara al hacer click y se apaga solo.
+        uCursor: { value: new THREE.Vector3(999, 999, 999) },
+        uCursorRadius: { value: 1.1 },
+        uCursorForce: { value: 0.9 },
+        uPulse: { value: 0 },
       },
       vertexShader: `
         uniform float uTime;
         uniform float uSize;
         uniform float uPixelRatio;
+        uniform vec3 uCursor;
+        uniform float uCursorRadius;
+        uniform float uCursorForce;
+        uniform float uPulse;
         attribute float aScale;
         attribute float aSeed;
         attribute float aRadius;
@@ -135,6 +145,18 @@
           float c = cos(swirl);
           float s = sin(swirl);
           pos.xz = mat2(c, -s, s, c) * pos.xz;
+
+          // El cursor empuja los puntos cercanos hacia fuera; se
+          // recalcula cada fotograma desde la posición base, así que
+          // vuelven a su sitio en cuanto el cursor se aleja.
+          vec3 away = pos - uCursor;
+          float distToCursor = length(away);
+          float push = smoothstep(uCursorRadius, 0.0, distToCursor) * uCursorForce;
+          pos += normalize(away + 0.0001) * push;
+
+          // uPulse combina el "big bang" del scroll y el pulso del
+          // click (ver frame() en el bucle de animación).
+          pos *= 1.0 + uPulse * 0.4;
 
           vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
           gl_Position = projectionMatrix * mvPosition;
@@ -170,17 +192,36 @@
     let mouseY = 0;
     let smoothX = 0;
     let smoothY = 0;
+    let hovering = false;
     const lerp = (a, b, t) => a + (b - a) * t;
 
     window.addEventListener(
       'pointermove',
       (e) => {
         const rect = hero.getBoundingClientRect();
+        hovering =
+          e.clientX >= rect.left &&
+          e.clientX <= rect.right &&
+          e.clientY >= rect.top &&
+          e.clientY <= rect.bottom;
         mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
         mouseY = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
       },
       { passive: true }
     );
+
+    // Al hacer click en el hero, dispara un pulso que se apaga solo.
+    let clickPulse = 0;
+    hero.addEventListener('pointerdown', () => {
+      clickPulse = 1;
+    });
+
+    // Convierte el cursor (coordenadas de pantalla) al punto donde cruza
+    // el plano z=0 de la escena, que es donde vive la esfera.
+    const raycaster = new THREE.Raycaster();
+    const cursorPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+    const cursorPoint = new THREE.Vector3();
+    const ndc = new THREE.Vector2();
 
     function resize() {
       const rect = hero.getBoundingClientRect();
@@ -210,13 +251,43 @@
       requestAnimationFrame(frame);
       if (!visible || document.hidden) return;
 
+      // Cuánto se ha scrolleado dentro del propio hero (0 al llegar,
+      // 1 al salir de él): acelera el giro y acerca la cámara, para
+      // que la esfera responda también al scroll, no sólo al cursor.
+      const heroRect = hero.getBoundingClientRect();
+      const scrollT = Math.min(1, Math.max(0, -heroRect.top / heroRect.height));
+
+      // "Big bang" ligado directamente al scroll (no a un evento con
+      // estado): crece según se empieza a bajar y se deshace igual si
+      // se vuelve a subir, porque es sólo una función de scrollT.
+      const scrollPulse = Math.sin(Math.min(scrollT, 1) * Math.PI) * 1.4;
+
       material.uniforms.uTime.value = clock.getElapsedTime();
       smoothX = lerp(smoothX, mouseX, 0.05);
       smoothY = lerp(smoothY, mouseY, 0.05);
-      points.rotation.y += 0.001;
+      points.rotation.y += 0.001 + scrollT * 0.01;
+      points.updateMatrixWorld();
       camera.position.x = smoothX * 0.35;
       camera.position.y = smoothY * 0.35;
+      camera.position.z = 5.5 - scrollT * 2.2;
       camera.lookAt(0, 0, 0);
+      camera.updateMatrixWorld();
+
+      if (hovering) {
+        ndc.set(mouseX, mouseY);
+        raycaster.setFromCamera(ndc, camera);
+        if (raycaster.ray.intersectPlane(cursorPlane, cursorPoint)) {
+          // Se aplica en el espacio local de la esfera, que gira, así
+          // que se deshace la rotación para que el empuje quede fijo
+          // en pantalla donde está el cursor de verdad.
+          material.uniforms.uCursor.value.copy(cursorPoint).applyMatrix4(points.matrixWorld.clone().invert());
+        }
+      } else {
+        material.uniforms.uCursor.value.set(999, 999, 999);
+      }
+
+      clickPulse *= 0.92;
+      material.uniforms.uPulse.value = scrollPulse + clickPulse;
 
       renderer.render(scene, camera);
     }
