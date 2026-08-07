@@ -1,9 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import { getLangFromUrl, useTranslations } from '../i18n/ui';
 import ProjectCard from './ProjectCard.astro';
 import PostCard from './PostCard.astro';
 import StormHero from './StormHero.astro';
+import melanyPhoto from '../assets/melany.jpg';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -45,9 +47,18 @@ const email = 'melanymartinez667@gmail.com';
         <p>{t('about.p2')}</p>
         <p>{t('about.p3')}</p>
       </div>
-      <aside class="card now-card">
-        <h3>{t('about.nowHeading')}</h3>
-        <p>{t('about.nowText')}</p>
+      <aside class="about-aside">
+        <Image
+          class="about-photo"
+          src={melanyPhoto}
+          alt={t('about.photoAlt')}
+          width={480}
+          height={Math.round(480 * (melanyPhoto.height / melanyPhoto.width))}
+        />
+        <div class="card now-card">
+          <h3>{t('about.nowHeading')}</h3>
+          <p>{t('about.nowText')}</p>
+        </div>
       </aside>
     </div>
   </div>
@@ -124,6 +135,16 @@ const email = 'melanymartinez667@gmail.com';
       <button class="btn btn--primary" type="submit">{t('contact.formSend')}</button>
     </form>
 
+    <p class="contact-status" id="contact-status" role="status" hidden>
+      {t('contact.sentMessage')}
+      <span class="contact-email-row">
+        <a href={`mailto:${email}`}>{email}</a>
+        <button type="button" class="copy-email" id="copy-email" data-email={email}>
+          {t('contact.copyEmail')}
+        </button>
+      </span>
+    </p>
+
     <noscript>
       <p class="contact-noscript">
         {t('contact.noscript')}
@@ -131,8 +152,17 @@ const email = 'melanymartinez667@gmail.com';
       </p>
     </noscript>
 
-    <script define:vars={{ email, subjectPrefix: t('contact.formSubjectPrefix') }}>
+    <script
+      define:vars={{
+        email,
+        subjectPrefix: t('contact.formSubjectPrefix'),
+        copyLabel: t('contact.copyEmail'),
+        copiedLabel: t('contact.copied'),
+      }}
+    >
       const form = document.getElementById('contact-form');
+      const status = document.getElementById('contact-status');
+
       form?.addEventListener('submit', (e) => {
         e.preventDefault();
         const data = new FormData(form);
@@ -143,6 +173,21 @@ const email = 'melanymartinez667@gmail.com';
         const subject = encodeURIComponent(`${subjectPrefix} — ${name}`);
         const body = encodeURIComponent(`${message}\n\n—\n${name}\n${senderEmail}`);
         window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+
+        if (status) status.hidden = false;
+      });
+
+      const copyBtn = document.getElementById('copy-email');
+      copyBtn?.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(copyBtn.dataset.email || email);
+          copyBtn.textContent = copiedLabel;
+          setTimeout(() => {
+            copyBtn.textContent = copyLabel;
+          }, 2000);
+        } catch {
+          // Sin portapapeles disponible, el enlace de correo justo al lado sigue sirviendo.
+        }
       });
     </script>
   </div>
@@ -190,6 +235,18 @@ const email = 'melanymartinez667@gmail.com';
     margin-top: var(--space-6);
     display: grid;
     gap: var(--space-5);
+  }
+  .about-aside {
+    display: grid;
+    gap: var(--space-5);
+    /* En móvil la tarjeta no necesita más ancho que la foto */
+    max-width: 18rem;
+  }
+  .about-photo {
+    width: 100%;
+    height: auto;
+    border: var(--border-width) solid var(--ink);
+    border-radius: var(--radius-lg);
   }
   .now-card h3 {
     font-family: var(--font-mono);
@@ -266,6 +323,39 @@ const email = 'melanymartinez667@gmail.com';
   }
   .contact-form .btn {
     justify-self: start;
+  }
+  .contact-status {
+    margin-top: var(--space-6);
+    max-width: 32rem;
+    padding: var(--space-4) var(--space-5);
+    border: var(--border-width) solid var(--ink);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--ink-soft);
+  }
+  .contact-status[hidden] {
+    display: none;
+  }
+  .contact-email-row {
+    margin-top: var(--space-3);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+  }
+  .copy-email {
+    font: inherit;
+    color: var(--ink);
+    background: var(--paper-2);
+    border: var(--border-width) solid var(--ink);
+    border-radius: var(--radius);
+    padding: var(--space-2) var(--space-3);
+    cursor: pointer;
+  }
+  .copy-email:hover {
+    background: var(--surface);
   }
   .contact-noscript {
     margin-top: var(--space-6);
