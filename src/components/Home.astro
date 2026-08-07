@@ -47,9 +47,18 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
       <ul class="stack-group">
         {stack.map((item) => <li>{item}</li>)}
       </ul>
-      <ul class="stack-group" aria-hidden="true">
-        {stack.map((item) => <li>{item}</li>)}
-      </ul>
+      {
+        // Nueve copias más de refuerzo (ocultas a lectores de pantalla).
+        // Con pocas copias, en pantallas muy anchas (monitores grandes,
+        // 4K) la tira no llega a cubrir el hueco entero y se ve un
+        // corte justo antes de que reaparezca texto. Repetir texto no
+        // cuesta nada, así que de sobra es más seguro que ajustado.
+        Array.from({ length: 9 }).map(() => (
+          <ul class="stack-group" aria-hidden="true">
+            {stack.map((item) => <li>{item}</li>)}
+          </ul>
+        ))
+      }
     </div>
   </div>
 </section>
@@ -403,7 +412,10 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
       transform: translateX(0);
     }
     to {
-      transform: translateX(-50%);
+      /* Se mueve exactamente el ancho de una copia (1 de 10 = 10% del
+         total), no medio total — con más de dos copias, "la mitad"
+         ya no es una copia entera. */
+      transform: translateX(-10%);
     }
   }
   @media (prefers-reduced-motion: reduce) {
