@@ -36,3 +36,28 @@ y dejarle elegir con los números delante, no negarse ni copiar sin más.
 (tarjeta plana CSS → 3D pequeña → 3D grande colgando del header) avanzaron cada
 vez que vio una captura, no cuando le describí opciones. Coincide con lo ya
 sabido: construir y enseñar gana a proponer en prosa.
+
+## Rendimiento del fondo (2026-08-07)
+
+**Nunca animar `background-position` en bucle.** Escribí tres animaciones
+infinitas sobre `background-position` — el foco rojo del body y las dos capas de
+estrellas — todas en capas del tamaño del viewport y con
+`background-attachment: fixed`. Esa propiedad no se puede componer en la GPU:
+cada fotograma re-rasteriza la capa entera, así que la web repintaba la pantalla
+completa tres veces por frame, para siempre, incluso parada. De ahí que fuera
+lenta y que las estrellas se movieran a tirones: el tirón *era* el repintado.
+**Regla: lo que se mueve sin parar sólo puede animar `transform` y `opacity`.
+Para desplazar un mosaico, estirar la capa un mosaico en la dirección del viaje
+y recorrer exactamente ese mosaico con `translate3d` — el bucle encaja solo.**
+
+**El orden de `background-image` es de arriba hacia abajo, y una capa opaca
+tapa todo lo de debajo.** Puse la bruma granate como primera capa, y como acaba
+en `--paper` (opaco) escondía por completo el grano y el foco rojo que iban
+detrás. Estuvo así sin que se notara porque lo que tapaba era justo lo más
+sutil. **Regla: al reordenar capas de fondo, comprobar si alguna es opaca antes
+de darla por decorativa.**
+
+**No fiarse de medir fps en la pestaña automatizada.** El primer intento dio
+0 fps y un frame de 14 s: la pestaña no estaba componiendo. Lo que sí se puede
+medir de forma fiable desde ahí es `document.getAnimations()` y qué propiedad
+anima cada una — eso ya dice si algo repinta o no, sin necesidad de fps.

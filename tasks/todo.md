@@ -348,3 +348,28 @@ Cambios aplicados:
 Deliberadamente **no** hecho (sería cambiar estructura o contenido):
 la píldora de aviso del hero, los iconos en las tarjetas, la banda roja
 de testimonio, la rejilla de precios y las columnas de enlaces del pie.
+
+## Arreglo de rendimiento (fondo)
+
+Melany avisó de que la web iba lenta y las estrellas no se veían fluidas.
+Causa medida con `document.getAnimations()`: tres animaciones infinitas sobre
+`background-position` (`bg-breathe`, `stars-drift-up`, `stars-drift-down`), las
+tres en capas de viewport completo con `background-attachment: fixed`. Esa
+propiedad no se compone en GPU → repintado de pantalla completa, tres veces por
+fotograma, sin parar.
+
+- [x] Estrellas: `background-position` → `translate3d`, estirando cada capa un
+      mosaico en la dirección del viaje para que el bucle siga encajando
+- [x] Foco rojo: sacado del fondo del body a su propia capa (`main::after`,
+      z-index -2) y animado con `transform: translate + scale`
+- [x] Fondo del body: ya no anima nada
+- [x] `will-change: transform` en las capas que se mueven
+- [x] Arreglado de paso: la bruma granate iba como capa superior y, al ser
+      opaca, tapaba el grano y el foco rojo — nunca se habían visto
+- [x] Verificado: 0 animaciones infinitas que repinten (antes 3), sin
+      desbordamiento, mismo alto de documento, build limpio
+
+Coste que queda a propósito: `btn-border-spin` anima una custom property que
+alimenta un conic-gradient, así que repinta el botón cada fotograma. Son dos
+botones de ~180×52 px — despreciable al lado de lo anterior, y es el efecto de
+la referencia. Se puede limitar al hover si molesta.
