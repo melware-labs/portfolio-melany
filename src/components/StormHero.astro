@@ -1,0 +1,225 @@
+---
+/**
+ * Fondo del hero: versión ligera, con la paleta del sitio, del
+ * experimento "Tormenta" (src/pages/experimentos/tormenta.astro).
+ * Vive dentro de .hero como position:absolute, no fixed — desaparece
+ * del DOM visual en cuanto se hace scroll, así que no tiene coste
+ * fuera del hero.
+ */
+---
+
+<canvas id="storm-hero" aria-hidden="true"></canvas>
+
+<style>
+  #storm-hero {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #storm-hero {
+      display: none;
+    }
+  }
+</style>
+
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+    }
+  }
+</script>
+
+<script type="module">
+  const canvas = document.getElementById('storm-hero');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (canvas && !reduceMotion) {
+    mount(canvas);
+  }
+
+  async function mount(canvas) {
+    const hero = canvas.closest('.hero');
+    if (!hero) return;
+
+    let THREE;
+    let renderer;
+    try {
+      THREE = await import('three');
+      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    } catch {
+      return;
+    }
+
+    const styles = getComputedStyle(document.documentElement);
+    const core = (styles.getPropertyValue('--paper-2') || '#16111e').trim();
+    const mid = (styles.getPropertyValue('--accent') || '#c34fef').trim();
+    const rim = (styles.getPropertyValue('--accent-cool') || '#46d9e6').trim();
+
+    renderer.setClearColor(0x000000, 0);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 20);
+    camera.position.set(0, 0, 5.5);
+
+    const COUNT = 4000;
+    const RADIUS = 1.6;
+    const positions = new Float32Array(COUNT * 3);
+    const scales = new Float32Array(COUNT);
+    const seeds = new Float32Array(COUNT);
+    const radii = new Float32Array(COUNT);
+
+    for (let i = 0; i < COUNT; i++) {
+      let x, y, z, lenSq;
+      do {
+        x = Math.random() * 2 - 1;
+        y = Math.random() * 2 - 1;
+        z = Math.random() * 2 - 1;
+        lenSq = x * x + y * y + z * z;
+      } while (lenSq > 1 || lenSq === 0);
+      const len = Math.sqrt(lenSq);
+      x /= len;
+      y /= len;
+      z /= len;
+
+      const rNorm = Math.pow(Math.random(), 0.5);
+      const r = RADIUS * (0.45 + rNorm * 0.55);
+
+      positions[i * 3] = x * r;
+      positions[i * 3 + 1] = y * r;
+      positions[i * 3 + 2] = z * r;
+      scales[i] = 0.5 + Math.random() * 0.9;
+      seeds[i] = Math.random();
+      radii[i] = rNorm;
+    }
+
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('aScale', new THREE.BufferAttribute(scales, 1));
+    geometry.setAttribute('aSeed', new THREE.BufferAttribute(seeds, 1));
+    geometry.setAttribute('aRadius', new THREE.BufferAttribute(radii, 1));
+
+    const material = new THREE.ShaderMaterial({
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      uniforms: {
+        uTime: { value: 0 },
+        uSize: { value: 30 },
+        uPixelRatio: { value: Math.min(devicePixelRatio, 2) },
+        uCore: { value: new THREE.Color(core) },
+        uMid: { value: new THREE.Color(mid) },
+        uRim: { value: new THREE.Color(rim) },
+        uBrightness: { value: 1.1 },
+      },
+      vertexShader: `
+        uniform float uTime;
+        uniform float uSize;
+        uniform float uPixelRatio;
+        attribute float aScale;
+        attribute float aSeed;
+        attribute float aRadius;
+        varying float vRadius;
+
+        void main() {
+          vec3 pos = position;
+
+          float phase = uTime * 0.5 + aSeed * 6.2831853;
+          pos *= 1.0 + 0.06 * sin(phase);
+
+          float swirl = uTime * 0.06 + aSeed * 6.2831853 * 0.3;
+          float c = cos(swirl);
+          float s = sin(swirl);
+          pos.xz = mat2(c, -s, s, c) * pos.xz;
+
+          vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+          gl_Position = projectionMatrix * mvPosition;
+          gl_PointSize = uSize * aScale * uPixelRatio * (1.0 / -mvPosition.z);
+          vRadius = aRadius;
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 uCore;
+        uniform vec3 uMid;
+        uniform vec3 uRim;
+        uniform float uBrightness;
+        varying float vRadius;
+
+        void main() {
+          vec2 uv = gl_PointCoord - 0.5;
+          float d = length(uv);
+          if (d > 0.5) discard;
+          float strength = pow(1.0 - d * 2.0, 3.0);
+
+          vec3 col = mix(uCore, uMid, smoothstep(0.15, 0.75, vRadius));
+          col = mix(col, uRim, smoothstep(0.78, 1.0, vRadius));
+
+          gl_FragColor = vec4(col * uBrightness, strength);
+        }
+      `,
+    });
+
+    const points = new THREE.Points(geometry, material);
+    scene.add(points);
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let smoothX = 0;
+    let smoothY = 0;
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    window.addEventListener(
+      'pointermove',
+      (e) => {
+        const rect = hero.getBoundingClientRect();
+        mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        mouseY = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
+      },
+      { passive: true }
+    );
+
+    function resize() {
+      const rect = hero.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
+      camera.aspect = rect.width / rect.height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(rect.width, rect.height);
+      const pr = Math.min(devicePixelRatio, 2);
+      renderer.setPixelRatio(pr);
+      material.uniforms.uPixelRatio.value = pr;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    let visible = true;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        visible = entries[0]?.isIntersecting ?? true;
+      },
+      { threshold: 0 }
+    );
+    observer.observe(hero);
+
+    const clock = new THREE.Clock();
+
+    function frame() {
+      requestAnimationFrame(frame);
+      if (!visible || document.hidden) return;
+
+      material.uniforms.uTime.value = clock.getElapsedTime();
+      smoothX = lerp(smoothX, mouseX, 0.05);
+      smoothY = lerp(smoothY, mouseY, 0.05);
+      points.rotation.y += 0.001;
+      camera.position.x = smoothX * 0.35;
+      camera.position.y = smoothY * 0.35;
+      camera.lookAt(0, 0, 0);
+
+      renderer.render(scene, camera);
+    }
+    frame();
+  }
+</script>
