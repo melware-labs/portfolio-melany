@@ -78,10 +78,11 @@ export const ui = {
     'contact.formMessage': 'Mensaje',
     'contact.formSend': 'Enviar',
     'contact.formSending': 'Enviando…',
+    'contact.formSent': 'Enviado',
+    'contact.formSendAnother': 'Enviar otro mensaje',
     'contact.formSubjectPrefix': 'Contacto desde el portfolio',
     'contact.noscript':
       'Este formulario necesita JavaScript. Si lo tienes desactivado, escríbeme directamente:',
-    'contact.sentMessage': '¡Mensaje enviado! Te responderé en cuanto lo vea.',
     'contact.errorMessage':
       'Uy, algo ha fallado al enviarlo. Escríbeme directo mientras lo reviso:',
     'contact.copyEmail': 'Copiar email',
@@ -158,10 +159,11 @@ export const ui = {
     'contact.formMessage': 'Message',
     'contact.formSend': 'Send',
     'contact.formSending': 'Sending…',
+    'contact.formSent': 'Sent',
+    'contact.formSendAnother': 'Send another message',
     'contact.formSubjectPrefix': 'Portfolio contact',
     'contact.noscript':
       "This form needs JavaScript. If yours is off, email me directly:",
-    'contact.sentMessage': "Message sent! I'll reply as soon as I see it.",
     'contact.errorMessage':
       "Ugh, something went wrong sending that. Email me directly while I look into it:",
     'contact.copyEmail': 'Copy email',
