@@ -47,6 +47,7 @@ export const ui = {
     'about.p3':
       'Fuera de eso: me encantan los videojuegos arcade y tengo una obsesión con cómo iba cambiando la tecnología década a década — sobre todo el salto de los 90 a los 2000. Ah, y la música de los 80.',
     'about.photoAlt': 'Foto de Melany.',
+    'about.badgeRole': 'Estudiante de Ing. del Software',
 
     'projects.heading': 'Melware Labs',
     'projects.intro':
@@ -128,6 +129,7 @@ export const ui = {
     'about.p3':
       "Outside of that: I love arcade games, and I'm obsessed with how technology kept shifting from one decade to the next — especially the jump from the 90s to the 2000s. Oh, and 80s music.",
     'about.photoAlt': 'Photo of Melany.',
+    'about.badgeRole': 'Software Engineering Student',
 
     'projects.heading': 'Melware Labs',
     'projects.intro':
