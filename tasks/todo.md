@@ -301,3 +301,50 @@ verdad al correo y no sólo que el código "se ve bien".
 ## Siguiente (fase 2)
 
 - [ ] Publicar y poner `site` en `astro.config.mjs`
+
+## Pasada de estilo noir rojo (referencia de Melany)
+
+Objetivo: acercar el acabado a la referencia visual **sin tocar la
+estructura** — mismo HTML, mismas secciones, mismo copy. Sólo color,
+tipografía, bordes, radios, sombras y micro-detalles.
+
+Diagnóstico contra la referencia (lo que estaba lejos):
+
+- [x] El fondo estaba **teñido de rojo** (radiales al 22% y 10%). La
+      referencia es negra con un único foco rojo al 5% — noir con acento,
+      no niebla roja.
+- [x] Bordes **blanco puro al 100%** en botones, campos, selector de
+      idioma, hamburguesa y pie. La referencia nunca pasa de `white/10`.
+- [x] Tipografía: falta Inter para el cuerpo; los títulos van en 700 y la
+      referencia usa 600 con interletraje más cerrado.
+- [x] Sombras rojas por todas partes. La referencia usa sombra negra de
+      profundidad y guarda el resplandor rojo para lo que lleva acento.
+- [x] Faltaban: la franja difuminada bajo la cabecera fija, la trama de
+      puntos dentro del botón principal, la rejilla desvanecida hacia los
+      bordes y el trazo bajo la palabra en acento.
+
+Cambios aplicados:
+
+- [x] `tokens.css`: Inter en el cuerpo, tokens `--line/--line-strong/
+      --line-faint` y `--surface-2`, radios 12/16 + píldora, sombras
+      negras + `--glow` rojo aparte
+- [x] `base.css`: títulos en 600 más cerrados, `.eyebrow` como micro-título
+      rojo, botones con bordes suaves y trama de puntos, tarjetas con
+      resplandor rojo al 10% arriba a la derecha (arreglado el
+      `isolation` que lo dejaba invisible)
+- [x] `theme-flourishes.css`: fondo negro con bruma roja arriba y un solo
+      foco central; rejilla movida a `main::before` con máscara radial
+- [x] `Header.astro`: franja difuminada arriba, bordes `white/10`,
+      navegación en cuerpo pequeño
+- [x] `Home.astro`: trazo bajo "Melany", tira de stack al 60% que se
+      aclara al pasar por encima, campos del formulario en píldora con
+      fondo `white/5` y foco rojo
+- [x] `Footer.astro`, `ProjectCard.astro`, `PostCard.astro`,
+      `PostBody.astro`, `LanyardCard.astro`: bordes suaves y micro-texto
+      en mayúsculas
+- [x] `Base.astro`: Inter + Manrope 600, `theme-color` corregido (era
+      `#0d0a12`, morado del diseño viejo)
+
+Deliberadamente **no** hecho (sería cambiar estructura o contenido):
+la píldora de aviso del hero, los iconos en las tarjetas, la banda roja
+de testimonio, la rejilla de precios y las columnas de enlaces del pie.

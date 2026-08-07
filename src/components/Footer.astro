@@ -19,10 +19,13 @@ const year = new Date().getFullYear();
 </footer>
 
 <style>
+  /* Negro opaco y una línea casi invisible: el pie cierra la página en
+     vez de destacar como una franja más clara, que era lo que hacía
+     antes con --paper-2. */
   .site-footer {
-    border-top: var(--border-width) solid var(--ink);
-    background: var(--paper-2);
-    padding-block: var(--space-6);
+    border-top: var(--border-width) solid var(--line-faint);
+    background: var(--paper);
+    padding-block: var(--space-7) var(--space-6);
     margin-top: var(--space-8);
   }
 
@@ -43,8 +46,13 @@ const year = new Date().getFullYear();
     letter-spacing: 0.1em;
     text-transform: uppercase;
   }
+  /* Micro-texto en mayúsculas muy espaciado, como la línea legal de la
+     referencia: se lee si lo buscas y desaparece si no. */
   .footer-brand span {
-    font-size: var(--step--1);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
     color: var(--ink-muted);
   }
 

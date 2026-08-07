@@ -115,17 +115,23 @@ svg {
 
 /* ── Tipografía ───────────────────────────────────────────────── */
 
+/* Títulos en 600, no en 700, y con el interletraje bastante cerrado:
+   es lo que le da a la referencia ese aire de producto en vez de
+   cartel. Cuanto más grande el título, más cerrado va. */
 h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.015em;
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
   text-wrap: balance;
 }
 
-h1 { font-size: var(--step-4); }
+h1 {
+  font-size: var(--step-4);
+  letter-spacing: -0.045em;
+}
 h2 { font-size: var(--step-3); }
 h3 { font-size: var(--step-1); }
 
@@ -144,7 +150,7 @@ a:hover {
 
 ::selection {
   background: var(--accent);
-  color: var(--paper);
+  color: var(--ink);
 }
 
 /* ── Estructura ───────────────────────────────────────────────── */
@@ -167,13 +173,16 @@ a:hover {
   margin-top: var(--space-4);
 }
 
-/* Etiqueta pequeña en monoespaciada, encima de cada título */
+/* Etiqueta pequeña encima de cada título. En la referencia estos
+   micro-títulos van en rojo, en mayúsculas y muy espaciados: es lo que
+   marca dónde empieza cada bloque sin tener que meter más adorno. */
 .eyebrow {
   font-family: var(--font-mono);
   font-size: var(--step--1);
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--ink-muted);
+  letter-spacing: 0.18em;
+  color: var(--accent);
   margin-bottom: var(--space-2);
 }
 
@@ -192,28 +201,26 @@ a:hover {
   gap: var(--space-2);
   /* 44px de alto mínimo: el objetivo táctil recomendado */
   min-height: 2.75rem;
-  padding: var(--space-3) var(--space-5);
-  border: var(--border-width) solid var(--ink);
-  border-radius: 9999px;
+  padding: var(--space-4) var(--space-6);
+  border: var(--border-width) solid var(--line);
+  border-radius: var(--radius-pill);
   font-family: var(--font-body);
   font-size: var(--step-0);
-  font-weight: 600;
+  font-weight: 500;
   text-decoration: none;
   cursor: pointer;
-  box-shadow: var(--shadow-sm);
+  /* En la referencia el hover no mueve el botón: cambia de color. El
+     desplazamiento diagonal venía del diseño anterior, de bordes duros
+     y sombra sólida, y con sombras suaves parecía que se despegaba. */
   transition:
-    transform 0.12s ease,
-    box-shadow 0.12s ease,
-    background-color 0.12s ease,
-    border-color 0.12s ease;
-}
-.btn:hover {
-  transform: translate(var(--btn-hover-shift, 0), var(--btn-hover-shift, 0));
-  box-shadow: var(--shadow);
+    box-shadow 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
 }
 .btn:active {
-  transform: none;
-  box-shadow: var(--shadow-sm);
+  /* Único movimiento que queda, y sólo al pulsar */
+  transform: scale(0.97);
 }
 
 /* Botón principal: fondo casi negro con un borde que gira despacio,
@@ -222,8 +229,13 @@ a:hover {
    aplicada aquí sin su marcado ni su copy. */
 .btn--primary {
   --gradient-angle: 0deg;
+  position: relative;
+  overflow: hidden;
+  /* Encierra el apilado para que la trama de puntos de abajo se pinte
+     sobre el fondo del botón y no detrás de él. */
+  isolation: isolate;
   background:
-    linear-gradient(var(--paper-2), var(--paper-2)) padding-box,
+    linear-gradient(var(--paper), var(--paper)) padding-box,
     conic-gradient(
         from var(--gradient-angle),
         transparent 0%,
@@ -234,11 +246,25 @@ a:hover {
       )
       border-box;
   border: 2px solid transparent;
-  color: var(--btn-primary-fg);
+  color: var(--ink);
+  box-shadow: var(--glow);
   animation: btn-border-spin 2.4s linear infinite;
 }
+/* Trama de puntos finísima por dentro: no se "ve", pero quita el
+   plano muerto del negro. Otro truco genérico de la referencia. */
+.btn--primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(circle at 50% 50%, var(--ink) 0.5px, transparent 0);
+  background-size: 4px 4px;
+  opacity: 0.1;
+  pointer-events: none;
+}
 .btn--primary:hover {
-  color: var(--btn-primary-fg);
+  color: var(--ink);
+  box-shadow: var(--shadow-sm), var(--glow);
 }
 
 @keyframes btn-border-spin {
@@ -248,12 +274,12 @@ a:hover {
 }
 
 .btn--secondary {
-  background: var(--surface);
-  color: var(--ink);
+  background: var(--paper-2);
+  color: var(--ink-soft);
 }
 .btn--secondary:hover {
-  background: var(--paper-2);
-  border-color: var(--accent);
+  background: var(--surface);
+  border-color: var(--line-strong);
   color: var(--ink);
 }
 
@@ -262,34 +288,41 @@ a:hover {
 .card {
   position: relative;
   overflow: hidden;
-  background: var(--surface);
-  border: var(--border-width) solid color-mix(in srgb, var(--ink) 16%, transparent);
+  /* `isolation` no es decorativo: sin él la tarjeta no crea contexto de
+     apilado, el ::before de abajo (z-index: -1) se va detrás del fondo
+     opaco y el resplandor del hover no se veía nunca. */
+  isolation: isolate;
+  background:
+    linear-gradient(to bottom, color-mix(in srgb, var(--ink) 4%, transparent), transparent 60%),
+    var(--paper);
+  border: var(--border-width) solid var(--line);
   border-radius: var(--radius-lg);
-  padding: var(--space-5);
+  padding: var(--space-6);
+  transition: border-color 0.3s ease;
 }
-/* Resplandor rojo que aparece detrás al pasar el cursor — mismo
-   truco genérico de la referencia, sin su contenido. */
+.card:hover {
+  border-color: var(--line-strong);
+}
+/* Resplandor rojo que nace de la esquina de arriba a la derecha al
+   pasar el cursor — mismo truco genérico de la referencia, sin su
+   contenido. Muy flojo a propósito: al 10%, como allí. */
 .card::before {
   content: '';
   position: absolute;
   inset: 0;
   z-index: -1;
   opacity: 0;
-  background: radial-gradient(
-    16rem 10rem at 85% 0%,
-    color-mix(in srgb, var(--accent) 22%, transparent),
-    transparent 70%
-  );
+  background: radial-gradient(circle at 100% 0%, var(--accent), transparent 70%);
   transition: opacity 0.3s ease;
   pointer-events: none;
 }
 .card:hover::before {
-  opacity: 1;
+  opacity: 0.1;
 }
 
 /* Estado vacío: tiene que parecer intencionado, no roto. */
 .empty {
-  border: var(--border-width) dashed var(--ink-muted);
+  border: var(--border-width) dashed var(--line-strong);
   border-radius: var(--radius-lg);
   padding: var(--space-6) var(--space-5);
   background: transparent;

@@ -33,7 +33,7 @@ const otherCanonical = Astro.site ? new URL(otherHref, Astro.site) : null;
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content="Melany Martínez" />
-    <meta name="theme-color" content="#0d0a12" />
+    <meta name="theme-color" content="#0a0a0a" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
     {canonical && <link rel="canonical" href={canonical.href} />}
@@ -52,13 +52,15 @@ const otherCanonical = Astro.site ? new URL(otherHref, Astro.site) : null;
     <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_GB'} />
     <meta name="twitter:card" content="summary" />
 
-    {/* Una sola fuente web. preconnect acelera la conexión;
-        display=swap evita que el texto quede invisible mientras carga. */}
+    {/* Dos fuentes, una sola petición: Inter para el cuerpo y Manrope
+        para los títulos, como en la referencia. preconnect acelera la
+        conexión; display=swap evita que el texto quede invisible
+        mientras carga. */}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Manrope:wght@500;600;700;800&display=swap"
     />
   </head>
 

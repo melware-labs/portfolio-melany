@@ -51,11 +51,17 @@ const links = [
 </header>
 
 <style>
+  /* Barra a todo el ancho. La píldora flotante quedaba como adorno de
+     plantilla y comía espacio por los lados; ahora el fondo y el borde los
+     lleva la propia cabecera, de borde a borde. */
   .site-header {
     position: sticky;
     top: 0;
     z-index: 100;
-    padding-block: var(--space-4) var(--space-3);
+    background: color-mix(in srgb, var(--paper) 82%, transparent);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border-bottom: var(--border-width) solid var(--line);
   }
 
   .header-inner {
@@ -63,13 +69,7 @@ const links = [
     align-items: center;
     gap: var(--space-4);
     min-height: 3.75rem;
-    background: color-mix(in srgb, var(--paper) 68%, transparent);
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
-    border: var(--border-width) solid color-mix(in srgb, var(--ink) 14%, transparent);
-    border-radius: 9999px;
-    padding-inline: var(--space-5);
-    box-shadow: var(--shadow-sm);
+    padding-block: var(--space-2);
   }
 
   .brand {
@@ -83,6 +83,7 @@ const links = [
     font-family: var(--font-display);
     font-weight: 700;
     font-size: var(--step-1);
+    letter-spacing: -0.03em;
   }
   .brand-labs {
     font-family: var(--font-mono);
@@ -100,9 +101,11 @@ const links = [
   .nav-desktop a {
     color: var(--ink-soft);
     text-decoration: none;
+    font-size: var(--step--1);
     font-weight: 500;
     padding-block: var(--space-2);
     border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
   }
   .nav-desktop a:hover {
     color: var(--ink);
@@ -116,22 +119,30 @@ const links = [
     margin-inline-start: auto;
   }
 
+  /* Misma familia visual que el botón de acción de la referencia:
+     píldora con fondo translúcido, línea al 10% y micro-texto en
+     mayúsculas bien espaciado. */
   .lang-switch {
     font-family: var(--font-mono);
-    font-size: var(--step--1);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
     color: var(--ink-soft);
     text-decoration: none;
-    padding: var(--space-2) var(--space-3);
+    padding: var(--space-2) var(--space-4);
     min-height: 2.75rem;
     display: inline-flex;
     align-items: center;
-    border: var(--border-width) solid var(--ink);
-    border-radius: 9999px;
-    background: var(--surface);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-pill);
+    background: var(--surface-2);
+    transition: color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
   }
   .lang-switch:hover {
-    background: var(--paper-2);
     color: var(--ink);
+    border-color: var(--accent);
+    box-shadow: var(--glow);
   }
 
   /* ── Botón hamburguesa ─────────────────────────────────────── */
@@ -141,9 +152,9 @@ const links = [
     height: 2.75rem;
     display: grid;
     place-items: center;
-    background: var(--surface);
-    border: var(--border-width) solid var(--ink);
-    border-radius: 9999px;
+    background: var(--surface-2);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-pill);
     cursor: pointer;
   }
   .bars {
@@ -170,24 +181,27 @@ const links = [
   /* ── Menú desplegable ──────────────────────────────────────── */
   .nav-mobile {
     display: grid;
-    border-top: var(--border-width) solid var(--ink);
-    background: var(--surface);
+    border-top: var(--border-width) solid var(--line);
+    background: color-mix(in srgb, var(--paper) 94%, transparent);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
   }
   .nav-mobile[hidden] {
     display: none;
   }
   .nav-mobile a {
     padding: var(--space-4) var(--space-5);
-    color: var(--ink);
+    color: var(--ink-soft);
     text-decoration: none;
     font-weight: 500;
-    border-bottom: 1px solid var(--paper-2);
+    border-bottom: var(--border-width) solid var(--line-faint);
   }
   .nav-mobile a:last-child {
     border-bottom: none;
   }
   .nav-mobile a:hover {
-    background: var(--paper-2);
+    background: var(--surface-2);
+    color: var(--ink);
   }
 
   /* A partir de tablet: navegación completa y fuera la hamburguesa */
