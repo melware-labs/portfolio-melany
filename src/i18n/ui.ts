@@ -61,8 +61,8 @@ export const ui = {
     'blog.intro':
       'Vibe coding, IA y muchas pruebas: aquí cuento cómo construyo cosas rápido, qué herramientas uso y lo que aprendo en el camino.',
     'blog.readMore': 'Seguir leyendo',
+    'blog.empty': 'Aún no he publicado nada. Estoy en ello, prometido.',
     'blog.emptyHint': 'El primero va a ser sobre cómo construí esta web haciendo vibe coding con IA.',
-    'blog.readMore': 'Seguir leyendo',
     'blog.readingTime': 'min de lectura',
     'blog.backToList': 'Volver al blog',
     'blog.publishedOn': 'Publicado el',
