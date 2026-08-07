@@ -4,7 +4,6 @@ import { Image } from 'astro:assets';
 import { getLangFromUrl, useTranslations } from '../i18n/ui';
 import ProjectCard from './ProjectCard.astro';
 import PostCard from './PostCard.astro';
-import StormHero from './StormHero.astro';
 import SocialLinks from './SocialLinks.astro';
 import melanyPhoto from '../assets/melany.jpg';
 
@@ -27,7 +26,6 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
 
 <!-- ── Portada ──────────────────────────────────────────────── -->
 <section class="hero">
-  <StormHero />
   <div class="container hero-copy">
     <h1>
       {t('hero.greeting')} <span class="hero-name">{t('hero.name')}</span>
@@ -74,17 +72,65 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
         <p>{t('about.p3')}</p>
       </div>
       <div class="about-aside">
-        <Image
-          class="about-photo"
-          src={melanyPhoto}
-          alt={t('about.photoAlt')}
-          width={480}
-          height={Math.round(480 * (melanyPhoto.height / melanyPhoto.width))}
-        />
+        <!-- Gafete colgando de un cordón: se balancea solo y responde
+             un poco al ratón (perspective + rotateX/Y), sin ninguna
+             librería de física — ver el <script> al final del archivo. -->
+        <div class="badge-wrap" id="about-badge-wrap">
+          <span class="badge-ring" aria-hidden="true"></span>
+          <div class="badge-rig">
+            <span class="badge-strap" aria-hidden="true"></span>
+            <div class="badge-card" id="about-badge-card">
+              <Image
+                class="badge-photo"
+                src={melanyPhoto}
+                alt={t('about.photoAlt')}
+                width={400}
+                height={Math.round(400 * (melanyPhoto.height / melanyPhoto.width))}
+              />
+              <div class="badge-plate">
+                <p class="badge-name">Melany Martínez</p>
+                <p class="badge-role">{t('about.badgeRole')}</p>
+              </div>
+            </div>
+          </div>
+        </div>
         <SocialLinks />
       </div>
     </div>
   </div>
+
+  <script>
+    // Tilt del gafete al pasar el ratón: sólo con puntero fino (no táctil)
+    // y sólo si no han pedido menos movimiento. El balanceo en reposo es
+    // pura animación CSS y ya respeta prefers-reduced-motion desde base.css.
+    const wrap = document.getElementById('about-badge-wrap');
+    const card = document.getElementById('about-badge-card');
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (wrap && card && finePointer && !reducedMotion) {
+      let frame = 0;
+
+      const applyTilt = (event: PointerEvent) => {
+        const rect = card.getBoundingClientRect();
+        const px = (event.clientX - rect.left) / rect.width - 0.5;
+        const py = (event.clientY - rect.top) / rect.height - 0.5;
+        card.style.setProperty('--ry', `${(px * 16).toFixed(2)}deg`);
+        card.style.setProperty('--rx', `${(py * -16).toFixed(2)}deg`);
+        frame = 0;
+      };
+
+      wrap.addEventListener('pointermove', (event) => {
+        if (frame) return;
+        frame = requestAnimationFrame(() => applyTilt(event));
+      });
+
+      wrap.addEventListener('pointerleave', () => {
+        card.style.setProperty('--rx', '0deg');
+        card.style.setProperty('--ry', '0deg');
+      });
+    }
+  </script>
 </section>
 
 <!-- ── Proyectos ────────────────────────────────────────────── -->
@@ -441,12 +487,92 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
        altura y se sienta menos encajonada. */
     margin-top: -3rem;
   }
-  .about-photo {
-    max-width: 18rem;
-    width: 100%;
-    height: auto;
-    border: var(--border-width) solid var(--ink);
+  /* Gafete con cordón, foto y nombre — reemplaza la foto suelta. */
+  .badge-wrap {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    padding-top: 3rem;
+    /* Da aire para que el tilt del gafete no recorte contra el borde. */
+    perspective: 900px;
+  }
+  .badge-ring {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 0.8rem;
+    height: 0.8rem;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: var(--ink-soft);
+    box-shadow: inset 0 0 0 2px var(--paper);
+  }
+  .badge-rig {
+    transform-origin: top center;
+    animation: badge-swing 5s ease-in-out infinite;
+  }
+  /* En reposo se para al pasar el ratón: el tilt manda mientras se interactúa. */
+  .badge-wrap:hover .badge-rig,
+  .badge-wrap:focus-within .badge-rig {
+    animation-play-state: paused;
+  }
+  .badge-strap {
+    display: block;
+    width: 1.5rem;
+    height: 2.75rem;
+    margin-inline: auto;
+    background: var(--accent);
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0 7px,
+      color-mix(in srgb, var(--paper) 45%, transparent) 7px 8px
+    );
+    clip-path: polygon(18% 0, 82% 0, 100% 100%, 0% 100%);
+  }
+  .badge-card {
+    --rx: 0deg;
+    --ry: 0deg;
+    width: 16rem;
+    max-width: 100%;
+    margin-top: -0.2rem;
+    background: var(--surface);
+    border: var(--border-width) solid color-mix(in srgb, var(--ink) 16%, transparent);
     border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transform: perspective(700px) rotateX(var(--rx)) rotateY(var(--ry));
+    transition: transform 0.4s ease;
+  }
+  .badge-photo {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+  .badge-plate {
+    padding: var(--space-3) var(--space-4);
+    border-top: var(--border-width) solid color-mix(in srgb, var(--ink) 16%, transparent);
+    text-align: center;
+  }
+  .badge-name {
+    font-family: var(--font-display);
+    font-weight: 700;
+  }
+  .badge-role {
+    margin-top: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-muted);
+  }
+  @keyframes badge-swing {
+    0%,
+    100% {
+      transform: rotate(-3deg);
+    }
+    50% {
+      transform: rotate(3deg);
+    }
   }
   @media (min-width: 48rem) {
     .about-grid {

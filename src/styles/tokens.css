@@ -1,14 +1,15 @@
 /* ═══════════════════════════════════════════════════════════════
    TOKENS — las decisiones de diseño, en un solo sitio.
 
-   Ambiente elegido: Noche. Retrato de Melany como protagonista del
-   hero, fondo casi negro con resplandor violeta y cian.
+   Ambiente: Noir. Negro casi puro con un único acento en rojo —
+   estilo tomado de una referencia visual que pasó Melany, sólo la
+   parte de color/forma (nada de su contenido).
 ═══════════════════════════════════════════════════════════════ */
 
 :root {
   --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-display: 'Manrope', system-ui, sans-serif;
 
   --step--1: clamp(0.83rem, 0.8rem + 0.15vw, 0.9rem);
   --step-0:  clamp(1rem, 0.96rem + 0.2vw, 1.1rem);
@@ -34,22 +35,21 @@
   --radius: 14px;
   --radius-lg: 20px;
 
-  /* Noche — casi negro, resplandor violeta y cian */
-  --paper:     #0d0a12;
-  --paper-2:   #16111e;
-  --surface:   #191420;
+  /* Noir — casi negro, un único acento rojo */
+  --paper:     #0a0a0a;
+  --paper-2:   #141414;
+  --surface:   #111113;
 
   --ink:       #f5f2ee;
-  --ink-soft:  #c9c2d4;
-  --ink-muted: #948da4;
+  --ink-soft:  #a3a3a8;
+  --ink-muted: #808088;
 
-  --accent:       #c34fef;
-  --accent-cool:  #46d9e6;
-  --accent-hover: #d576f5;
-  --focus:        #46d9e6;
+  --accent:       #ef233c;
+  --accent-hover: #ff4258;
+  --focus:        #ef233c;
 
-  --shadow: 0 20px 60px rgb(195 79 239 / 20%);
-  --shadow-sm: 0 10px 30px rgb(195 79 239 / 14%);
-  --btn-primary-fg: #0d0a12;
+  --shadow: 0 20px 60px rgb(239 35 60 / 25%);
+  --shadow-sm: 0 10px 30px rgb(239 35 60 / 16%);
+  --btn-primary-fg: #f5f2ee;
   --btn-hover-shift: -2px;
 }

@@ -68,7 +68,7 @@ svg {
   z-index: 300;
   padding: var(--space-3) var(--space-4);
   background: var(--accent);
-  color: var(--btn-primary-fg);
+  color: var(--paper);
   font-weight: 600;
   text-decoration: none;
   border-radius: var(--radius);
@@ -124,7 +124,7 @@ a:hover {
 
 ::selection {
   background: var(--accent);
-  color: var(--btn-primary-fg);
+  color: var(--paper);
 }
 
 /* ── Estructura ───────────────────────────────────────────────── */
@@ -159,6 +159,12 @@ a:hover {
 
 /* ── Botones ──────────────────────────────────────────────────── */
 
+@property --gradient-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -168,7 +174,7 @@ a:hover {
   min-height: 2.75rem;
   padding: var(--space-3) var(--space-5);
   border: var(--border-width) solid var(--ink);
-  border-radius: var(--radius);
+  border-radius: 9999px;
   font-family: var(--font-body);
   font-size: var(--step-0);
   font-weight: 600;
@@ -178,7 +184,8 @@ a:hover {
   transition:
     transform 0.12s ease,
     box-shadow 0.12s ease,
-    background-color 0.12s ease;
+    background-color 0.12s ease,
+    border-color 0.12s ease;
 }
 .btn:hover {
   transform: translate(var(--btn-hover-shift, 0), var(--btn-hover-shift, 0));
@@ -189,13 +196,35 @@ a:hover {
   box-shadow: var(--shadow-sm);
 }
 
+/* Botón principal: fondo casi negro con un borde que gira despacio,
+   en vez del truco anterior de fondo sólido de color. Misma técnica
+   genérica (conic-gradient + @property) que vimos en la referencia,
+   aplicada aquí sin su marcado ni su copy. */
 .btn--primary {
-  background: var(--accent);
+  --gradient-angle: 0deg;
+  background:
+    linear-gradient(var(--paper-2), var(--paper-2)) padding-box,
+    conic-gradient(
+        from var(--gradient-angle),
+        transparent 0%,
+        var(--accent) 6%,
+        var(--accent) 18%,
+        transparent 32%,
+        transparent 100%
+      )
+      border-box;
+  border: 2px solid transparent;
   color: var(--btn-primary-fg);
+  animation: btn-border-spin 2.4s linear infinite;
 }
 .btn--primary:hover {
-  background: var(--accent-hover);
   color: var(--btn-primary-fg);
+}
+
+@keyframes btn-border-spin {
+  to {
+    --gradient-angle: 360deg;
+  }
 }
 
 .btn--secondary {
@@ -204,16 +233,38 @@ a:hover {
 }
 .btn--secondary:hover {
   background: var(--paper-2);
+  border-color: var(--accent);
   color: var(--ink);
 }
 
 /* ── Tarjetas ─────────────────────────────────────────────────── */
 
 .card {
+  position: relative;
+  overflow: hidden;
   background: var(--surface);
-  border: var(--border-width) solid var(--ink);
+  border: var(--border-width) solid color-mix(in srgb, var(--ink) 16%, transparent);
   border-radius: var(--radius-lg);
   padding: var(--space-5);
+}
+/* Resplandor rojo que aparece detrás al pasar el cursor — mismo
+   truco genérico de la referencia, sin su contenido. */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  background: radial-gradient(
+    16rem 10rem at 85% 0%,
+    color-mix(in srgb, var(--accent) 22%, transparent),
+    transparent 70%
+  );
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.card:hover::before {
+  opacity: 1;
 }
 
 /* Estado vacío: tiene que parecer intencionado, no roto. */
