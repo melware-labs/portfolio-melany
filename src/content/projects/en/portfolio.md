@@ -8,6 +8,7 @@ tech:
   - TypeScript
   - CSS
 order: 1
+repo: https://github.com/melware-labs/portfolio-melany
 ---
 
 The first Melware Labs project is the site you are looking at.

@@ -59,9 +59,9 @@ export const ui = {
 
     'blog.heading': 'Blog',
     'blog.intro':
-      'Escribo lo que voy aprendiendo. La idea es que dentro de un año esto esté lleno y me dé un poco de vergüenza releer lo primero.',
+      'Vibe coding, IA y muchas pruebas: aquí cuento cómo construyo cosas rápido, qué herramientas uso y lo que aprendo en el camino.',
     'blog.empty': 'Aún no he publicado nada. Estoy en ello, prometido.',
-    'blog.emptyHint': 'El primero va a ser sobre cómo monté esta web sin tener ni idea.',
+    'blog.emptyHint': 'El primero va a ser sobre cómo construí esta web haciendo vibe coding con IA.',
     'blog.readMore': 'Leer',
     'blog.readingTime': 'min de lectura',
     'blog.backToList': 'Volver al blog',
@@ -141,9 +141,9 @@ export const ui = {
 
     'blog.heading': 'Blog',
     'blog.intro':
-      "I write about what I'm learning. The plan is that in a year this is full and the earliest posts make me wince.",
+      'Vibe coding, AI tools and lots of trial and error: I write about how I build things fast, what tools I use and what I learn along the way.',
     'blog.empty': "I haven't published anything yet. Working on it, I promise.",
-    'blog.emptyHint': 'The first one will be about building this site with no idea what I was doing.',
+    'blog.emptyHint': 'The first one will be about how I vibe-coded this entire site with AI.',
     'blog.readMore': 'Read',
     'blog.readingTime': 'min read',
     'blog.backToList': 'Back to the blog',

@@ -71,5 +71,22 @@ const otherCanonical = Astro.site ? new URL(otherHref, Astro.site) : null;
       <slot />
     </main>
     <Footer />
+
+    <script>
+      // Scroll-fade: observa los .scroll-fade y alterna .is-visible
+      // según entran o salen de la pantalla, en ambas direcciones.
+      const faders = document.querySelectorAll('.scroll-fade');
+      if (faders.length) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              e.target.classList.toggle('is-visible', e.isIntersecting);
+            });
+          },
+          { threshold: 0.15 }
+        );
+        faders.forEach((el) => io.observe(el));
+      }
+    </script>
   </body>
 </html>
