@@ -69,7 +69,7 @@ export const ui = {
 
     'contact.heading': 'Contacto',
     'contact.intro':
-      'Si quieres contactarme para colaborar, resolver dudas o proponerme algo, escríbeme por aquí. Respondo siempre.',
+      'Si quieres contactarme para colaborar, resolver dudas o proponerme algo, escríbeme por aquí.',
     'contact.email': 'Escríbeme un correo',
     'contact.formName': 'Nombre',
     'contact.formEmail': 'Email',
@@ -151,7 +151,7 @@ export const ui = {
 
     'contact.heading': 'Contact',
     'contact.intro':
-      "If you'd like to get in touch about a collaboration, ask a question, or pitch me something, reach out here. I always reply.",
+      "If you'd like to get in touch about a collaboration, ask a question, or pitch me something, reach out here.",
     'contact.email': 'Send me an email',
     'contact.formName': 'Name',
     'contact.formEmail': 'Email',
