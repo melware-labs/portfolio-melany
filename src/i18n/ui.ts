@@ -18,7 +18,7 @@ export const ui = {
   es: {
     'site.title': 'Melany Martínez — Melware Labs',
     'site.description':
-      'Estudiante de Ingeniería del Software aprendiendo a construir cosas y contándolo por el camino. Proyectos y blog.',
+      'Portfolio de Melany Martinez - Software Engineer @ UMA | MTV 80s Synthwave aesthetic',
 
     'nav.skip': 'Saltar al contenido',
     'nav.home': 'Inicio',
@@ -100,7 +100,7 @@ export const ui = {
   en: {
     'site.title': 'Melany Martínez — Melware Labs',
     'site.description':
-      'Software engineering student learning to build things and writing about it along the way. Projects and blog.',
+      'Portfolio de Melany Martinez - Software Engineer @ UMA | MTV 80s Synthwave aesthetic',
 
     'nav.skip': 'Skip to content',
     'nav.home': 'Home',
