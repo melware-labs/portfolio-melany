@@ -49,6 +49,7 @@ export const ui = {
       'Fuera de eso: me encantan los videojuegos arcade y tengo una obsesión con cómo iba cambiando la tecnología década a década — sobre todo el salto de los 90 a los 2000. Ah, y la música de los 80.',
     'about.nowHeading': 'Ahora mismo',
     'about.nowText': 'Aprendiendo lo básico de verdad y buscando mis primeras prácticas.',
+    'about.photoAlt': 'Foto de Melany.',
 
     'projects.heading': 'Melware Labs',
     'projects.intro':
@@ -79,6 +80,10 @@ export const ui = {
     'contact.formSubjectPrefix': 'Contacto desde el portfolio',
     'contact.noscript':
       'Este formulario necesita JavaScript. Si lo tienes desactivado, escríbeme directamente:',
+    'contact.sentMessage':
+      'Debería habérsete abierto el correo con todo ya escrito. Si no ha pasado nada (pasa más de lo que crees), escríbeme directo:',
+    'contact.copyEmail': 'Copiar email',
+    'contact.copied': '¡Copiado!',
 
     'footer.built': 'Hecha desde cero con Astro',
     'footer.rights': 'Melany Martínez',
@@ -123,6 +128,7 @@ export const ui = {
       "Outside of that: I love arcade games, and I'm obsessed with how technology kept shifting from one decade to the next — especially the jump from the 90s to the 2000s. Oh, and 80s music.",
     'about.nowHeading': 'Right now',
     'about.nowText': "Learning the fundamentals properly and looking for my first internship.",
+    'about.photoAlt': 'Photo of Melany.',
 
     'projects.heading': 'Melware Labs',
     'projects.intro':
@@ -153,6 +159,10 @@ export const ui = {
     'contact.formSubjectPrefix': 'Portfolio contact',
     'contact.noscript':
       "This form needs JavaScript. If yours is off, email me directly:",
+    'contact.sentMessage':
+      "Your email app should have opened with everything filled in. If nothing happened (it happens more than you'd think), just email me directly:",
+    'contact.copyEmail': 'Copy email',
+    'contact.copied': 'Copied!',
 
     'footer.built': 'Built from scratch with Astro',
     'footer.rights': 'Melany Martínez',
