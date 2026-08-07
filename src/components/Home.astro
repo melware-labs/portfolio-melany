@@ -35,6 +35,24 @@ const email = 'melanymartinez667@gmail.com';
   </div>
 </section>
 
+<!-- ── Sobre mí ─────────────────────────────────────────────── -->
+<section id="sobre-mi" class="section section--alt">
+  <div class="container">
+    <h2>{t('about.heading')}</h2>
+    <div class="about-grid">
+      <div class="prose">
+        <p>{t('about.p1')}</p>
+        <p>{t('about.p2')}</p>
+        <p>{t('about.p3')}</p>
+      </div>
+      <aside class="card now-card">
+        <h3>{t('about.nowHeading')}</h3>
+        <p>{t('about.nowText')}</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
 <!-- ── Proyectos ────────────────────────────────────────────── -->
 <section id="proyectos" class="section">
   <div class="container">
@@ -165,6 +183,27 @@ const email = 'melanymartinez667@gmail.com';
     justify-content: center;
     gap: var(--space-3);
     margin-top: var(--space-6);
+  }
+
+  /* ── Sobre mí ─────────────────────────────────────────────── */
+  .about-grid {
+    margin-top: var(--space-6);
+    display: grid;
+    gap: var(--space-5);
+  }
+  .now-card h3 {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-muted);
+    margin-bottom: var(--space-2);
+  }
+  @media (min-width: 48rem) {
+    .about-grid {
+      grid-template-columns: 1fr 18rem;
+      align-items: start;
+    }
   }
 
   .section-intro {

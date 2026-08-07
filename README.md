@@ -50,35 +50,45 @@ src/
 ├── components/             Las piezas reutilizables (cabecera, tarjetas…)
 ├── layouts/Base.astro      El esqueleto común de todas las páginas
 ├── pages/                  Cada archivo aquí es una página de la web
-│   ├── index.astro         Inicio en español       →  /
-│   ├── sobre-mi.astro      Sobre mí en español      →  /sobre-mi
+│   ├── index.astro         Inicio en español (incluye "Sobre mí")  →  /
 │   ├── blog/[slug].astro   Un artículo en español   →  /blog/…
+│   ├── experimentos/tormenta.astro  Experimento aparte con Three.js
 │   └── en/                 Todo lo anterior en inglés  →  /en/…
 ├── i18n/ui.ts              Todos los textos de la interfaz, en los dos idiomas
 └── styles/
     ├── tokens.css          Colores, tipografías y espaciados
     ├── base.css            Estilos y componentes comunes
-    └── theme-flourishes.css  El ambiente: fondo animado, cristal, estrellas
+    └── theme-flourishes.css  El ambiente: fondo animado y cristal en la cabecera
 ```
 
 ## Decisiones
 
 - **Sin frameworks de CSS.** CSS normal con variables. Una pieza menos que
   mantener y una cosa más que entiendo.
-- **Casi sin JavaScript.** Sólo el menú del móvil. La web funciona igual
-  con JavaScript desactivado.
+- **JavaScript sólo donde aporta algo.** El menú del móvil, el hero
+  interactivo (ver siguiente punto) y el envío del formulario de
+  contacto. Sin ese JavaScript la web se sigue viendo y usando bien —
+  el hero no monta el canvas y el contacto cae a un botón de correo
+  directo.
+- **El hero es interactivo, no un avatar.** Se intentó un avatar
+  ilustrado dos veces y no salió bien — dibujar una cara convincente a
+  mano en SVG no es viable sin poder ver e iterar el resultado. En su
+  lugar, el hero tiene una esfera de partículas hecha con Three.js
+  (shaders propios, cargados sólo en la home) que reacciona al cursor,
+  al click y al scroll. El experimento hermano, más grande y pesado,
+  vive aparte en `/experimentos/tormenta`.
+- **"Sobre mí" está en la portada,** como una sección más — no en su
+  propia página. Se probó como página aparte y se echaba en falta en
+  el recorrido normal de la web.
 - **Una sola fuente web.** El resto son fuentes del sistema, que cargan
   al instante.
 - **Accesible a propósito:** se navega entera con el teclado, el foco
   siempre se ve, los colores cumplen el contraste AA y se respeta la
   preferencia de reducir el movimiento.
-- **Sin avatar ilustrado.** Se intentó dos veces y no salió bien —
-  dibujar una cara convincente a mano en SVG no es viable sin poder ver
-  e iterar el resultado. Si en el futuro hay una foto tratada o una
-  ilustración de verdad (encargada fuera), tiene sitio en el hero.
-- **Contacto por correo, sin formulario.** Sin hosting elegido no hay
-  dónde recibir un envío real, y una imitación de formulario que en
-  realidad abre el correo se sentía peor que ser directa.
+- **Formulario de contacto sin backend propio.** Arma un correo ya
+  redactado (`mailto:`) en vez de enviar nada a un servidor, porque
+  todavía no hay hosting elegido. Si `JavaScript` está desactivado,
+  cae a un botón de correo directo.
 
 ## Pendiente
 

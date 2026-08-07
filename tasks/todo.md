@@ -248,8 +248,35 @@ renderizando, la interacción de scroll/zoom y la pista "Desplázate ↓"
 funcionando, sin errores de consola, y la tarjeta del proyecto
 apareciendo bien en `#proyectos`.
 
+## "Sobre mí" vuelve a la portada (2026-08-07)
+
+Melany cambió de opinión sobre la decisión del mismo día documentada
+arriba ("Formulario de contacto + redes sociales + 'Sobre mí' aparte"):
+ya no quiere "Sobre mí" en su propia página, la quiere de vuelta en la
+portada como una sección más.
+
+Revertido:
+- El contenido de `AboutPage.astro` pasó a ser una sección normal
+  dentro de `Home.astro` (`#sobre-mi`), entre el hero y Proyectos, con
+  el mismo estilo de tarjeta/tarjeta lateral que tenía antes.
+- Se borraron `src/pages/sobre-mi.astro`, `src/pages/en/about.astro`
+  y `src/components/AboutPage.astro` (ya no los usa nadie).
+- `Header.astro`: el enlace de "Sobre mí" pasó de página propia a
+  ancla (`#sobre-mi`), igual que Proyectos/Blog/Contacto.
+- Los enlaces "Volver al portfolio" de los experimentos Tormenta/Storm
+  apuntaban a la página de Sobre mí; ahora van a la portada (`/`,
+  `/en/`), que es lo que de verdad significan.
+- README actualizado: el árbol de archivos y la sección de Decisiones
+  ya no mencionan la página aparte, y de paso se pusieron al día las
+  dos decisiones que habían quedado obsoletas desde antes en esta
+  misma sesión (el avatar ilustrado y el contacto sin formulario).
+
+Verificado: `npx astro check` y `npm run build` sin errores (7 páginas,
+antes 9), nav y ancla probados en el navegador.
+
 ## Siguiente (fase 2)
 
 - [ ] Publicar y poner `site` en `astro.config.mjs`
-- [ ] Avatar ilustrado con su cara real
-- [ ] Formulario de contacto funcional
+- [ ] Conectar el formulario de contacto a un backend real (Formspree,
+      Netlify Forms…) cuando haya hosting elegido — hoy abre un
+      `mailto:` porque no hay dónde recibir el envío
