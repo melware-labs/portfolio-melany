@@ -16,9 +16,9 @@ export type Lang = keyof typeof languages;
 
 export const ui = {
   es: {
-    'site.title': 'Melany Martínez — Melware Labs',
+    'site.title': 'Melany Martínez | Melware Labs',
     'site.description':
-      'Portfolio de Melany Martínez — Software Engineer',
+      'Portfolio de Melany Martínez | Software Engineer',
 
     'nav.skip': 'Saltar al contenido',
     'nav.home': 'Inicio',
@@ -35,7 +35,7 @@ export const ui = {
     'hero.greeting': 'Hola, soy',
     'hero.name': 'Melany',
     'hero.intro':
-      'Estudio Ingeniería del Software en Málaga. Estoy aprendiendo a construir cosas de verdad y lo voy contando aquí — lo que sale bien y lo que no.',
+      'Estudio Ingeniería del Software en Málaga. Estoy aprendiendo a construir cosas de verdad y lo voy contando aquí: lo que sale bien y lo que no.',
     'hero.ctaProjects': 'Proyectos',
     'hero.ctaBlog': 'Blog',
 
@@ -45,7 +45,7 @@ export const ui = {
     'about.p2':
       'Así que he decidido empezar por mi cuenta: construir cosas pequeñas, romperlas, entender por qué se han roto y escribir lo que voy aprendiendo. Esta web es la primera de esas cosas.',
     'about.p3':
-      'Fuera de eso: me encantan los videojuegos arcade y tengo una obsesión con la evolución del mundo tech década a década — sobre todo el salto de los 90 a los 2000.',
+      'Fuera de eso: me encantan los videojuegos arcade y tengo una obsesión con la evolución del mundo tech década a década, sobre todo el salto de los 90 a los 2000.',
     'about.photoAlt': 'Foto de Melany.',
     'about.lanyardHint': 'arrástrala ↔',
 
@@ -98,9 +98,9 @@ export const ui = {
   },
 
   en: {
-    'site.title': 'Melany Martínez — Melware Labs',
+    'site.title': 'Melany Martínez | Melware Labs',
     'site.description':
-      'Portfolio de Melany Martínez — Software Engineer',
+      'Portfolio de Melany Martínez | Software Engineer',
 
     'nav.skip': 'Skip to content',
     'nav.home': 'Home',
@@ -117,7 +117,7 @@ export const ui = {
     'hero.greeting': "Hi, I'm",
     'hero.name': 'Melany',
     'hero.intro':
-      "I'm studying software engineering in Málaga, Spain. I'm learning to build real things and writing about it here — the parts that work and the parts that don't.",
+      "I'm studying software engineering in Málaga, Spain. I'm learning to build real things and writing about it here: the parts that work and the parts that don't.",
     'hero.ctaProjects': 'Projects',
     'hero.ctaBlog': 'Blog',
 
@@ -127,7 +127,7 @@ export const ui = {
     'about.p2':
       'So I started on my own: build small things, break them, work out why they broke, and write down what I learn. This site is the first of those things.',
     'about.p3':
-      "Outside of that: I love arcade games, and I'm obsessed with the evolution of the tech world from one decade to the next — especially the jump from the 90s to the 2000s.",
+      "Outside of that: I love arcade games, and I'm obsessed with the evolution of the tech world from one decade to the next, especially the jump from the 90s to the 2000s.",
     'about.photoAlt': 'Photo of Melany.',
     'about.lanyardHint': 'drag it ↔',
 

@@ -1,5 +1,5 @@
 ---
-title: Tormenta — experimento con Three.js
+title: "Tormenta: experimento con Three.js"
 description: Una esfera de 9.000 partículas con shaders propios, que respira, gira y reacciona al cursor y al scroll. Vive en su propia página, fuera del sitio principal.
 lang: es
 status: live
