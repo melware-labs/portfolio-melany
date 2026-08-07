@@ -39,6 +39,8 @@ export const ui = {
     'hero.ctaProjects': 'Proyectos',
     'hero.ctaBlog': 'Blog',
 
+    'stack.heading': 'Con qué está hecha esta web',
+
     'about.heading': 'Sobre mí',
     'about.p1':
       'Tengo 22 años y estoy en ese punto de la carrera en el que te das cuenta de que aprobar exámenes y saber programar no son exactamente lo mismo.',
@@ -119,6 +121,8 @@ export const ui = {
       "I'm studying software engineering in Málaga, Spain. I'm learning to build real things and writing about it here — the parts that work and the parts that don't.",
     'hero.ctaProjects': 'Projects',
     'hero.ctaBlog': 'Blog',
+
+    'stack.heading': 'What this site is built with',
 
     'about.heading': 'About me',
     'about.p1':
