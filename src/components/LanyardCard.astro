@@ -1,0 +1,192 @@
+---
+/**
+ * Gafete colgante de "Sobre mí".
+ *
+ * En el DOM vive siempre la versión plana (foto + nombre + enlaces): es lo que
+ * ven quien no tenga JavaScript o WebGL, y es también la ruta accesible cuando
+ * manda el canvas — los enlaces siguen siendo <a> de verdad, alcanzables con el
+ * tabulador, porque dentro de un canvas no lo serían.
+ *
+ * Three.js sólo se descarga (import dinámico, chunk aparte) cuando la sección
+ * se acerca a la pantalla, y el bucle se para en cuanto sale.
+ */
+import { Image, getImage } from 'astro:assets';
+import { getLangFromUrl, useTranslations } from '../i18n/ui';
+import SocialLinks from './SocialLinks.astro';
+import melanyPhoto from '../assets/melany.jpg';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const name = 'Melany Martínez';
+
+// La textura del canvas necesita una URL suelta, no el <img> de Astro.
+const photo = await getImage({ src: melanyPhoto, width: 720, format: 'webp' });
+---
+
+<div class="lanyard" data-lanyard data-photo={photo.src} data-name={name}>
+  <canvas class="lanyard-canvas" data-lanyard-canvas aria-hidden="true"></canvas>
+
+  <div class="lanyard-flat" data-lanyard-flat>
+    <div class="lanyard-flat-card">
+      <Image
+        class="lanyard-flat-photo"
+        src={melanyPhoto}
+        alt={t('about.photoAlt')}
+        width={400}
+        height={Math.round(400 * (melanyPhoto.height / melanyPhoto.width))}
+      />
+      <div class="lanyard-flat-plate">
+        <p class="lanyard-flat-name">{name}</p>
+        <SocialLinks class="lanyard-flat-links" />
+      </div>
+    </div>
+  </div>
+
+  <p class="lanyard-hint" data-lanyard-hint hidden>{t('about.lanyardHint')}</p>
+</div>
+
+<script>
+  import type { LanyardHandle } from '../scripts/lanyard';
+
+  const root = document.querySelector<HTMLElement>('[data-lanyard]');
+  const canvas = root?.querySelector<HTMLCanvasElement>('[data-lanyard-canvas]');
+  const flat = root?.querySelector<HTMLElement>('[data-lanyard-flat]');
+  const hint = root?.querySelector<HTMLElement>('[data-lanyard-hint]');
+
+  if (root && canvas && flat) {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let handle: LanyardHandle | null = null;
+    let loading = false;
+
+    async function mount() {
+      if (loading || handle) return;
+      loading = true;
+      try {
+        const [{ createLanyard }, { socialLinks }] = await Promise.all([
+          import('../scripts/lanyard'),
+          import('../data/social'),
+        ]);
+        handle = await createLanyard({
+          canvas: canvas!,
+          photoUrl: root!.dataset.photo!,
+          name: root!.dataset.name!,
+          links: socialLinks,
+          backText: 'Melware Labs',
+          reducedMotion,
+          onFirstDrag: () => hint?.setAttribute('hidden', ''),
+        });
+        // Sólo se releva a la versión plana cuando la escena ya está montada:
+        // si algo falla por el camino, no se queda un hueco vacío.
+        root!.dataset.ready = 'true';
+        if (!reducedMotion && hint) hint.hidden = false;
+        handle.start();
+      } catch (error) {
+        // Sin WebGL, o si three no llega: se queda la versión plana.
+        console.warn('El gafete 3D no se pudo montar; se usa la versión plana.', error);
+      } finally {
+        loading = false;
+      }
+    }
+
+    // Three no se descarga hasta que la sección se acerca a la pantalla.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            void mount();
+            handle?.start();
+          } else {
+            handle?.stop();
+          }
+        }
+      },
+      { rootMargin: '200px' }
+    );
+    observer.observe(root);
+  }
+</script>
+
+<style>
+  .lanyard {
+    position: relative;
+    width: 100%;
+  }
+
+  .lanyard-canvas {
+    display: none;
+    width: 100%;
+    height: 30rem;
+    /* Deja pasar el scroll vertical de la página y quédate sólo con el
+       arrastre lateral: en móvil, si no, la tarjeta secuestra el dedo. */
+    touch-action: pan-y;
+  }
+  .lanyard[data-ready] .lanyard-canvas {
+    display: block;
+  }
+
+  /* ── Versión plana ─────────────────────────────────────────────
+     Con el canvas montado se saca de la vista pero se deja en el árbol de
+     accesibilidad, y vuelve a aparecer si algo dentro recibe el foco: así los
+     enlaces siguen siendo alcanzables con el teclado. */
+  .lanyard[data-ready] .lanyard-flat {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .lanyard[data-ready] .lanyard-flat:focus-within {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+    white-space: normal;
+  }
+
+  .lanyard-flat-card {
+    width: 16rem;
+    max-width: 100%;
+    margin-inline: auto;
+    background: var(--surface);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .lanyard-flat-photo {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+  .lanyard-flat-plate {
+    padding: var(--space-3) var(--space-4) var(--space-4);
+    border-top: 3px solid var(--accent);
+    text-align: center;
+  }
+  .lanyard-flat-name {
+    font-family: var(--font-display);
+    font-weight: 700;
+  }
+  .lanyard-flat-links {
+    justify-content: center;
+    margin-top: var(--space-2);
+    gap: var(--space-2);
+  }
+
+  .lanyard-hint {
+    margin-top: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    text-align: center;
+    color: var(--ink-muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lanyard-hint {
+      display: none;
+    }
+  }
+</style>

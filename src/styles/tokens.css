@@ -4,10 +4,14 @@
    Ambiente: Noir. Negro casi puro con un único acento en rojo —
    estilo tomado de una referencia visual que pasó Melany, sólo la
    parte de color/forma (nada de su contenido).
+
+   Regla de la referencia que aquí se respeta a rajatabla: el rojo es
+   ACENTO, no ambiente. Y ninguna línea es blanco puro: los bordes
+   viven entre el 5% y el 20% de tinta sobre el fondo.
 ═══════════════════════════════════════════════════════════════ */
 
 :root {
-  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --font-display: 'Manrope', system-ui, sans-serif;
 
@@ -32,8 +36,9 @@
   --container: 68rem;
 
   --border-width: 1px;
-  --radius: 14px;
-  --radius-lg: 20px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 9999px;
 
   /* Noir — casi negro, un único acento rojo */
   --paper:     #0a0a0a;
@@ -44,12 +49,23 @@
   --ink-soft:  #a3a3a8;
   --ink-muted: #808088;
 
+  /* Superficie translúcida para campos y fichas: se apoya en lo que
+     tenga detrás en vez de tapar el fondo con un gris plano. */
+  --surface-2: color-mix(in srgb, var(--ink) 5%, transparent);
+
+  /* Las tres únicas intensidades de línea que usa la web */
+  --line-faint:  color-mix(in srgb, var(--ink) 5%, transparent);
+  --line:        color-mix(in srgb, var(--ink) 10%, transparent);
+  --line-strong: color-mix(in srgb, var(--ink) 20%, transparent);
+
   --accent:       #ef233c;
   --accent-hover: #ff4258;
   --focus:        #ef233c;
 
-  --shadow: 0 20px 60px rgb(239 35 60 / 25%);
-  --shadow-sm: 0 10px 30px rgb(239 35 60 / 16%);
-  --btn-primary-fg: #f5f2ee;
-  --btn-hover-shift: -2px;
+  /* Sombra = profundidad (negra). El resplandor rojo va aparte y sólo
+     lo llevan las piezas que ya tienen acento, para que el rojo no se
+     acabe pegando a todo. */
+  --shadow-sm: 0 8px 24px rgb(0 0 0 / 45%);
+  --shadow:    0 22px 60px rgb(0 0 0 / 60%);
+  --glow:      0 0 30px rgb(239 35 60 / 14%);
 }

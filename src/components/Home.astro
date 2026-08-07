@@ -1,11 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
-import { Image } from 'astro:assets';
 import { getLangFromUrl, useTranslations } from '../i18n/ui';
 import ProjectCard from './ProjectCard.astro';
 import PostCard from './PostCard.astro';
-import SocialLinks from './SocialLinks.astro';
-import melanyPhoto from '../assets/melany.jpg';
+import LanyardCard from './LanyardCard.astro';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -38,7 +36,27 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
   </div>
 </section>
 
-<!-- ── Stack ────────────────────────────────────────────────── -->
+<!-- ── Sobre mí ─────────────────────────────────────────────── -->
+<section id="sobre-mi" class="section">
+  <div class="container">
+    <h2>{t('about.heading')}</h2>
+    <div class="about-grid">
+      <div class="prose">
+        <p>{t('about.p1')}</p>
+        <p>{t('about.p2')}</p>
+        <p>{t('about.p3')}</p>
+      </div>
+      <div class="about-aside">
+        <LanyardCard />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Stack ────────────────────────────────────────────────────
+     Va justo antes de los proyectos, a modo de entradilla: primero las
+     herramientas, después lo construido con ellas. Entre la portada y
+     "Sobre mí" sólo cortaba la presentación. -->
 <section class="section stack-section">
   <div class="stack-marquee">
     <div class="stack-track">
@@ -59,78 +77,6 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
       }
     </div>
   </div>
-</section>
-
-<!-- ── Sobre mí ─────────────────────────────────────────────── -->
-<section id="sobre-mi" class="section">
-  <div class="container">
-    <h2>{t('about.heading')}</h2>
-    <div class="about-grid">
-      <div class="prose">
-        <p>{t('about.p1')}</p>
-        <p>{t('about.p2')}</p>
-        <p>{t('about.p3')}</p>
-      </div>
-      <div class="about-aside">
-        <!-- Gafete colgando de un cordón: se balancea solo y responde
-             un poco al ratón (perspective + rotateX/Y), sin ninguna
-             librería de física — ver el <script> al final del archivo. -->
-        <div class="badge-wrap" id="about-badge-wrap">
-          <span class="badge-ring" aria-hidden="true"></span>
-          <div class="badge-rig">
-            <span class="badge-strap" aria-hidden="true"></span>
-            <div class="badge-card" id="about-badge-card">
-              <Image
-                class="badge-photo"
-                src={melanyPhoto}
-                alt={t('about.photoAlt')}
-                width={400}
-                height={Math.round(400 * (melanyPhoto.height / melanyPhoto.width))}
-              />
-              <div class="badge-plate">
-                <p class="badge-name">Melany Martínez</p>
-                <p class="badge-role">{t('about.badgeRole')}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <SocialLinks />
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // Tilt del gafete al pasar el ratón: sólo con puntero fino (no táctil)
-    // y sólo si no han pedido menos movimiento. El balanceo en reposo es
-    // pura animación CSS y ya respeta prefers-reduced-motion desde base.css.
-    const wrap = document.getElementById('about-badge-wrap');
-    const card = document.getElementById('about-badge-card');
-    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (wrap && card && finePointer && !reducedMotion) {
-      let frame = 0;
-
-      const applyTilt = (event: PointerEvent) => {
-        const rect = card.getBoundingClientRect();
-        const px = (event.clientX - rect.left) / rect.width - 0.5;
-        const py = (event.clientY - rect.top) / rect.height - 0.5;
-        card.style.setProperty('--ry', `${(px * 16).toFixed(2)}deg`);
-        card.style.setProperty('--rx', `${(py * -16).toFixed(2)}deg`);
-        frame = 0;
-      };
-
-      wrap.addEventListener('pointermove', (event) => {
-        if (frame) return;
-        frame = requestAnimationFrame(() => applyTilt(event));
-      });
-
-      wrap.addEventListener('pointerleave', () => {
-        card.style.setProperty('--rx', '0deg');
-        card.style.setProperty('--ry', '0deg');
-      });
-    }
-  </script>
 </section>
 
 <!-- ── Proyectos ────────────────────────────────────────────── -->
@@ -402,7 +348,7 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
   }
   .hero-copy h1 {
     font-size: clamp(2.8rem, 1.8rem + 6vw, 6rem);
-    letter-spacing: -0.03em;
+    letter-spacing: -0.05em;
   }
   .hero-fade {
     background: linear-gradient(
@@ -415,7 +361,26 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
     color: transparent;
   }
   .hero-name {
+    position: relative;
+    display: inline-block;
     color: var(--accent);
+  }
+  /* Trazo a mano alzada bajo el nombre — es el remate que la referencia
+     le pone a la palabra en acento. Va con máscara en vez de meter el
+     color dentro del SVG, para que siga saliendo de --accent y no se
+     quede descolgado si algún día cambia el rojo. */
+  .hero-name::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.1em;
+    height: 0.13em;
+    background: var(--accent);
+    opacity: 0.55;
+    --stroke: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M0 5 Q 50 10 100 5' stroke='%23000' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+    -webkit-mask: var(--stroke) no-repeat center / 100% 100%;
+    mask: var(--stroke) no-repeat center / 100% 100%;
   }
   .hero-intro {
     margin-top: var(--space-4);
@@ -432,10 +397,19 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
   }
 
   /* ── Stack ────────────────────────────────────────────────── */
+  /* Atenuada de serie y se aclara al acercarse: en la referencia la tira
+     de logos vive al 60% y sólo despierta si le haces caso. Así no
+     compite con los proyectos, que es lo que va justo debajo. */
   .stack-section {
     padding-block: var(--space-6);
-    border-block: var(--border-width) solid color-mix(in srgb, var(--ink) 8%, transparent);
+    border-block: var(--border-width) solid var(--line-faint);
     background: color-mix(in srgb, var(--ink) 2%, transparent);
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+  }
+  .stack-section:hover,
+  .stack-section:focus-within {
+    opacity: 1;
   }
   .stack-marquee {
     overflow: hidden;
@@ -496,103 +470,13 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
     gap: var(--space-5);
   }
   .about-aside {
-    display: grid;
-    justify-items: center;
-    gap: var(--space-4);
-    /* Más arriba que el texto, para que no arranque a la misma
-       altura y se sienta menos encajonada. */
+    /* Arranca más arriba que el texto para que la correa tenga sitio y no
+       parezca que el gafete cuelga desde el mismo renglón. */
     margin-top: -3rem;
-  }
-  /* Gafete con cordón, foto y nombre — reemplaza la foto suelta. */
-  .badge-wrap {
-    position: relative;
-    display: grid;
-    justify-items: center;
-    padding-top: 3rem;
-    /* Da aire para que el tilt del gafete no recorte contra el borde. */
-    perspective: 900px;
-  }
-  .badge-ring {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 0.8rem;
-    height: 0.8rem;
-    transform: translateX(-50%);
-    border-radius: 50%;
-    background: var(--ink-soft);
-    box-shadow: inset 0 0 0 2px var(--paper);
-  }
-  .badge-rig {
-    transform-origin: top center;
-    animation: badge-swing 5s ease-in-out infinite;
-  }
-  /* En reposo se para al pasar el ratón: el tilt manda mientras se interactúa. */
-  .badge-wrap:hover .badge-rig,
-  .badge-wrap:focus-within .badge-rig {
-    animation-play-state: paused;
-  }
-  .badge-strap {
-    display: block;
-    width: 1.5rem;
-    height: 2.75rem;
-    margin-inline: auto;
-    background: var(--accent);
-    background-image: repeating-linear-gradient(
-      to bottom,
-      transparent 0 7px,
-      color-mix(in srgb, var(--paper) 45%, transparent) 7px 8px
-    );
-    clip-path: polygon(18% 0, 82% 0, 100% 100%, 0% 100%);
-  }
-  .badge-card {
-    --rx: 0deg;
-    --ry: 0deg;
-    width: 16rem;
-    max-width: 100%;
-    margin-top: -0.2rem;
-    background: var(--surface);
-    border: var(--border-width) solid color-mix(in srgb, var(--ink) 16%, transparent);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
-    transform: perspective(700px) rotateX(var(--rx)) rotateY(var(--ry));
-    transition: transform 0.4s ease;
-  }
-  .badge-photo {
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-  }
-  .badge-plate {
-    padding: var(--space-3) var(--space-4);
-    border-top: var(--border-width) solid color-mix(in srgb, var(--ink) 16%, transparent);
-    text-align: center;
-  }
-  .badge-name {
-    font-family: var(--font-display);
-    font-weight: 700;
-  }
-  .badge-role {
-    margin-top: var(--space-1);
-    font-family: var(--font-mono);
-    font-size: var(--step--1);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--ink-muted);
-  }
-  @keyframes badge-swing {
-    0%,
-    100% {
-      transform: rotate(-3deg);
-    }
-    50% {
-      transform: rotate(3deg);
-    }
   }
   @media (min-width: 48rem) {
     .about-grid {
-      grid-template-columns: 1fr 18rem;
+      grid-template-columns: 1fr 22rem;
       align-items: start;
     }
   }
@@ -654,22 +538,40 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
       grid-template-columns: 1fr 1fr;
     }
   }
+  /* Campos como en la referencia: fondo translúcido al 5%, línea al 10%
+     y el rojo reservado para cuando el campo tiene el foco. Los de una
+     línea van en píldora, igual que los botones; el área de texto no,
+     porque una píldora de ocho centímetros de alto queda ridícula. */
   .field input,
   .field textarea {
     width: 100%;
     font: inherit;
     color: var(--ink);
-    background: var(--surface);
-    border: var(--border-width) solid var(--ink);
-    border-radius: var(--radius);
-    padding: var(--space-3) var(--space-4);
+    background: var(--surface-2);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-pill);
+    padding: var(--space-4) var(--space-5);
+    transition: border-color 0.15s ease, background-color 0.15s ease;
   }
+  .field input:hover,
+  .field textarea:hover {
+    border-color: var(--line-strong);
+  }
+  .field input:focus,
+  .field textarea:focus {
+    border-color: var(--accent);
+  }
+  /* Estos marcadores de posición hacen de etiqueta (los <label> reales
+     están sólo para lectores de pantalla), así que tienen que leerse de
+     verdad: con --ink-muted sobre el fondo del campo se quedaban en 4,4
+     de contraste, justo por debajo del mínimo. */
   .field input::placeholder,
   .field textarea::placeholder {
-    color: var(--ink-muted);
+    color: var(--ink-soft);
     opacity: 1;
   }
   .field textarea {
+    border-radius: var(--radius-lg);
     resize: vertical;
     min-height: 8rem;
   }
@@ -683,14 +585,16 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
     place-items: center;
     width: 2.75rem;
     height: 2.75rem;
-    color: var(--ink);
-    background: var(--surface);
-    border: var(--border-width) solid var(--ink);
-    border-radius: var(--radius);
+    color: var(--ink-soft);
+    background: var(--surface-2);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-pill);
     cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
   }
   .contact-reset:hover {
     color: var(--accent);
+    border-color: var(--line-strong);
   }
   .contact-reset[hidden] {
     display: none;
@@ -699,9 +603,9 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
     margin-top: var(--space-6);
     max-width: 32rem;
     padding: var(--space-4) var(--space-5);
-    border: var(--border-width) solid var(--ink);
-    border-radius: var(--radius);
-    background: var(--surface);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface-2);
     color: var(--ink-soft);
   }
   .contact-status[hidden] {
@@ -722,14 +626,15 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
   .copy-email {
     font: inherit;
     color: var(--ink);
-    background: var(--paper-2);
-    border: var(--border-width) solid var(--ink);
-    border-radius: var(--radius);
-    padding: var(--space-2) var(--space-3);
+    background: var(--surface-2);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-pill);
+    padding: var(--space-2) var(--space-4);
     cursor: pointer;
+    transition: border-color 0.15s ease;
   }
   .copy-email:hover {
-    background: var(--surface);
+    border-color: var(--line-strong);
   }
   .contact-noscript {
     margin-top: var(--space-6);
