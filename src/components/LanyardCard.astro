@@ -116,10 +116,15 @@ const photo = await getImage({ src: melanyPhoto, width: 720, format: 'webp' });
   .lanyard-canvas {
     display: none;
     width: 100%;
-    height: 30rem;
+    height: 32rem;
     /* Deja pasar el scroll vertical de la página y quédate sólo con el
        arrastre lateral: en móvil, si no, la tarjeta secuestra el dedo. */
     touch-action: pan-y;
+    /* La correa sale por arriba del canvas. Sin esto se corta en seco contra
+       una línea recta en mitad de la sección, que es justo lo que hacía que
+       pareciera recortada y flotando; difuminada, se pierde hacia arriba. */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 11%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 11%);
   }
   .lanyard[data-ready] .lanyard-canvas {
     display: block;

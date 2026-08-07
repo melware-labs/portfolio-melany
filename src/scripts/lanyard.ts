@@ -67,18 +67,23 @@ const ATTACH_OFFSET = CARD_H / 2 + 0.12;
 const CARD_SPAN = ATTACH_OFFSET + CARD_H / 2;
 
 const ROPE_POINTS = 12;
-const ROPE_LENGTH = 1.3;
+const ROPE_LENGTH = 1.0;
 const STRAP_WIDTH = 0.26;
 const ANCHOR = new THREE.Vector3(0, 3.05, 0);
 
 /**
  * Tramo de correa que queda por encima del marco. El anclaje cae fuera de
  * cuadro a propósito: así se lee que cuelga de algo que está más arriba, sin
- * tener que inventarse un objeto del que colgarla.
+ * tener que inventarse un objeto del que colgarla. El corte no se ve porque
+ * LanyardCard.astro difumina el borde superior del canvas.
  */
-const ROPE_OFF_FRAME = 0.4;
-const MARGIN_BOTTOM = 0.2;
-const MARGIN_SIDE = 1.1;
+const ROPE_OFF_FRAME = 0.38;
+/**
+ * Márgenes muy justos: la tarjeta tiene que dominar el encuadre. Con margen
+ * de sobra se veía diminuta dentro de un canvas medio vacío.
+ */
+const MARGIN_BOTTOM = 0.15;
+const MARGIN_SIDE = 0.7;
 
 // ── Física ────────────────────────────────────────────────────────────
 const GRAVITY = new THREE.Vector3(0, -19, 0);
@@ -530,13 +535,15 @@ export async function createLanyard(options: LanyardOptions): Promise<LanyardHan
   const segmentLength = ROPE_LENGTH / (ROPE_POINTS - 1);
   for (let i = 0; i < ROPE_POINTS; i++) {
     const t = i / (ROPE_POINTS - 1);
-    points.push(new THREE.Vector3(ANCHOR.x + t * 0.7, ANCHOR.y - t * ROPE_LENGTH * 0.7, ANCHOR.z));
+    // Desplazamiento inicial pequeño: con el encuadre ajustado, arrancar muy
+    // de lado hacía que la tarjeta se saliera del canvas en el primer vaivén.
+    points.push(new THREE.Vector3(ANCHOR.x + t * 0.28, ANCHOR.y - t * ROPE_LENGTH * 0.8, ANCHOR.z));
     prevPoints.push(points[i].clone());
   }
-  const bottom = points[ROPE_POINTS - 1].clone().add(new THREE.Vector3(0.3, -CARD_SPAN, 0));
+  const bottom = points[ROPE_POINTS - 1].clone().add(new THREE.Vector3(0.12, -CARD_SPAN, 0));
   const prevBottom = bottom.clone();
 
-  let spin = 0.55;
+  let spin = 0.4;
   let spinVelocity = 0;
 
   // ── Interacción ──────────────────────────────────────────────────────
