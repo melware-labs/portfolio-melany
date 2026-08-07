@@ -42,9 +42,6 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
 
 <!-- ── Stack ────────────────────────────────────────────────── -->
 <section class="section stack-section">
-  <div class="container">
-    <p class="eyebrow">{t('stack.heading')}</p>
-  </div>
   <div class="stack-marquee">
     <div class="stack-track">
       <ul class="stack-group">
@@ -367,13 +364,9 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
 
   /* ── Stack ────────────────────────────────────────────────── */
   .stack-section {
-    padding-block: var(--space-6);
-  }
-  .stack-section .eyebrow {
-    text-align: center;
+    padding-block: var(--space-5);
   }
   .stack-marquee {
-    margin-top: var(--space-5);
     overflow: hidden;
     mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
     -webkit-mask-image: linear-gradient(
@@ -395,19 +388,15 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
   }
   .stack-group {
     display: flex;
-    gap: var(--space-4);
-    padding-inline-end: var(--space-4);
+    gap: var(--space-8);
     list-style: none;
+    padding-inline-end: var(--space-8);
   }
   .stack-group li {
     font-family: var(--font-mono);
-    font-size: var(--step--1);
+    font-size: var(--step-0);
     white-space: nowrap;
     color: var(--ink-soft);
-    background: var(--paper-2);
-    border: var(--border-width) solid var(--ink);
-    border-radius: var(--radius);
-    padding: var(--space-2) var(--space-4);
   }
   @keyframes stack-scroll {
     from {
