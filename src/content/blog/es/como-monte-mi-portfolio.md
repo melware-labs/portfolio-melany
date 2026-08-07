@@ -1,5 +1,5 @@
 ---
-title: Cómo monté mi portfolio sin saber programar
+title: Cómo monté mi portfolio a base de vibe coding
 description: Empecé queriendo que fuera bonita y acabé aprendiendo que ese no era el problema. Lo que pasó por el camino y lo que me llevo.
 date: 2026-07-31
 lang: es
