@@ -18,7 +18,7 @@ export const ui = {
   es: {
     'site.title': 'Melany Martínez — Melware Labs',
     'site.description':
-      'Portfolio de Melany Martinez - Software Engineer @ UMA | MTV 80s Synthwave aesthetic',
+      'Portfolio de Melany Martínez — Software Engineer',
 
     'nav.skip': 'Saltar al contenido',
     'nav.home': 'Inicio',
@@ -60,9 +60,9 @@ export const ui = {
     'blog.heading': 'Blog',
     'blog.intro':
       'Vibe coding, IA y muchas pruebas: aquí cuento cómo construyo cosas rápido, qué herramientas uso y lo que aprendo en el camino.',
-    'blog.empty': 'Aún no he publicado nada. Estoy en ello, prometido.',
+    'blog.readMore': 'Seguir leyendo',
     'blog.emptyHint': 'El primero va a ser sobre cómo construí esta web haciendo vibe coding con IA.',
-    'blog.readMore': 'Leer',
+    'blog.readMore': 'Seguir leyendo',
     'blog.readingTime': 'min de lectura',
     'blog.backToList': 'Volver al blog',
     'blog.publishedOn': 'Publicado el',
@@ -100,7 +100,7 @@ export const ui = {
   en: {
     'site.title': 'Melany Martínez — Melware Labs',
     'site.description':
-      'Portfolio de Melany Martinez - Software Engineer @ UMA | MTV 80s Synthwave aesthetic',
+      'Portfolio de Melany Martínez — Software Engineer',
 
     'nav.skip': 'Skip to content',
     'nav.home': 'Home',
@@ -142,9 +142,9 @@ export const ui = {
     'blog.heading': 'Blog',
     'blog.intro':
       'Vibe coding, AI tools and lots of trial and error: I write about how I build things fast, what tools I use and what I learn along the way.',
+    'blog.readMore': 'Read more',
     'blog.empty': "I haven't published anything yet. Working on it, I promise.",
     'blog.emptyHint': 'The first one will be about how I vibe-coded this entire site with AI.',
-    'blog.readMore': 'Read',
     'blog.readingTime': 'min read',
     'blog.backToList': 'Back to the blog',
     'blog.publishedOn': 'Published on',

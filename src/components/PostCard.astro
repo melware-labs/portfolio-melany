@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { getLangFromUrl, localizedPath } from '../i18n/ui';
+import { getLangFromUrl, localizedPath, useTranslations } from '../i18n/ui';
 
 interface Props {
   post: CollectionEntry<'blog'>;
@@ -8,6 +8,7 @@ interface Props {
 
 const { post } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 // El id incluye la carpeta de idioma ("es/mi-post"); la URL sólo el slug.
 const slug = post.id.split('/').pop()!;
@@ -25,13 +26,15 @@ const formattedDate = post.data.date.toLocaleDateString(lang === 'es' ? 'es-ES' 
     <time datetime={post.data.date.toISOString()}>{formattedDate}</time>
   </p>
   <h3>
-    <a href={href}>{post.data.title}</a>
+    <a href={href} class="title-link stretched-link">{post.data.title}</a>
   </h3>
   <p class="post-desc">{post.data.description}</p>
+  <span class="read-more" aria-hidden="true">{t('blog.readMore')} &rarr;</span>
 </article>
 
 <style>
   .post {
+    position: relative;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -54,10 +57,29 @@ const formattedDate = post.data.date.toLocaleDateString(lang === 'es' ? 'es-ES' 
     color: var(--accent);
     text-decoration: underline;
   }
+  .stretched-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
   /* Toda la tarjeta responde al hover, pero el enlace sigue siendo
      sólo el título: mejor para lectores de pantalla. */
   .post:hover h3 a {
     color: var(--accent);
+  }
+
+  .read-more {
+    margin-top: auto;
+    font-weight: 500;
+    font-size: var(--step--1);
+    color: var(--accent);
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+
+  .post:hover .read-more {
+    transform: translateX(4px);
   }
 
   .post-desc {
