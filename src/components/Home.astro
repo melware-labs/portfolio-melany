@@ -46,15 +46,17 @@ const email = 'melanymartinez667@gmail.com';
         <p>{t('about.p1')}</p>
         <p>{t('about.p2')}</p>
         <p>{t('about.p3')}</p>
+      </div>
+      <div class="about-aside">
+        <Image
+          class="about-photo"
+          src={melanyPhoto}
+          alt={t('about.photoAlt')}
+          width={480}
+          height={Math.round(480 * (melanyPhoto.height / melanyPhoto.width))}
+        />
         <SocialLinks />
       </div>
-      <Image
-        class="about-photo"
-        src={melanyPhoto}
-        alt={t('about.photoAlt')}
-        width={480}
-        height={Math.round(480 * (melanyPhoto.height / melanyPhoto.width))}
-      />
     </div>
   </div>
 </section>
@@ -110,64 +112,68 @@ const email = 'melanymartinez667@gmail.com';
 
 <!-- ── Contacto ─────────────────────────────────────────────── -->
 <section id="contacto" class="section">
-  <div class="container">
-    <h2>{t('contact.heading')}</h2>
-    <p class="section-intro prose">{t('contact.intro')}</p>
+  <div class="container contact-grid">
+    <div class="contact-intro">
+      <h2>{t('contact.heading')}</h2>
+      <p class="section-intro prose">{t('contact.intro')}</p>
+    </div>
 
-    <form class="contact-form" id="contact-form">
-      <div class="field-row">
-        <div class="field">
-          <label for="cf-name" class="visually-hidden">{t('contact.formName')}</label>
-          <input
-            id="cf-name"
-            name="name"
-            type="text"
-            autocomplete="name"
-            placeholder={t('contact.formName')}
-            required
-          />
+    <div class="contact-form-col">
+      <form class="contact-form" id="contact-form">
+        <div class="field-row">
+          <div class="field">
+            <label for="cf-name" class="visually-hidden">{t('contact.formName')}</label>
+            <input
+              id="cf-name"
+              name="name"
+              type="text"
+              autocomplete="name"
+              placeholder={t('contact.formName')}
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="cf-email" class="visually-hidden">{t('contact.formEmail')}</label>
+            <input
+              id="cf-email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              placeholder={t('contact.formEmail')}
+              required
+            />
+          </div>
         </div>
         <div class="field">
-          <label for="cf-email" class="visually-hidden">{t('contact.formEmail')}</label>
-          <input
-            id="cf-email"
-            name="email"
-            type="email"
-            autocomplete="email"
-            placeholder={t('contact.formEmail')}
+          <label for="cf-message" class="visually-hidden">{t('contact.formMessage')}</label>
+          <textarea
+            id="cf-message"
+            name="message"
+            rows="5"
+            placeholder={t('contact.formMessage')}
             required
-          />
+          ></textarea>
         </div>
-      </div>
-      <div class="field">
-        <label for="cf-message" class="visually-hidden">{t('contact.formMessage')}</label>
-        <textarea
-          id="cf-message"
-          name="message"
-          rows="5"
-          placeholder={t('contact.formMessage')}
-          required
-        ></textarea>
-      </div>
-      <button class="btn btn--primary" type="submit">{t('contact.formSend')}</button>
-    </form>
+        <button class="btn btn--primary" type="submit">{t('contact.formSend')}</button>
+      </form>
 
-    <p class="contact-status" id="contact-status" role="status" hidden>
-      {t('contact.sentMessage')}
-      <span class="contact-email-row">
-        <a href={`mailto:${email}`}>{email}</a>
-        <button type="button" class="copy-email" id="copy-email" data-email={email}>
-          {t('contact.copyEmail')}
-        </button>
-      </span>
-    </p>
-
-    <noscript>
-      <p class="contact-noscript">
-        {t('contact.noscript')}
-        <a class="btn btn--secondary" href={`mailto:${email}`}>{t('contact.email')}</a>
+      <p class="contact-status" id="contact-status" role="status" hidden>
+        {t('contact.sentMessage')}
+        <span class="contact-email-row">
+          <a href={`mailto:${email}`}>{email}</a>
+          <button type="button" class="copy-email" id="copy-email" data-email={email}>
+            {t('contact.copyEmail')}
+          </button>
+        </span>
       </p>
-    </noscript>
+
+      <noscript>
+        <p class="contact-noscript">
+          {t('contact.noscript')}
+          <a class="btn btn--secondary" href={`mailto:${email}`}>{t('contact.email')}</a>
+        </p>
+      </noscript>
+    </div>
 
     <script
       define:vars={{
@@ -252,6 +258,13 @@ const email = 'melanymartinez667@gmail.com';
     display: grid;
     gap: var(--space-5);
   }
+  .about-aside {
+    display: grid;
+    gap: var(--space-4);
+    /* Un poco más arriba que el texto, para que no arranque a la
+       misma altura y se sienta menos encajonada. */
+    margin-top: -1.5rem;
+  }
   .about-photo {
     max-width: 18rem;
     width: 100%;
@@ -294,8 +307,17 @@ const email = 'melanymartinez667@gmail.com';
   }
 
   /* ── Formulario de contacto ─────────────────────────────────── */
+  .contact-grid {
+    display: grid;
+    gap: var(--space-6);
+  }
+  @media (min-width: 48rem) {
+    .contact-grid {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+  }
   .contact-form {
-    margin-top: var(--space-6);
     display: grid;
     gap: var(--space-4);
     max-width: 36rem;
