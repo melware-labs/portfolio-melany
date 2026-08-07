@@ -144,6 +144,28 @@ const email = 'melanymartinez667@gmail.com';
             />
           </div>
         </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="cf-subject" class="visually-hidden">{t('contact.formSubject')}</label>
+            <input
+              id="cf-subject"
+              name="subject"
+              type="text"
+              placeholder={t('contact.formSubject')}
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="cf-phone" class="visually-hidden">{t('contact.formPhone')}</label>
+            <input
+              id="cf-phone"
+              name="phone"
+              type="tel"
+              autocomplete="tel"
+              placeholder={t('contact.formPhoneOptional')}
+            />
+          </div>
+        </div>
         <div class="field">
           <label for="cf-message" class="visually-hidden">{t('contact.formMessage')}</label>
           <textarea
@@ -191,10 +213,14 @@ const email = 'melanymartinez667@gmail.com';
         const data = new FormData(form);
         const name = String(data.get('name') || '').trim();
         const senderEmail = String(data.get('email') || '').trim();
+        const userSubject = String(data.get('subject') || '').trim();
+        const phone = String(data.get('phone') || '').trim();
         const message = String(data.get('message') || '').trim();
 
-        const subject = encodeURIComponent(`${subjectPrefix} — ${name}`);
-        const body = encodeURIComponent(`${message}\n\n—\n${name}\n${senderEmail}`);
+        const subject = encodeURIComponent(`${subjectPrefix} — ${userSubject}`);
+        const bodyLines = [message, '', '—', name, senderEmail];
+        if (phone) bodyLines.push(phone);
+        const body = encodeURIComponent(bodyLines.join('\n'));
         window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
 
         if (status) status.hidden = false;
@@ -260,10 +286,11 @@ const email = 'melanymartinez667@gmail.com';
   }
   .about-aside {
     display: grid;
+    justify-items: center;
     gap: var(--space-4);
-    /* Un poco más arriba que el texto, para que no arranque a la
-       misma altura y se sienta menos encajonada. */
-    margin-top: -1.5rem;
+    /* Más arriba que el texto, para que no arranque a la misma
+       altura y se sienta menos encajonada. */
+    margin-top: -3rem;
   }
   .about-photo {
     max-width: 18rem;
