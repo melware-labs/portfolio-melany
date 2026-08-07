@@ -14,13 +14,16 @@ const links = [
   { href: `${home}#blog`, label: t('nav.blog') },
   { href: `${home}#contacto`, label: t('nav.contact') },
 ];
+
+const flagSrc: Record<string, string> = {
+  es: 'https://flagcdn.com/w40/es.png',
+  en: 'https://flagcdn.com/w40/gb.png',
+};
 ---
 
 <header class="site-header">
   <div class="container header-inner">
     <a class="brand" href={home}>
-      {/* El chevrón es decorativo: oculto a lectores de pantalla para que
-          el enlace se anuncie "Melany" y no "menor que Melany". */}
       <span class="brand-mark" aria-hidden="true">&lt;</span>
       <span class="brand-name">Melany</span>
     </a>
@@ -30,9 +33,46 @@ const links = [
     </nav>
 
     <div class="header-actions">
-      <a class="lang-switch" href={otherHref} lang={otherLang} hreflang={otherLang} aria-label={t('nav.switchTo')}>
-        {languages[otherLang]}
-      </a>
+      <div class="lang-dropdown" id="lang-dropdown">
+        <button
+          class="lang-toggle"
+          type="button"
+          id="lang-toggle"
+          aria-expanded="false"
+          aria-haspopup="true"
+          aria-label={t('nav.language')}
+        >
+          <img class="lang-flag" src={flagSrc[lang]} alt="" width="20" height="15" />
+          <span class="lang-code">{lang.toUpperCase()}</span>
+          <svg class="lang-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="3 5 6 8 9 5"></polyline>
+          </svg>
+        </button>
+        <div class="lang-menu" id="lang-menu" role="menu" hidden>
+          <a
+            class:list={['lang-option', { 'is-active': lang === 'es' }]}
+            href={lang === 'es' ? '#' : alternatePath(Astro.url, 'en')}
+            role="menuitem"
+            lang="es"
+            hreflang="es"
+            aria-current={lang === 'es' ? 'true' : undefined}
+          >
+            <img class="lang-flag" src={flagSrc.es} alt="" width="20" height="15" />
+            <span>Español</span>
+          </a>
+          <a
+            class:list={['lang-option', { 'is-active': lang === 'en' }]}
+            href={lang === 'en' ? '#' : alternatePath(Astro.url, 'es')}
+            role="menuitem"
+            lang="en"
+            hreflang="en"
+            aria-current={lang === 'en' ? 'true' : undefined}
+          >
+            <img class="lang-flag" src={flagSrc.en} alt="" width="20" height="15" />
+            <span>English</span>
+          </a>
+        </div>
+      </div>
 
       <button
         id="menu-toggle"
@@ -53,9 +93,6 @@ const links = [
 </header>
 
 <style>
-  /* Barra a todo el ancho. La píldora flotante quedaba como adorno de
-     plantilla y comía espacio por los lados; ahora el fondo y el borde los
-     lleva la propia cabecera, de borde a borde. */
   .site-header {
     position: sticky;
     top: 0;
@@ -82,8 +119,6 @@ const links = [
     color: var(--ink);
     line-height: 1.1;
   }
-  /* El chevrón rojo hace de marca, en el sitio donde la referencia pone
-     su cuadradito de color antes del nombre. */
   .brand-mark {
     font-family: var(--font-mono);
     font-size: var(--step-1);
@@ -97,10 +132,13 @@ const links = [
     letter-spacing: -0.03em;
   }
 
+  /* ── Nav centrada ─────────────────────────────────────────── */
   .nav-desktop {
     display: none;
-    margin-inline-start: auto;
     gap: var(--space-5);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
   .nav-desktop a {
     color: var(--ink-soft);
@@ -123,35 +161,97 @@ const links = [
     margin-inline-start: auto;
   }
 
-  /* Misma familia visual que el botón de acción de la referencia:
-     píldora con fondo translúcido, línea al 10% y micro-texto en
-     mayúsculas bien espaciado. */
-  .lang-switch {
+  /* ── Dropdown de idioma ──────────────────────────────────── */
+  .lang-dropdown {
+    position: relative;
+  }
+  .lang-toggle {
     font-family: var(--font-mono);
     font-size: 0.7rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: var(--ink-soft);
-    text-decoration: none;
     padding: var(--space-2) var(--space-4);
     min-height: 2.75rem;
     display: inline-flex;
     align-items: center;
+    gap: 0.4em;
     border: var(--border-width) solid var(--line);
     border-radius: var(--radius-pill);
     background: var(--surface-2);
+    cursor: pointer;
     transition: color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
   }
-  .lang-switch:hover {
+  .lang-toggle:hover {
     color: var(--ink);
     border-color: var(--accent);
     box-shadow: var(--glow);
   }
+  .lang-flag {
+    width: 20px;
+    height: 15px;
+    object-fit: cover;
+    border-radius: 2px;
+    vertical-align: middle;
+  }
+  .lang-chevron {
+    transition: transform 0.2s ease;
+  }
+  .lang-toggle[aria-expanded='true'] .lang-chevron {
+    transform: rotate(180deg);
+  }
+
+  .lang-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    min-width: 10rem;
+    background: var(--paper);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    pointer-events: none;
+  }
+  .lang-menu:not([hidden]) {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .lang-menu[hidden] {
+    display: block !important;
+    visibility: hidden;
+  }
+
+  .lang-option {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    padding: var(--space-3) var(--space-4);
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: var(--step--1);
+    font-weight: 500;
+    transition: background 0.12s ease, color 0.12s ease;
+  }
+  .lang-option:hover {
+    background: var(--surface-2);
+    color: var(--ink);
+  }
+  .lang-option.is-active {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .lang-option + .lang-option {
+    border-top: var(--border-width) solid var(--line-faint);
+  }
 
   /* ── Botón hamburguesa ─────────────────────────────────────── */
   .menu-toggle {
-    /* 44x44: objetivo táctil mínimo cómodo */
     width: 2.75rem;
     height: 2.75rem;
     display: grid;
@@ -182,7 +282,7 @@ const links = [
     transform: translateY(-6px) rotate(-45deg);
   }
 
-  /* ── Menú desplegable ──────────────────────────────────────── */
+  /* ── Menú desplegable móvil ──────────────────────────────── */
   .nav-mobile {
     display: grid;
     border-top: var(--border-width) solid var(--line);
@@ -208,13 +308,12 @@ const links = [
     color: var(--ink);
   }
 
-  /* A partir de tablet: navegación completa y fuera la hamburguesa */
   @media (min-width: 48rem) {
+    .header-inner {
+      position: relative;
+    }
     .nav-desktop {
       display: flex;
-    }
-    .header-actions {
-      margin-inline-start: 0;
     }
     .menu-toggle {
       display: none;
@@ -226,6 +325,7 @@ const links = [
 </style>
 
 <script>
+  // ── Menú hamburguesa ────────────────────────────────────────
   const toggle = document.getElementById('menu-toggle');
   const nav = document.getElementById('mobile-nav');
 
@@ -233,7 +333,6 @@ const links = [
     const open = () => {
       nav.hidden = false;
       toggle.setAttribute('aria-expanded', 'true');
-      // Evita que el fondo haga scroll mientras el menú está abierto
       document.body.style.overflow = 'hidden';
     };
 
@@ -249,7 +348,6 @@ const links = [
       isOpen ? close() : open();
     });
 
-    // Al pulsar un enlace el menú debe desaparecer, si no tapa la sección
     nav.addEventListener('click', (e) => {
       if ((e.target as HTMLElement).closest('a')) close();
     });
@@ -262,7 +360,6 @@ const links = [
         return;
       }
 
-      // Mientras está abierto, el tabulador se queda dentro del menú
       if (e.key === 'Tab') {
         const items = [toggle, ...Array.from(nav.querySelectorAll('a'))];
         const first = items[0];
@@ -278,10 +375,45 @@ const links = [
       }
     });
 
-    // Si se ensancha la ventana hasta escritorio, el menú sobra
     const desktop = window.matchMedia('(min-width: 48rem)');
     desktop.addEventListener('change', (e) => {
       if (e.matches) close();
+    });
+  }
+
+  // ── Dropdown de idioma ──────────────────────────────────────
+  const langToggle = document.getElementById('lang-toggle');
+  const langMenu = document.getElementById('lang-menu');
+
+  if (langToggle && langMenu) {
+    const openLang = () => {
+      langMenu.hidden = false;
+      langToggle.setAttribute('aria-expanded', 'true');
+    };
+
+    const closeLang = () => {
+      langMenu.hidden = true;
+      langToggle.setAttribute('aria-expanded', 'false');
+    };
+
+    langToggle.addEventListener('click', () => {
+      const isOpen = langToggle.getAttribute('aria-expanded') === 'true';
+      isOpen ? closeLang() : openLang();
+    });
+
+    // Cerrar al hacer clic fuera
+    document.addEventListener('click', (e) => {
+      if (!(e.target as HTMLElement).closest('#lang-dropdown')) {
+        closeLang();
+      }
+    });
+
+    // Cerrar con Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && langToggle.getAttribute('aria-expanded') === 'true') {
+        closeLang();
+        langToggle.focus();
+      }
     });
   }
 </script>
