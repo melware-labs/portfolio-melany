@@ -119,8 +119,8 @@ const photo = await getImage({ src: melanyPhoto, width: 720, format: 'webp' });
     /* La correa sale por arriba del canvas. Sin esto se corta en seco contra
        una línea recta en mitad de la sección, que es justo lo que hacía que
        pareciera recortada y flotando; difuminada, se pierde hacia arriba. */
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 11%);
-    mask-image: linear-gradient(to bottom, transparent 0, #000 11%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 11%, #000 89%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 11%, #000 89%, transparent 100%);
   }
   .lanyard[data-ready] .lanyard-canvas {
     display: block;
