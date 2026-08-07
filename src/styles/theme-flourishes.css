@@ -1,8 +1,12 @@
 /* ═══════════════════════════════════════════════════════════════
-   ATMÓSFERA — el fondo de toda la web: resplandor rojo que respira
-   muy despacio. El estilo "noir" (negro casi puro, un único acento
-   rojo) viene de una referencia visual que pasó Melany — sólo se usa
-   el lenguaje de color/forma, no su contenido.
+   ATMÓSFERA — el fondo de toda la web. El estilo "noir" (negro casi
+   puro, un único acento rojo) viene de una referencia visual que pasó
+   Melany — sólo se usa el lenguaje de color/forma, no su contenido.
+
+   Lo importante: en la referencia el rojo es ACENTO, no ambiente. El
+   fondo es negro con una bruma granate arriba y un único foco rojo muy
+   flojo en el centro. Antes había aquí dos radiales al 22% y al 10%
+   que teñían de rojo la pantalla entera y se comían el contraste.
 
    Cada sección "nace" de un estallido de rescoldos al entrar en
    pantalla y su contenido crece desde 0.9 en vez de sólo deslizarse —
@@ -16,25 +20,52 @@ body {
   position: relative;
   background-color: var(--paper);
   background-image:
-    radial-gradient(50rem 38rem at 78% 8%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 64%),
-    radial-gradient(40rem 30rem at 8% 55%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 60%),
-    linear-gradient(color-mix(in srgb, var(--ink) 4%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--ink) 4%, transparent) 1px, transparent 1px),
+    /* Bruma granate que baja desde arriba y se apaga a media pantalla */
+    linear-gradient(180deg, color-mix(in srgb, var(--accent) 8%, var(--paper)), var(--paper) 55%),
+    /* Un único foco rojo, enorme y difuso, en el centro */
+    radial-gradient(60% 55% at 50% 42%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 70%),
+    /* Grano de película: es lo que evita que el negro quede plástico */
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.025 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 140% 140%, 140% 140%, 42px 42px, 42px 42px, auto;
-  background-position: 78% 8%, 8% 55%, 0 0, 0 0, 0 0;
-  background-attachment: fixed, fixed, fixed, fixed, fixed;
-  animation: bg-breathe 22s ease-in-out infinite alternate;
+  background-size: 100% 100%, 140% 140%, auto;
+  background-position: 0 0, 50% 42%, 0 0;
+  background-repeat: no-repeat, no-repeat, repeat;
+  background-attachment: fixed, fixed, fixed;
+  animation: bg-breathe 26s ease-in-out infinite alternate;
 }
+/* Sólo respira el foco central; la bruma de arriba se queda quieta. */
 @keyframes bg-breathe {
-  0%   { background-position: 78% 8%, 8% 55%, 0 0, 0 0, 0 0; }
-  100% { background-position: 64% 20%, 18% 42%, 0 0, 0 0, 0 0; }
+  0%   { background-position: 0 0, 50% 42%, 0 0; }
+  100% { background-position: 0 0, 42% 54%, 0 0; }
 }
 
-/* Cielo de estrellas: dos capas fijas de puntos que parpadean y se
-   desplazan muy despacio, para dar sensación de profundidad detrás
-   del contenido. Mismo truco (radial-gradient repetido) que ya se usa
-   en los rescoldos de los títulos, sin imágenes ni JS de por medio. */
+/* Rejilla técnica, apenas insinuada, que se desvanece hacia los bordes
+   — en la referencia lleva una máscara radial para que no llegue nunca
+   a las esquinas y no parezca un cuaderno cuadriculado. Va sobre <main>
+   y no sobre <body> porque los dos pseudoelementos del body ya están
+   ocupados por las dos capas de estrellas. */
+main::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--ink) 3%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--ink) 3%, transparent) 1px, transparent 1px);
+  background-size: 40px 40px;
+  -webkit-mask-image: radial-gradient(circle at 50% 45%, #000 40%, transparent 80%);
+  mask-image: radial-gradient(circle at 50% 45%, #000 40%, transparent 80%);
+}
+
+/* Cielo de estrellas: dos capas fijas de puntos que parpadean y
+   además se desplazan de verdad, sin pararse — en la referencia las
+   estrellas viajan en una sola dirección sin parar (animStar,
+   translateY continuo). Antes esto iba con alternate y un recorrido
+   de sólo 140px en 90s, así que en la práctica no se veía moverse.
+   Ahora cada capa tiene su propio tamaño de mosaico (background-size)
+   y se desplaza exactamente ese tamaño por ciclo — así el bucle es
+   perfecto (repite sin salto) y de verdad se percibe como movimiento
+   continuo, no como un vaivén casi imperceptible. */
 body::before,
 body::after {
   content: '';
@@ -42,7 +73,7 @@ body::after {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background-repeat: no-repeat;
+  background-repeat: repeat;
 }
 body::before {
   background-image:
@@ -56,10 +87,11 @@ body::before {
     radial-gradient(1.4px 1.4px at 66% 92%, var(--ink) 100%, transparent),
     radial-gradient(1.5px 1.5px at 4% 45%, var(--ink) 100%, transparent),
     radial-gradient(1.3px 1.3px at 92% 60%, var(--ink) 100%, transparent);
+  background-size: 520px 520px;
   opacity: 0.5;
   animation:
     stars-twinkle 6s ease-in-out infinite alternate,
-    stars-drift 90s linear infinite alternate;
+    stars-drift-up 45s linear infinite;
 }
 body::after {
   background-image:
@@ -71,19 +103,27 @@ body::after {
     radial-gradient(1.7px 1.7px at 94% 34%, var(--accent) 100%, transparent),
     radial-gradient(1.3px 1.3px at 36% 30%, var(--ink) 100%, transparent),
     radial-gradient(1.5px 1.5px at 8% 70%, var(--accent) 100%, transparent);
+  background-size: 640px 640px;
   opacity: 0.35;
   animation:
     stars-twinkle 7.5s ease-in-out infinite alternate-reverse,
-    stars-drift 130s linear infinite alternate-reverse;
+    stars-drift-down 65s linear infinite;
 }
 @keyframes stars-twinkle {
   0%   { opacity: 0.22; }
   50%  { opacity: 0.65; }
   100% { opacity: 0.3; }
 }
-@keyframes stars-drift {
+/* El recorrido es exactamente un mosaico (background-size), así que
+   al llegar al final encaja pixel a pixel con el punto de partida —
+   sin eso, cada vuelta del bucle daría un salto visible. */
+@keyframes stars-drift-up {
   from { background-position: 0 0; }
-  to   { background-position: 0 -140px; }
+  to   { background-position: 0 -520px; }
+}
+@keyframes stars-drift-down {
+  from { background-position: 0 0; }
+  to   { background-position: 0 640px; }
 }
 
 /* Aparecer al hacer scroll — sólo donde el navegador lo soporta;
