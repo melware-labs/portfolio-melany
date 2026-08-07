@@ -24,7 +24,8 @@ const year = new Date().getFullYear();
      antes con --paper-2. */
   .site-footer {
     border-top: var(--border-width) solid var(--line-faint);
-    background: var(--paper);
+    background: var(--accent-hover);
+    color: var(--paper);
     padding-block: var(--space-7) var(--space-6);
     margin-top: var(--space-8);
   }
@@ -53,7 +54,16 @@ const year = new Date().getFullYear();
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    color: var(--ink-muted);
+    color: var(--paper);
+    opacity: 0.8;
+  }
+
+  .site-footer :global(.social-links a) {
+    color: var(--paper);
+  }
+  .site-footer :global(.social-links a:hover) {
+    color: var(--accent-hover);
+    background: var(--paper);
   }
 
   @media (min-width: 40rem) {
