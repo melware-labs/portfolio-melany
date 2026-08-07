@@ -23,7 +23,7 @@ export const ui = {
     'nav.skip': 'Saltar al contenido',
     'nav.home': 'Inicio',
     'nav.about': 'Sobre mí',
-    'nav.projects': 'Proyectos',
+    'nav.projects': 'Melware Labs',
     'nav.blog': 'Blog',
     'nav.contact': 'Contacto',
     'nav.menu': 'Menú',
@@ -37,8 +37,8 @@ export const ui = {
     'hero.tagline': 'Aprendiendo a programar en público',
     'hero.intro':
       'Estudio Ingeniería del Software en Málaga. Estoy aprendiendo a construir cosas de verdad y lo voy contando aquí — lo que sale bien y lo que no.',
-    'hero.ctaProjects': 'Ver lo que llevo',
-    'hero.ctaBlog': 'Leer el blog',
+    'hero.ctaProjects': 'Proyectos',
+    'hero.ctaBlog': 'Blog',
 
     'about.heading': 'Sobre mí',
     'about.p1':
@@ -50,7 +50,7 @@ export const ui = {
     'about.nowHeading': 'Ahora mismo',
     'about.nowText': 'Aprendiendo lo básico de verdad y buscando mis primeras prácticas.',
 
-    'projects.heading': 'Proyectos',
+    'projects.heading': 'Melware Labs',
     'projects.intro':
       'Firmo lo que hago como Melware Labs. Sí, ya lo sé, demasiado creativo.',
     'projects.empty': 'Todavía no hay nada aquí, pero está a punto de cambiar.',
@@ -97,7 +97,7 @@ export const ui = {
     'nav.skip': 'Skip to content',
     'nav.home': 'Home',
     'nav.about': 'About',
-    'nav.projects': 'Projects',
+    'nav.projects': 'Melware Labs',
     'nav.blog': 'Blog',
     'nav.contact': 'Contact',
     'nav.menu': 'Menu',
@@ -111,8 +111,8 @@ export const ui = {
     'hero.tagline': 'Learning to code in public',
     'hero.intro':
       "I'm studying software engineering in Málaga, Spain. I'm learning to build real things and writing about it here — the parts that work and the parts that don't.",
-    'hero.ctaProjects': 'See what I have so far',
-    'hero.ctaBlog': 'Read the blog',
+    'hero.ctaProjects': 'Projects',
+    'hero.ctaBlog': 'Blog',
 
     'about.heading': 'About me',
     'about.p1':
@@ -124,7 +124,7 @@ export const ui = {
     'about.nowHeading': 'Right now',
     'about.nowText': "Learning the fundamentals properly and looking for my first internship.",
 
-    'projects.heading': 'Projects',
+    'projects.heading': 'Melware Labs',
     'projects.intro':
       'I ship things under the name Melware Labs. Yes, I know. Very creative.',
     'projects.empty': "Nothing here yet, but that's about to change.",
