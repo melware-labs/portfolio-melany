@@ -17,7 +17,6 @@ const { title, description, status, repo, url, tech } = project.data;
     <h3>
       {url ? <a href={url} class="title-link">{title}</a> : title}
     </h3>
-    {status === 'wip' && <span class="badge">{t('projects.inProgress')}</span>}
     {repo && (
       <a href={repo} class="repo-link" aria-label={t('projects.viewCode')} title={t('projects.viewCode')}>
         <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
@@ -29,15 +28,19 @@ const { title, description, status, repo, url, tech } = project.data;
 
   <p class="project-desc">{description}</p>
 
-  {
-    tech.length > 0 && (
-      <ul class="tech">
-        {tech.map((item) => (
-          <li>{item}</li>
-        ))}
-      </ul>
-    )
-  }
+  <div class="project-footer">
+    {status === 'wip' && <span class="badge">{t('projects.inProgress')}</span>}
+
+    {
+      tech.length > 0 && (
+        <ul class="tech">
+          {tech.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
 
 </article>
 
@@ -51,9 +54,14 @@ const { title, description, status, repo, url, tech } = project.data;
 
   .project-head {
     display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
+    flex-wrap: nowrap;
+    align-items: flex-start;
     gap: var(--space-3);
+  }
+
+  .project-head h3 {
+    /* Permitir que el título haga salto de línea si es largo, sin encogerse */
+    flex: 1 1 auto;
   }
 
   .title-link {
@@ -69,6 +77,8 @@ const { title, description, status, repo, url, tech } = project.data;
     color: var(--ink-soft);
     display: flex;
     align-items: center;
+    /* Evitar que el icono se encoja o cambie de tamaño si el título empuja */
+    flex: 0 0 auto;
   }
   .repo-link:hover {
     color: var(--ink);
@@ -78,6 +88,7 @@ const { title, description, status, repo, url, tech } = project.data;
      lo destacado. Negro sobre el rojo y no blanco: ahí el contraste sube
      de 4,2 a 4,9 y sí pasa el mínimo de accesibilidad. */
   .badge {
+    align-self: flex-start;
     font-family: var(--font-mono);
     font-size: 0.65rem;
     font-weight: 700;
@@ -93,12 +104,19 @@ const { title, description, status, repo, url, tech } = project.data;
     color: var(--ink-soft);
   }
 
+  .project-footer {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
   .tech {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
-    margin-top: auto;
   }
   .tech li {
     font-family: var(--font-mono);
