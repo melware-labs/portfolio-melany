@@ -176,7 +176,23 @@ const email = 'melanymartinez667@gmail.com';
             required
           ></textarea>
         </div>
-        <button class="btn btn--primary" type="submit">{t('contact.formSend')}</button>
+        <div class="contact-form-actions">
+          <button class="btn btn--primary" type="submit" id="contact-submit">
+            {t('contact.formSend')}
+          </button>
+          <button
+            type="button"
+            class="contact-reset"
+            id="contact-reset"
+            aria-label={t('contact.formSendAnother')}
+            hidden
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="1 4 1 10 7 10"></polyline>
+              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+            </svg>
+          </button>
+        </div>
       </form>
 
       <p class="contact-status" id="contact-status" role="status" hidden>
@@ -202,29 +218,35 @@ const email = 'melanymartinez667@gmail.com';
         email,
         accessKey: '7d9b8989-913c-4fbe-ae7a-1468d954cf2f',
         subjectPrefix: t('contact.formSubjectPrefix'),
-        sentMessage: t('contact.sentMessage'),
         errorMessage: t('contact.errorMessage'),
         sendingLabel: t('contact.formSending'),
         sendLabel: t('contact.formSend'),
+        sentLabel: t('contact.formSent'),
         copyLabel: t('contact.copyEmail'),
         copiedLabel: t('contact.copied'),
       }}
     >
       const form = document.getElementById('contact-form');
-      const submitBtn = form?.querySelector('button[type="submit"]');
+      const submitBtn = document.getElementById('contact-submit');
+      const resetBtn = document.getElementById('contact-reset');
       const status = document.getElementById('contact-status');
       const statusText = document.getElementById('contact-status-text');
       const statusFallback = document.getElementById('contact-status-fallback');
 
-      function showStatus(text, withFallback) {
+      function showError(text) {
         if (!status || !statusText || !statusFallback) return;
         statusText.textContent = text;
-        statusFallback.hidden = !withFallback;
+        statusFallback.hidden = false;
         status.hidden = false;
+      }
+
+      function hideError() {
+        if (status) status.hidden = true;
       }
 
       form?.addEventListener('submit', async (e) => {
         e.preventDefault();
+        hideError();
         const data = new FormData(form);
         const userSubject = String(data.get('subject') || '').trim();
         data.set('subject', `${subjectPrefix} — ${userSubject}`);
@@ -243,19 +265,32 @@ const email = 'melanymartinez667@gmail.com';
           });
           const result = await res.json();
           if (result.success) {
-            showStatus(sentMessage, false);
-            form.reset();
+            if (submitBtn) submitBtn.textContent = sentLabel;
+            if (resetBtn) resetBtn.hidden = false;
           } else {
-            showStatus(errorMessage, true);
+            showError(errorMessage);
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = sendLabel;
+            }
           }
         } catch {
-          showStatus(errorMessage, true);
-        } finally {
+          showError(errorMessage);
           if (submitBtn) {
             submitBtn.disabled = false;
             submitBtn.textContent = sendLabel;
           }
         }
+      });
+
+      resetBtn?.addEventListener('click', () => {
+        form?.reset();
+        hideError();
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = sendLabel;
+        }
+        resetBtn.hidden = true;
       });
 
       const copyBtn = document.getElementById('copy-email');
@@ -409,8 +444,27 @@ const email = 'melanymartinez667@gmail.com';
     resize: vertical;
     min-height: 8rem;
   }
-  .contact-form .btn {
-    justify-self: start;
+  .contact-form-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .contact-reset {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    color: var(--ink);
+    background: var(--surface);
+    border: var(--border-width) solid var(--ink);
+    border-radius: var(--radius);
+    cursor: pointer;
+  }
+  .contact-reset:hover {
+    color: var(--accent);
+  }
+  .contact-reset[hidden] {
+    display: none;
   }
   .contact-status {
     margin-top: var(--space-6);
