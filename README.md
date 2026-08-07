@@ -94,8 +94,6 @@ src/
 
 - [ ] Publicarla (falta elegir dónde y poner `site` en `astro.config.mjs`,
       que hace falta para las URLs canónicas y las etiquetas de idioma)
-- [ ] Poner los enlaces reales de GitHub, LinkedIn e Instagram en el footer
-      (ahora mismo apuntan a las portadas genéricas, de broma)
 - [ ] Revisar el aspecto en un móvil real a 390px — no se ha podido
       comprobar visualmente en las últimas sesiones
 - [ ] Subir Astro a la 7.x cuando haya tiempo de probarlo con calma
