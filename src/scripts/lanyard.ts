@@ -84,6 +84,8 @@ const ROPE_OFF_FRAME = 0.38;
  */
 const MARGIN_BOTTOM = 0.15;
 const MARGIN_SIDE = 0.7;
+/** Aire que se deja entre el borde de la tarjeta y el del canvas. */
+const EDGE_PADDING = 0.06;
 
 // ── Física ────────────────────────────────────────────────────────────
 const GRAVITY = new THREE.Vector3(0, -19, 0);
@@ -489,6 +491,11 @@ export async function createLanyard(options: LanyardOptions): Promise<LanyardHan
   });
   const strap = new THREE.Mesh(strapGeometry, strapMaterial);
   strap.castShadow = true;
+  // Su geometría se reescribe cada frame, pero Three cachea la esfera
+  // envolvente del primer cálculo: con ella obsoleta, la cinta puede
+  // descartarse por "fuera de cámara" y desaparecer sin motivo. Es una malla
+  // diminuta y siempre en cuadro, así que sale más barato no descartarla.
+  strap.frustumCulled = false;
   scene.add(strap);
 
   // ── Luces ────────────────────────────────────────────────────────────
@@ -545,6 +552,11 @@ export async function createLanyard(options: LanyardOptions): Promise<LanyardHan
 
   let spin = 0.4;
   let spinVelocity = 0;
+  /**
+   * Tope lateral del movimiento. Lo fija resize() a partir del encuadre real;
+   * hasta entonces no limita nada.
+   */
+  let maxOffsetX = Infinity;
 
   // ── Interacción ──────────────────────────────────────────────────────
   const raycaster = new THREE.Raycaster();
@@ -632,6 +644,9 @@ export async function createLanyard(options: LanyardOptions): Promise<LanyardHan
     const attach = points[ROPE_POINTS - 1];
     const previousX = attach.x;
     attach.copy(dragPoint).add(dragOffset);
+    // El mismo tope que en la simulación: arrastrando también hay que poder
+    // llegar al borde, pero no pasarlo.
+    attach.x = THREE.MathUtils.clamp(attach.x, -maxOffsetX, maxOffsetX);
     // Arrastrar de lado la hace girar, como pasaría de verdad.
     spinVelocity += (attach.x - previousX) * 2.4;
   }
@@ -687,6 +702,21 @@ export async function createLanyard(options: LanyardOptions): Promise<LanyardHan
     }
   }
 
+  /**
+   * Frena el punto contra un muro invisible en el borde del encuadre. Se
+   * iguala también el punto previo para anular la velocidad horizontal: si no,
+   * en Verlet el impulso seguiría empujando contra el tope y vibraría.
+   */
+  function clampX(p: THREE.Vector3, prev: THREE.Vector3) {
+    if (p.x > maxOffsetX) {
+      p.x = maxOffsetX;
+      prev.x = maxOffsetX;
+    } else if (p.x < -maxOffsetX) {
+      p.x = -maxOffsetX;
+      prev.x = -maxOffsetX;
+    }
+  }
+
   function simulate(dt: number) {
     const lastIndex = ROPE_POINTS - 1;
 
@@ -712,6 +742,14 @@ export async function createLanyard(options: LanyardOptions): Promise<LanyardHan
       // La tarjeta cuelga del enganche: sólo se mueve su borde inferior.
       constrain(points[lastIndex], bottom, CARD_SPAN, 'b');
     }
+
+    // Topes laterales. Sin esto la tarjeta se va fuera de cuadro al
+    // balancearse y desaparece: el encuadre va ajustado a propósito para que
+    // se vea grande, así que el límite lo pone la física, no el margen.
+    // Los dos puntos definen la tarjeta entera, así que acotarlos a ambos
+    // mantiene dentro cualquier punto intermedio.
+    clampX(points[lastIndex], prevPoints[lastIndex]);
+    clampX(bottom, prevBottom);
 
     spinVelocity += -spin * SPIN_STIFFNESS * dt;
     spinVelocity *= SPIN_DAMPING;
@@ -785,6 +823,12 @@ export async function createLanyard(options: LanyardOptions): Promise<LanyardHan
     camera.lookAt(0, centerY, 0);
     camera.updateProjectionMatrix();
     shadowCatcher.position.y = centerY;
+
+    // Hasta dónde puede irse el centro de la tarjeta sin que su borde salga
+    // de cuadro. Se recalcula aquí porque depende del encuadre: media anchura
+    // visible en el plano z=0, menos media tarjeta.
+    const visibleHalfWidth = distance * Math.tan(halfFov) * aspect;
+    maxOffsetX = Math.max(0, visibleHalfWidth - CARD_W / 2 - EDGE_PADDING);
   }
 
   const resizeObserver = new ResizeObserver(() => resize());
