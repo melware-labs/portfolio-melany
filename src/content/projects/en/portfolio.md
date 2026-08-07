@@ -1,5 +1,5 @@
 ---
-title: This website
+title: web
 description: My portfolio, built from scratch with Astro. Bilingual, accessible, and free of unnecessary libraries. It is the first project I have built end to end, and where everything else will be published.
 lang: en
 status: wip
@@ -9,7 +9,7 @@ tech:
   - CSS
 order: 1
 repo: https://github.com/melware-labs/portfolio-melany
-url: https://melany-martinez.vercel.app
+url: /
 ---
 
 The first Melware Labs project is the site you are looking at.
