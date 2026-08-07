@@ -1,5 +1,5 @@
 ---
-title: web
+title: Web
 description: Mi portfolio, hecho desde cero con Astro. Bilingüe, accesible y sin librerías de más. Es el primer proyecto que he construido entero y el sitio donde voy a ir publicando el resto.
 lang: es
 status: wip
