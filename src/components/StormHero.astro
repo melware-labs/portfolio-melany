@@ -1,10 +1,14 @@
 ---
 /**
- * Fondo del hero: versión ligera, con la paleta del sitio, del
+ * Fondo de partículas: versión ligera, con la paleta del sitio, del
  * experimento "Tormenta" (src/pages/experimentos/tormenta.astro).
- * Vive dentro de .hero como position:absolute, no fixed — desaparece
- * del DOM visual en cuanto se hace scroll, así que no tiene coste
- * fuera del hero.
+ *
+ * El canvas es position:fixed y cubre toda la pantalla — no vive
+ * recortado dentro del hero — para que el contenido de después no
+ * aparezca de golpe tras un borde recto, sino que se vea "salir" de
+ * las mismas partículas mientras se hace scroll. Se desvanece por
+ * opacidad según cuánto se ha scrolleado más allá del hero, y una vez
+ * invisible se deja de renderizar (return antes de dibujar).
  */
 ---
 
@@ -12,8 +16,9 @@
 
 <style>
   #storm-hero {
-    position: absolute;
+    position: fixed;
     inset: 0;
+    z-index: -1;
     width: 100%;
     height: 100%;
     display: block;
@@ -192,27 +197,23 @@
     let mouseY = 0;
     let smoothX = 0;
     let smoothY = 0;
-    let hovering = false;
+    let hasPointer = false;
     const lerp = (a, b, t) => a + (b - a) * t;
 
     window.addEventListener(
       'pointermove',
       (e) => {
-        const rect = hero.getBoundingClientRect();
-        hovering =
-          e.clientX >= rect.left &&
-          e.clientX <= rect.right &&
-          e.clientY >= rect.top &&
-          e.clientY <= rect.bottom;
-        mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-        mouseY = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
+        hasPointer = true;
+        mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+        mouseY = -((e.clientY / window.innerHeight) * 2 - 1);
       },
       { passive: true }
     );
 
-    // Al hacer click en el hero, dispara un pulso que se apaga solo.
+    // El pulso de click funciona en toda la página, no sólo en el
+    // hero, ya que el canvas ahora cubre la pantalla entera.
     let clickPulse = 0;
-    hero.addEventListener('pointerdown', () => {
+    window.addEventListener('pointerdown', () => {
       clickPulse = 1;
     });
 
@@ -224,11 +225,11 @@
     const ndc = new THREE.Vector2();
 
     function resize() {
-      const rect = hero.getBoundingClientRect();
-      if (rect.width === 0 || rect.height === 0) return;
-      camera.aspect = rect.width / rect.height;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      camera.aspect = w / h;
       camera.updateProjectionMatrix();
-      renderer.setSize(rect.width, rect.height);
+      renderer.setSize(w, h);
       const pr = Math.min(devicePixelRatio, 2);
       renderer.setPixelRatio(pr);
       material.uniforms.uPixelRatio.value = pr;
@@ -236,44 +237,46 @@
     resize();
     window.addEventListener('resize', resize);
 
-    let visible = true;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        visible = entries[0]?.isIntersecting ?? true;
-      },
-      { threshold: 0 }
-    );
-    observer.observe(hero);
-
     const clock = new THREE.Clock();
 
     function frame() {
       requestAnimationFrame(frame);
-      if (!visible || document.hidden) return;
+      if (document.hidden) return;
 
       // Cuánto se ha scrolleado dentro del propio hero (0 al llegar,
       // 1 al salir de él): acelera el giro y acerca la cámara, para
       // que la esfera responda también al scroll, no sólo al cursor.
       const heroRect = hero.getBoundingClientRect();
-      const scrollT = Math.min(1, Math.max(0, -heroRect.top / heroRect.height));
+      const heroT = Math.min(1, Math.max(0, -heroRect.top / heroRect.height));
+
+      // El canvas ya no está recortado al hero, así que en vez de
+      // cortarse en seco al salir de él, se disuelve por opacidad a
+      // lo largo de una pantalla más de scroll — el contenido de
+      // después "sale" de las mismas partículas en vez de aparecer
+      // tras un borde recto.
+      const pastHero = Math.max(0, -heroRect.bottom);
+      const fadeT = Math.min(1, pastHero / window.innerHeight);
+      const opacity = 1 - fadeT;
+      canvas.style.opacity = String(opacity);
+      if (opacity <= 0) return;
 
       // "Big bang" ligado directamente al scroll (no a un evento con
       // estado): crece según se empieza a bajar y se deshace igual si
-      // se vuelve a subir, porque es sólo una función de scrollT.
-      const scrollPulse = Math.sin(Math.min(scrollT, 1) * Math.PI) * 1.4;
+      // se vuelve a subir, porque es sólo una función de heroT.
+      const scrollPulse = Math.sin(heroT * Math.PI) * 1.4;
 
       material.uniforms.uTime.value = clock.getElapsedTime();
       smoothX = lerp(smoothX, mouseX, 0.05);
       smoothY = lerp(smoothY, mouseY, 0.05);
-      points.rotation.y += 0.001 + scrollT * 0.01;
+      points.rotation.y += 0.001 + heroT * 0.01;
       points.updateMatrixWorld();
       camera.position.x = smoothX * 0.35;
       camera.position.y = smoothY * 0.35;
-      camera.position.z = 5.5 - scrollT * 2.2;
+      camera.position.z = 5.5 - heroT * 2.2;
       camera.lookAt(0, 0, 0);
       camera.updateMatrixWorld();
 
-      if (hovering) {
+      if (hasPointer) {
         ndc.set(mouseX, mouseY);
         raycaster.setFromCamera(ndc, camera);
         if (raycaster.ray.intersectPlane(cursorPlane, cursorPoint)) {
@@ -282,8 +285,6 @@
           // en pantalla donde está el cursor de verdad.
           material.uniforms.uCursor.value.copy(cursorPoint).applyMatrix4(points.matrixWorld.clone().invert());
         }
-      } else {
-        material.uniforms.uCursor.value.set(999, 999, 999);
       }
 
       clickPulse *= 0.92;
