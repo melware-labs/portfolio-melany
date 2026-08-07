@@ -46,7 +46,7 @@ export const ui = {
     'about.p2':
       'Así que he decidido empezar por mi cuenta: construir cosas pequeñas, romperlas, entender por qué se han roto y escribir lo que voy aprendiendo. Esta web es la primera de esas cosas.',
     'about.p3':
-      'Fuera de eso: videojuegos y casi todo lo retro. Los 80, los 90, los 2000. No sé elegir y tampoco lo intento.',
+      'Fuera de eso: me encantan los videojuegos arcade y tengo una obsesión con cómo iba cambiando la tecnología década a década — sobre todo el salto de los 90 a los 2000. Ah, y la música de los 80. Con esa no hay remedio.',
     'about.nowHeading': 'Ahora mismo',
     'about.nowText': 'Aprendiendo lo básico de verdad y buscando mis primeras prácticas.',
 
@@ -120,7 +120,7 @@ export const ui = {
     'about.p2':
       'So I started on my own: build small things, break them, work out why they broke, and write down what I learn. This site is the first of those things.',
     'about.p3':
-      "Outside of that: videogames, and almost anything retro. The 80s, the 90s, the 2000s. I can't pick one and I've stopped trying.",
+      "Outside of that: I love arcade games, and I'm obsessed with how technology kept shifting from one decade to the next — especially the jump from the 90s to the 2000s. Oh, and 80s music. That one's beyond saving.",
     'about.nowHeading': 'Right now',
     'about.nowText': "Learning the fundamentals properly and looking for my first internship.",
 
