@@ -1,6 +1,6 @@
 # Melware Labs — portfolio de Melany Martínez
 
-Mi web personal: proyectos, blog y algo de contexto sobre quién soy.
+Portfolio de Melany Martinez - Software Engineer @ UMA | MTV 80s Synthwave aesthetic
 Hecha desde cero con [Astro](https://astro.build), en español e inglés.
 
 ## Cómo levantarla
