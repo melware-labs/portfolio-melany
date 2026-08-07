@@ -1,5 +1,5 @@
 ---
-title: Storm — a Three.js experiment
+title: "Storm: a Three.js experiment"
 description: A 9,000-particle sphere with hand-written shaders that breathes, spins, and reacts to the cursor and scroll. Lives on its own page, outside the main site.
 lang: en
 status: live

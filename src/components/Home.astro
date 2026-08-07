@@ -267,7 +267,7 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
         hideError();
         const data = new FormData(form);
         const userSubject = String(data.get('subject') || '').trim();
-        data.set('subject', `${subjectPrefix} — ${userSubject}`);
+        data.set('subject', `${subjectPrefix}: ${userSubject}`);
         data.append('access_key', accessKey);
 
         if (submitBtn) {

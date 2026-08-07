@@ -16,7 +16,7 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 ---
 
-<Base title={`${post.data.title} — Melany Martínez`} description={post.data.description}>
+<Base title={`${post.data.title} | Melany Martínez`} description={post.data.description}>
   <PostBody post={post}>
     <Content />
   </PostBody>
