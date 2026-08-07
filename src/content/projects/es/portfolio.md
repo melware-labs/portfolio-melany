@@ -14,7 +14,7 @@ url: /
 
 El primer proyecto de Melware Labs es el sitio que estás viendo.
 
-Lo monté desde cero, sin plantilla, para aprender de verdad cómo funciona una web por dentro en vez de copiar y pegar algo que no entendiera.
+Lo construí desde cero, sin plantilla, para aprender de verdad cómo funciona una web por dentro en vez de copiar y pegar algo que no entendiera.
 
 **Qué tiene por dentro:**
 
