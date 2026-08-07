@@ -16,17 +16,74 @@ body {
   position: relative;
   background-color: var(--paper);
   background-image:
-    radial-gradient(46rem 34rem at 78% 8%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 62%),
+    radial-gradient(50rem 38rem at 78% 8%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 64%),
     radial-gradient(40rem 30rem at 8% 55%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 60%),
+    linear-gradient(color-mix(in srgb, var(--ink) 4%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--ink) 4%, transparent) 1px, transparent 1px),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.025 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 140% 140%, 140% 140%, auto;
-  background-position: 78% 8%, 8% 55%, 0 0;
-  background-attachment: fixed, fixed, fixed;
+  background-size: 140% 140%, 140% 140%, 42px 42px, 42px 42px, auto;
+  background-position: 78% 8%, 8% 55%, 0 0, 0 0, 0 0;
+  background-attachment: fixed, fixed, fixed, fixed, fixed;
   animation: bg-breathe 22s ease-in-out infinite alternate;
 }
 @keyframes bg-breathe {
-  0%   { background-position: 78% 8%, 8% 55%, 0 0; }
-  100% { background-position: 64% 20%, 18% 42%, 0 0; }
+  0%   { background-position: 78% 8%, 8% 55%, 0 0, 0 0, 0 0; }
+  100% { background-position: 64% 20%, 18% 42%, 0 0, 0 0, 0 0; }
+}
+
+/* Cielo de estrellas: dos capas fijas de puntos que parpadean y se
+   desplazan muy despacio, para dar sensación de profundidad detrás
+   del contenido. Mismo truco (radial-gradient repetido) que ya se usa
+   en los rescoldos de los títulos, sin imágenes ni JS de por medio. */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-repeat: no-repeat;
+}
+body::before {
+  background-image:
+    radial-gradient(1.6px 1.6px at 10% 15%, var(--ink) 100%, transparent),
+    radial-gradient(1.3px 1.3px at 32% 62%, var(--ink) 100%, transparent),
+    radial-gradient(1.8px 1.8px at 58% 28%, var(--ink) 100%, transparent),
+    radial-gradient(1.2px 1.2px at 74% 70%, var(--ink) 100%, transparent),
+    radial-gradient(1.5px 1.5px at 88% 18%, var(--ink) 100%, transparent),
+    radial-gradient(1.3px 1.3px at 20% 85%, var(--ink) 100%, transparent),
+    radial-gradient(1.7px 1.7px at 48% 8%, var(--ink) 100%, transparent),
+    radial-gradient(1.4px 1.4px at 66% 92%, var(--ink) 100%, transparent),
+    radial-gradient(1.5px 1.5px at 4% 45%, var(--ink) 100%, transparent),
+    radial-gradient(1.3px 1.3px at 92% 60%, var(--ink) 100%, transparent);
+  opacity: 0.5;
+  animation:
+    stars-twinkle 6s ease-in-out infinite alternate,
+    stars-drift 90s linear infinite alternate;
+}
+body::after {
+  background-image:
+    radial-gradient(1.4px 1.4px at 14% 42%, var(--accent) 100%, transparent),
+    radial-gradient(1.6px 1.6px at 26% 12%, var(--accent) 100%, transparent),
+    radial-gradient(1.3px 1.3px at 44% 78%, var(--ink) 100%, transparent),
+    radial-gradient(1.5px 1.5px at 63% 46%, var(--accent) 100%, transparent),
+    radial-gradient(1.2px 1.2px at 82% 82%, var(--ink) 100%, transparent),
+    radial-gradient(1.7px 1.7px at 94% 34%, var(--accent) 100%, transparent),
+    radial-gradient(1.3px 1.3px at 36% 30%, var(--ink) 100%, transparent),
+    radial-gradient(1.5px 1.5px at 8% 70%, var(--accent) 100%, transparent);
+  opacity: 0.35;
+  animation:
+    stars-twinkle 7.5s ease-in-out infinite alternate-reverse,
+    stars-drift 130s linear infinite alternate-reverse;
+}
+@keyframes stars-twinkle {
+  0%   { opacity: 0.22; }
+  50%  { opacity: 0.65; }
+  100% { opacity: 0.3; }
+}
+@keyframes stars-drift {
+  from { background-position: 0 0; }
+  to   { background-position: 0 -140px; }
 }
 
 /* Aparecer al hacer scroll — sólo donde el navegador lo soporta;

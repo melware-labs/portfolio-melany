@@ -28,7 +28,7 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
 <section class="hero">
   <div class="container hero-copy">
     <h1>
-      {t('hero.greeting')} <span class="hero-name">{t('hero.name')}</span>
+      <span class="hero-fade">{t('hero.greeting')}</span> <span class="hero-name">{t('hero.name')}</span>
     </h1>
     <p class="hero-intro prose">{t('hero.intro')}</p>
     <div class="hero-actions">
@@ -141,7 +141,7 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
 
     {
       projects.length > 0 ? (
-        <ul class="card-list">
+        <ul class="card-list projects-grid">
           {projects.map((project) => (
             <li>
               <ProjectCard project={project} />
@@ -400,6 +400,20 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
     border-radius: var(--radius-lg);
     padding-block: var(--space-4);
   }
+  .hero-copy h1 {
+    font-size: clamp(2.8rem, 1.8rem + 6vw, 6rem);
+    letter-spacing: -0.03em;
+  }
+  .hero-fade {
+    background: linear-gradient(
+      to bottom,
+      var(--ink),
+      color-mix(in srgb, var(--ink) 55%, transparent)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
   .hero-name {
     color: var(--accent);
   }
@@ -419,7 +433,9 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
 
   /* ── Stack ────────────────────────────────────────────────── */
   .stack-section {
-    padding-block: var(--space-5);
+    padding-block: var(--space-6);
+    border-block: var(--border-width) solid color-mix(in srgb, var(--ink) 8%, transparent);
+    background: color-mix(in srgb, var(--ink) 2%, transparent);
   }
   .stack-marquee {
     overflow: hidden;
@@ -605,6 +621,11 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
        ocuparía media pantalla y parecería que falta algo. */
     .card-list:has(> li + li) {
       grid-template-columns: repeat(2, 1fr);
+    }
+    /* Proyectos concretamente en "bento" — una tarjeta más ancha que
+       la otra, como el grid de la referencia — en vez de dos iguales. */
+    .projects-grid:has(> li + li) {
+      grid-template-columns: 1.4fr 1fr;
     }
   }
 
