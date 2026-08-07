@@ -13,12 +13,12 @@ const { class: className } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-// TODO: cambiar por los perfiles reales de Melany.
+// TODO: falta el usuario real de GitHub y LinkedIn.
 const links = [
   { href: 'https://github.com/', label: 'GitHub' },
   { href: 'https://www.linkedin.com/', label: 'LinkedIn' },
-  { href: 'https://www.instagram.com/', label: 'Instagram' },
-  { href: 'https://www.tiktok.com/', label: 'TikTok' },
+  { href: 'https://www.instagram.com/ravenmel.9/', label: 'Instagram' },
+  { href: 'https://www.tiktok.com/@ravenmel.9', label: 'TikTok' },
 ] as const;
 ---
 
