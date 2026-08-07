@@ -85,7 +85,6 @@ export const ui = {
     'contact.copyEmail': 'Copiar email',
     'contact.copied': '¡Copiado!',
 
-    'footer.built': 'Hecha desde cero con Astro',
     'footer.rights': 'Melany Martínez',
     'footer.social': 'También ando por aquí',
 
@@ -164,7 +163,6 @@ export const ui = {
     'contact.copyEmail': 'Copy email',
     'contact.copied': 'Copied!',
 
-    'footer.built': 'Built from scratch with Astro',
     'footer.rights': 'Melany Martínez',
     'footer.social': 'Also around here',
 
