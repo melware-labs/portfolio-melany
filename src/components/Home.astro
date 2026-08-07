@@ -27,11 +27,11 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
 <!-- ── Portada ──────────────────────────────────────────────── -->
 <section class="hero">
   <div class="container hero-copy">
-    <h1>
+    <h1 class="animate-fade-up" style="animation-delay: 0.05s">
       <span class="hero-fade">{t('hero.greeting')}</span> <span class="hero-name">{t('hero.name')}</span>
     </h1>
-    <p class="hero-intro prose">{t('hero.intro')}</p>
-    <div class="hero-actions">
+    <p class="hero-intro prose animate-fade-up" style="animation-delay: 0.15s">{t('hero.intro')}</p>
+    <div class="hero-actions animate-fade-up" style="animation-delay: 0.25s">
       <a class="btn btn--primary" href="#proyectos">{t('hero.ctaProjects')}</a>
       <a class="btn btn--secondary" href="#blog">{t('hero.ctaBlog')}</a>
     </div>

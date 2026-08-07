@@ -93,6 +93,26 @@ svg {
   border: 0;
 }
 
+/* Entrada del hero: aparece con un pequeño deslizamiento hacia
+   arriba en vez de estar ahí de golpe al cargar. El retraso de cada
+   elemento se pone en línea (style="animation-delay: …") donde se usa.
+   No se fija opacity:0 aparte — sólo dentro del keyframe — para que
+   si por lo que sea la animación no llega a aplicarse, el contenido
+   se quede visible por defecto en vez de invisible. */
+.animate-fade-up {
+  animation: fade-in-up 0.7s ease-out forwards;
+}
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ── Tipografía ───────────────────────────────────────────────── */
 
 h1,

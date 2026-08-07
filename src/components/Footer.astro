@@ -16,8 +16,6 @@ const year = new Date().getFullYear();
 
     <SocialLinks />
   </div>
-
-  <p class="footer-wordmark" aria-hidden="true">MELANY</p>
 </footer>
 
 <style>
@@ -56,24 +54,5 @@ const year = new Date().getFullYear();
       justify-content: space-between;
       align-items: center;
     }
-  }
-
-  /* Marca gigante y difuminada de fondo — puramente decorativa, el
-     nombre ya está en texto real más arriba, así que se oculta a
-     lectores de pantalla. */
-  .footer-wordmark {
-    margin-top: var(--space-7);
-    overflow: hidden;
-    text-align: center;
-    white-space: nowrap;
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 15vw;
-    line-height: 1;
-    letter-spacing: -0.03em;
-    color: transparent;
-    -webkit-text-stroke: 1px color-mix(in srgb, var(--ink) 12%, transparent);
-    user-select: none;
-    pointer-events: none;
   }
 </style>
