@@ -72,6 +72,13 @@ export const ui = {
     'contact.intro':
       'Si quieres contarme algo, corregirme algo o darme una oportunidad, escríbeme. Respondo siempre.',
     'contact.email': 'Escríbeme un correo',
+    'contact.formName': 'Tu nombre',
+    'contact.formEmail': 'Tu email',
+    'contact.formMessage': 'Tu mensaje',
+    'contact.formSend': 'Enviar',
+    'contact.formSubjectPrefix': 'Contacto desde el portfolio',
+    'contact.noscript':
+      'Este formulario necesita JavaScript. Si lo tienes desactivado, escríbeme directamente:',
 
     'footer.built': 'Hecha desde cero con Astro',
     'footer.rights': 'Melany Martínez',
@@ -139,6 +146,13 @@ export const ui = {
     'contact.intro':
       'If you want to tell me something, correct me, or give me a shot — send me an email. I always reply.',
     'contact.email': 'Send me an email',
+    'contact.formName': 'Your name',
+    'contact.formEmail': 'Your email',
+    'contact.formMessage': 'Your message',
+    'contact.formSend': 'Send',
+    'contact.formSubjectPrefix': 'Portfolio contact',
+    'contact.noscript':
+      "This form needs JavaScript. If yours is off, email me directly:",
 
     'footer.built': 'Built from scratch with Astro',
     'footer.rights': 'Melany Martínez',

@@ -87,8 +87,35 @@ body::after {
     animation-timeline: view();
     animation-range: entry 0% cover 25%;
   }
+
+  /* Resplandor a juego con las partículas del hero: sigue la misma
+     entrada en pantalla que reveal-up, para que la Tormenta se sienta
+     continuada en vez de un elemento aparte. */
+  section h2 {
+    position: relative;
+  }
+  section h2::before {
+    content: '';
+    position: absolute;
+    inset: -1.5rem -2rem;
+    z-index: -1;
+    background: radial-gradient(
+      14rem 9rem at 0% 50%,
+      color-mix(in srgb, var(--accent) 22%, transparent),
+      transparent 70%
+    );
+    opacity: 0;
+    animation: heading-glow linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
 }
 @keyframes reveal-up {
   from { opacity: 0; transform: translateY(28px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes heading-glow {
+  from { opacity: 0; }
+  50%  { opacity: 1; }
+  to   { opacity: 0.4; }
 }
