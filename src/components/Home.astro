@@ -180,8 +180,8 @@ const email = 'melanymartinez667@gmail.com';
       </form>
 
       <p class="contact-status" id="contact-status" role="status" hidden>
-        {t('contact.sentMessage')}
-        <span class="contact-email-row">
+        <span id="contact-status-text"></span>
+        <span class="contact-email-row" id="contact-status-fallback" hidden>
           <a href={`mailto:${email}`}>{email}</a>
           <button type="button" class="copy-email" id="copy-email" data-email={email}>
             {t('contact.copyEmail')}
@@ -200,30 +200,62 @@ const email = 'melanymartinez667@gmail.com';
     <script
       define:vars={{
         email,
+        accessKey: '7d9b8989-913c-4fbe-ae7a-1468d954cf2f',
         subjectPrefix: t('contact.formSubjectPrefix'),
+        sentMessage: t('contact.sentMessage'),
+        errorMessage: t('contact.errorMessage'),
+        sendingLabel: t('contact.formSending'),
+        sendLabel: t('contact.formSend'),
         copyLabel: t('contact.copyEmail'),
         copiedLabel: t('contact.copied'),
       }}
     >
       const form = document.getElementById('contact-form');
+      const submitBtn = form?.querySelector('button[type="submit"]');
       const status = document.getElementById('contact-status');
+      const statusText = document.getElementById('contact-status-text');
+      const statusFallback = document.getElementById('contact-status-fallback');
 
-      form?.addEventListener('submit', (e) => {
+      function showStatus(text, withFallback) {
+        if (!status || !statusText || !statusFallback) return;
+        statusText.textContent = text;
+        statusFallback.hidden = !withFallback;
+        status.hidden = false;
+      }
+
+      form?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const data = new FormData(form);
-        const name = String(data.get('name') || '').trim();
-        const senderEmail = String(data.get('email') || '').trim();
         const userSubject = String(data.get('subject') || '').trim();
-        const phone = String(data.get('phone') || '').trim();
-        const message = String(data.get('message') || '').trim();
+        data.set('subject', `${subjectPrefix} — ${userSubject}`);
+        data.append('access_key', accessKey);
 
-        const subject = encodeURIComponent(`${subjectPrefix} — ${userSubject}`);
-        const bodyLines = [message, '', '—', name, senderEmail];
-        if (phone) bodyLines.push(phone);
-        const body = encodeURIComponent(bodyLines.join('\n'));
-        window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = sendingLabel;
+        }
 
-        if (status) status.hidden = false;
+        try {
+          const res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { Accept: 'application/json' },
+            body: data,
+          });
+          const result = await res.json();
+          if (result.success) {
+            showStatus(sentMessage, false);
+            form.reset();
+          } else {
+            showStatus(errorMessage, true);
+          }
+        } catch {
+          showStatus(errorMessage, true);
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = sendLabel;
+          }
+        }
       });
 
       const copyBtn = document.getElementById('copy-email');
@@ -390,6 +422,9 @@ const email = 'melanymartinez667@gmail.com';
     color: var(--ink-soft);
   }
   .contact-status[hidden] {
+    display: none;
+  }
+  .contact-email-row[hidden] {
     display: none;
   }
   .contact-email-row {

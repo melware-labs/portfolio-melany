@@ -85,10 +85,11 @@ src/
 - **Accesible a propósito:** se navega entera con el teclado, el foco
   siempre se ve, los colores cumplen el contraste AA y se respeta la
   preferencia de reducir el movimiento.
-- **Formulario de contacto sin backend propio.** Arma un correo ya
-  redactado (`mailto:`) en vez de enviar nada a un servidor, porque
-  todavía no hay hosting elegido. Si `JavaScript` está desactivado,
-  cae a un botón de correo directo.
+- **Formulario de contacto vía Web3Forms.** No hace falta backend
+  propio ni hosting elegido: el formulario manda los datos por fetch a
+  `api.web3forms.com`, que reenvía el mensaje directo al correo de
+  Melany. Si `JavaScript` está desactivado, cae a un botón de correo
+  directo (`mailto:`).
 
 ## Pendiente
 
