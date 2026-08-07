@@ -5,6 +5,7 @@ import { getLangFromUrl, useTranslations } from '../i18n/ui';
 import ProjectCard from './ProjectCard.astro';
 import PostCard from './PostCard.astro';
 import StormHero from './StormHero.astro';
+import SocialLinks from './SocialLinks.astro';
 import melanyPhoto from '../assets/melany.jpg';
 
 const lang = getLangFromUrl(Astro.url);
@@ -25,7 +26,6 @@ const email = 'melanymartinez667@gmail.com';
 <section class="hero">
   <StormHero />
   <div class="container hero-copy">
-    <p class="eyebrow">{t('hero.tagline')}</p>
     <h1>
       {t('hero.greeting')} <span class="hero-name">{t('hero.name')}</span>
     </h1>
@@ -46,20 +46,15 @@ const email = 'melanymartinez667@gmail.com';
         <p>{t('about.p1')}</p>
         <p>{t('about.p2')}</p>
         <p>{t('about.p3')}</p>
+        <SocialLinks />
       </div>
-      <aside class="about-aside">
-        <Image
-          class="about-photo"
-          src={melanyPhoto}
-          alt={t('about.photoAlt')}
-          width={480}
-          height={Math.round(480 * (melanyPhoto.height / melanyPhoto.width))}
-        />
-        <div class="card now-card">
-          <h3>{t('about.nowHeading')}</h3>
-          <p>{t('about.nowText')}</p>
-        </div>
-      </aside>
+      <Image
+        class="about-photo"
+        src={melanyPhoto}
+        alt={t('about.photoAlt')}
+        width={480}
+        height={Math.round(480 * (melanyPhoto.height / melanyPhoto.width))}
+      />
     </div>
   </div>
 </section>
@@ -120,17 +115,39 @@ const email = 'melanymartinez667@gmail.com';
     <p class="section-intro prose">{t('contact.intro')}</p>
 
     <form class="contact-form" id="contact-form">
-      <div class="field">
-        <label for="cf-name">{t('contact.formName')}</label>
-        <input id="cf-name" name="name" type="text" autocomplete="name" required />
+      <div class="field-row">
+        <div class="field">
+          <label for="cf-name" class="visually-hidden">{t('contact.formName')}</label>
+          <input
+            id="cf-name"
+            name="name"
+            type="text"
+            autocomplete="name"
+            placeholder={t('contact.formName')}
+            required
+          />
+        </div>
+        <div class="field">
+          <label for="cf-email" class="visually-hidden">{t('contact.formEmail')}</label>
+          <input
+            id="cf-email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            placeholder={t('contact.formEmail')}
+            required
+          />
+        </div>
       </div>
       <div class="field">
-        <label for="cf-email">{t('contact.formEmail')}</label>
-        <input id="cf-email" name="email" type="email" autocomplete="email" required />
-      </div>
-      <div class="field">
-        <label for="cf-message">{t('contact.formMessage')}</label>
-        <textarea id="cf-message" name="message" rows="5" required></textarea>
+        <label for="cf-message" class="visually-hidden">{t('contact.formMessage')}</label>
+        <textarea
+          id="cf-message"
+          name="message"
+          rows="5"
+          placeholder={t('contact.formMessage')}
+          required
+        ></textarea>
       </div>
       <button class="btn btn--primary" type="submit">{t('contact.formSend')}</button>
     </form>
@@ -235,25 +252,12 @@ const email = 'melanymartinez667@gmail.com';
     display: grid;
     gap: var(--space-5);
   }
-  .about-aside {
-    display: grid;
-    gap: var(--space-5);
-    /* En móvil la tarjeta no necesita más ancho que la foto */
-    max-width: 18rem;
-  }
   .about-photo {
+    max-width: 18rem;
     width: 100%;
     height: auto;
     border: var(--border-width) solid var(--ink);
     border-radius: var(--radius-lg);
-  }
-  .now-card h3 {
-    font-family: var(--font-mono);
-    font-size: var(--step--1);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--ink-muted);
-    margin-bottom: var(--space-2);
   }
   @media (min-width: 48rem) {
     .about-grid {
@@ -294,27 +298,31 @@ const email = 'melanymartinez667@gmail.com';
     margin-top: var(--space-6);
     display: grid;
     gap: var(--space-4);
-    max-width: 32rem;
+    max-width: 36rem;
   }
-  .field {
+  .field-row {
     display: grid;
-    gap: var(--space-2);
+    gap: var(--space-4);
   }
-  .field label {
-    font-family: var(--font-mono);
-    font-size: var(--step--1);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--ink-muted);
+  @media (min-width: 30rem) {
+    .field-row {
+      grid-template-columns: 1fr 1fr;
+    }
   }
   .field input,
   .field textarea {
+    width: 100%;
     font: inherit;
     color: var(--ink);
     background: var(--surface);
     border: var(--border-width) solid var(--ink);
     border-radius: var(--radius);
     padding: var(--space-3) var(--space-4);
+  }
+  .field input::placeholder,
+  .field textarea::placeholder {
+    color: var(--ink-muted);
+    opacity: 1;
   }
   .field textarea {
     resize: vertical;

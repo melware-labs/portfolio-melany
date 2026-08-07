@@ -34,7 +34,6 @@ export const ui = {
 
     'hero.greeting': 'Hola, soy',
     'hero.name': 'Melany',
-    'hero.tagline': 'Aprendiendo a programar en público',
     'hero.intro':
       'Estudio Ingeniería del Software en Málaga. Estoy aprendiendo a construir cosas de verdad y lo voy contando aquí — lo que sale bien y lo que no.',
     'hero.ctaProjects': 'Proyectos',
@@ -47,8 +46,6 @@ export const ui = {
       'Así que he decidido empezar por mi cuenta: construir cosas pequeñas, romperlas, entender por qué se han roto y escribir lo que voy aprendiendo. Esta web es la primera de esas cosas.',
     'about.p3':
       'Fuera de eso: me encantan los videojuegos arcade y tengo una obsesión con cómo iba cambiando la tecnología década a década — sobre todo el salto de los 90 a los 2000. Ah, y la música de los 80.',
-    'about.nowHeading': 'Ahora mismo',
-    'about.nowText': 'Aprendiendo lo básico de verdad y buscando mis primeras prácticas.',
     'about.photoAlt': 'Foto de Melany.',
 
     'projects.heading': 'Melware Labs',
@@ -71,7 +68,7 @@ export const ui = {
 
     'contact.heading': 'Contacto',
     'contact.intro':
-      'Si quieres contarme algo, corregirme algo o darme una oportunidad, escríbeme. Respondo siempre.',
+      'Si quieres contactarme para colaborar, resolver dudas o proponerme algo, escríbeme por aquí. Respondo siempre.',
     'contact.email': 'Escríbeme un correo',
     'contact.formName': 'Tu nombre',
     'contact.formEmail': 'Tu email',
@@ -113,7 +110,6 @@ export const ui = {
 
     'hero.greeting': "Hi, I'm",
     'hero.name': 'Melany',
-    'hero.tagline': 'Learning to code in public',
     'hero.intro':
       "I'm studying software engineering in Málaga, Spain. I'm learning to build real things and writing about it here — the parts that work and the parts that don't.",
     'hero.ctaProjects': 'Projects',
@@ -126,8 +122,6 @@ export const ui = {
       'So I started on my own: build small things, break them, work out why they broke, and write down what I learn. This site is the first of those things.',
     'about.p3':
       "Outside of that: I love arcade games, and I'm obsessed with how technology kept shifting from one decade to the next — especially the jump from the 90s to the 2000s. Oh, and 80s music.",
-    'about.nowHeading': 'Right now',
-    'about.nowText': "Learning the fundamentals properly and looking for my first internship.",
     'about.photoAlt': 'Photo of Melany.',
 
     'projects.heading': 'Melware Labs',
@@ -150,7 +144,7 @@ export const ui = {
 
     'contact.heading': 'Contact',
     'contact.intro':
-      'If you want to tell me something, correct me, or give me a shot — send me an email. I always reply.',
+      "If you'd like to get in touch about a collaboration, ask a question, or pitch me something, reach out here. I always reply.",
     'contact.email': 'Send me an email',
     'contact.formName': 'Your name',
     'contact.formEmail': 'Your email',
