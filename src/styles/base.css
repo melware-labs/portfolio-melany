@@ -139,10 +139,6 @@ a:hover {
 .section {
   padding-block: var(--space-section);
 }
-.section--alt {
-  background: var(--paper-2);
-  border-block: var(--border-width) solid var(--ink);
-}
 
 .prose {
   max-width: var(--measure);
