@@ -373,3 +373,111 @@ Coste que queda a propósito: `btn-border-spin` anima una custom property que
 alimenta un conic-gradient, así que repinta el botón cada fotograma. Son dos
 botones de ~180×52 px — despreciable al lado de lo anterior, y es el efecto de
 la referencia. Se puede limitar al hover si molesta.
+
+## Resplandor de las tarjetas (efecto "bento")
+
+Melany pidió el MagicBento de React Bits en las tarjetas, con la paleta de la
+casa y sin marcos gruesos. El componente es React + GSAP; el sitio es Astro sin
+React, así que se rehace el efecto en vainilla (mismo criterio que el gafete).
+
+- [x] `scripts/card-glow.ts`: escribe `--glow`, `--glow-x` y `--glow-y` por
+      tarjeta en cada `pointermove`, con rAF y las medidas leídas de una vez
+      antes de escribir nada (si no, se recalcula la maquetación por tarjeta)
+- [x] Distancia al *borde* de la tarjeta, no a su centro como el original: una
+      tarjeta ancha se enciende igual por cualquiera de sus lados
+- [x] Borde luminoso: `.card::after` de `var(--border-width)` (1px) con doble
+      máscara `exclude`, en `--accent` — el original usaba 6px y morado
+- [x] El resplandor de esquina que ya existía ahora nace de donde está el
+      cursor y alcanza también a las tarjetas vecinas; sigue tope al 12%
+- [x] Sin script (táctil, movimiento reducido, sin JS) las variables por
+      defecto dejan la tarjeta exactamente como estaba
+- [x] Zoom al pasar por encima: `.card:hover { transform: scale(1.02) }`, que
+      Melany pidió aparte (no el imán ni la inclinación)
+- [x] `content-emerge` (theme-flourishes.css) pasa a animar `scale` y
+      `translate` sueltos en vez de `transform`: una animación gana a una
+      regla normal, y mientras ocupara `transform` el zoom del hover no se
+      veía nunca. Comprobado que la entrada al hacer scroll sigue igual
+- [x] El zoom se anula con `prefers-reduced-motion`
+- [x] Verificado: `astro check` 0 errores, build 7 páginas, el enlace de la
+      tarjeta se sigue pulsando (el halo va con `pointer-events: none`), y con
+      el cursor dentro la tarjeta mide `matrix(1.02)` y `--glow` 0.979
+      mientras la vecina se queda en 0.278
+
+Fuera a propósito, por no amontonar decoración: partículas, imán al cursor y
+onda al pulsar (esta última ni se vería: al pulsar una tarjeta se navega).
+Están en el componente original si algún día se quieren.
+
+## Anillo de foco más fino y botones con reflejo
+
+Dos peticiones de Melany sobre el formulario y los botones, más un fallo mío
+que salió al mirarlo.
+
+- [x] `:focus-visible` baja de 3px a 2px (y el hueco de 3 a 2). No baja más:
+      2px es el mínimo de la WCAG 2.2 para que el foco se distinga
+- [x] Arreglado un choque de nombres que metí yo: las tarjetas usaban `--glow`
+      y ese nombre ya existía en tokens.css como la sombra roja de los
+      botones. Cualquier botón dentro de una tarjeta habría heredado un 0 y se
+      habría quedado sin resplandor. Ahora son `--card-glow*`
+- [x] Botones al estilo SpecularButton (React Bits, que va con un shader de
+      WebGL por botón): degradado cónico girado hacia el cursor y recortado al
+      borde con la misma máscara doble que las tarjetas. Dos brillos opuestos,
+      como el original, y entrada por proximidad (240px)
+- [x] Fuera la animación `btn-border-spin` y su `@property`: el borde rojo
+      giraba en bucle y repintaba el botón en cada fotograma para siempre,
+      incluso sin nadie delante. Era el coste que quedaba anotado en la sección
+      de rendimiento de más arriba; ya no está
+- [x] El principal se distingue por la luz roja del canto (`--btn-line`) y su
+      halo; el secundario lleva la luz en blanco
+- [x] `card-glow.ts` pasa a ser `pointer-light.ts` y lleva tarjetas y botones:
+      un solo `pointermove` y una sola lectura de medidas por fotograma
+- [x] Verificado: con el cursor 30px a la izquierda del botón principal,
+      `--btn-light` 0.957 y `--btn-angle` 270deg (izquierda), mientras el
+      secundario se queda en 0.106 y el de contacto, lejos, en 0
+
+**Segunda vuelta a los botones:** "que sean iguales, no unos negros con puntos
+y otros no; quita los puntos, mejóralos, usa la paleta". Ahora los dos son la
+misma pieza y sólo cambia cuánto rojo llevan:
+
+- [x] Fuera la trama de puntos del principal (era lo único que tenía y el
+      secundario no, de ahí que parecieran de sitios distintos)
+- [x] Un solo cristal para todos: degradado de `--surface` a `--paper` con una
+      línea de luz interior arriba (`inset 0 1px 0`) que hace de canto
+- [x] La diferencia es una variable, `--btn-tint`: 14% de acento mezclado en el
+      principal (22% al pasar por encima), 0% en el secundario (6% al pasarle
+      por encima). Borde y luz del canto en rojo sólo en el principal
+- [x] Contraste comprobado sobre el fondo nuevo: texto secundario 7.51 sobre
+      `--surface` y 7.88 sobre `--paper`; el principal, 16.90
+
+## Viñeta "New" sobre los botones
+
+Melany la pidió para que se note cuando sube un proyecto o publica un artículo.
+
+- [x] Los artículos ya traían `date`; a los proyectos se les añade un `date`
+      opcional en el esquema. Las fechas de los dos proyectos que ya existían
+      salen de cuando se dieron de alta en git (04 y 07 de agosto de 2026),
+      así que no es un dato inventado
+- [x] La viñeta sale si lo más reciente de esa sección tiene menos de 7 días
+      (`NEW_DAYS` en Home.astro)
+- [x] Se calcula dos veces: al construir el sitio (si ya caducó, ni se mete en
+      el HTML) y otra vez en el navegador. Lo segundo hace falta porque una web
+      estática se queda congelada en el despliegue: sin eso, la viñeta seguiría
+      anunciando como nuevo algo de hace meses hasta la siguiente publicación
+- [x] Accesible: el "New" va `aria-hidden` y al lado hay un texto sólo para
+      lectores de pantalla ("con novedades"), que un "New" suelto no dice nada
+- [x] En rojo del acento con el texto en negro, mismo criterio de contraste que
+      la chapa "EN CONSTRUCCIÓN" de las tarjetas
+- [x] Documentado en el README, en su propia sección
+- [x] Verificado en ES y EN: proyectos hasta el 2026-09-06 y blog hasta el
+      2026-08-30; poniéndole a mano una fecha pasada, esa viñeta desaparece y
+      la otra se queda
+- [x] La viñeta va por encima del reflejo del canto (`z-index: 1`): el reflejo
+      es un `::after` del botón, o sea el último hijo, y entre dos elementos
+      posicionados sin z-index gana el último del DOM — la línea de luz le
+      cruzaba la viñeta por encima
+- [x] Plazo bajado a una semana (`NEW_DAYS = 7`) a petición suya. Efecto
+      inmediato: la viñeta del blog se apaga, porque el último artículo es del
+      31 de julio; la de proyectos aguanta hasta el 14 de agosto
+- [x] Anillo de foco de los campos del formulario a 1px (el resto del sitio se
+      queda en 2px). Se puede bajar sin perder el nivel AA porque el campo
+      avisa dos veces —su borde ya se pone rojo— y el rojo va sobradísimo del
+      3:1 que se pide; lo que se pierde es el mínimo de 2px del criterio AAA

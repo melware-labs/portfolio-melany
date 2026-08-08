@@ -38,6 +38,10 @@ const projects = defineCollection({
     tech: z.array(z.string()).default([]),
     // Cuanto menor sea el número, más arriba sale
     order: z.number().default(99),
+    // Cuándo lo subiste. No se pinta en ningún sitio: sirve para que salga
+    // la viñeta "New" sobre el botón de proyectos durante los días
+    // siguientes (ver NEW_DAYS en Home.astro). Sin fecha, no hay viñeta.
+    date: z.coerce.date().optional(),
   }),
 });
 

@@ -166,7 +166,12 @@ body::after {
     animation-range: entry 0% cover 25%;
   }
 }
+/* Va por `scale` y `translate` sueltos y no por `transform`, que es lo mismo
+   en pantalla pero deja `transform` libre. Lo necesita el zoom del hover de
+   las tarjetas (`.card:hover` en base.css): una animación gana siempre a una
+   regla normal, así que mientras esto ocupara `transform` el zoom no se
+   llegaba a ver. Al ser propiedades distintas se aplican las dos a la vez. */
 @keyframes content-emerge {
-  from { opacity: 0; transform: scale(0.9) translateY(28px); }
-  to   { opacity: 1; transform: scale(1) translateY(0); }
+  from { opacity: 0; scale: 0.9; translate: 0 28px; }
+  to   { opacity: 1; scale: 1; translate: 0 0; }
 }
