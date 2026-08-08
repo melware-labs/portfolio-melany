@@ -488,6 +488,11 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
   .stack-marquee {
     overflow: hidden;
     cursor: grab;
+    /* Se arrastra para adelantar/retrasar la tira (ver el <script> de más
+       abajo): sin esto, ese mismo gesto selecciona el texto como si fuera
+       una frase cualquiera, en vez de mover la cinta. */
+    user-select: none;
+    -webkit-user-select: none;
     mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
     -webkit-mask-image: linear-gradient(
       to right,
