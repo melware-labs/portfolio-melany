@@ -17,6 +17,29 @@ const posts = (await getCollection('blog', (p) => p.data.lang === lang && !p.dat
   (a, b) => b.data.date.getTime() - a.data.date.getTime()
 );
 
+/**
+ * Días que una novedad sigue siendo novedad: una semana por publicación.
+ * Pasados estos, la viñeta "New" del botón desaparece sola.
+ *
+ * Se calcula dos veces a propósito: aquí, al construir el sitio, para no
+ * meter la viñeta en el HTML si ya está caducada; y otra vez en el navegador
+ * (ver el <script> del final), porque una web estática se queda congelada en
+ * el momento del despliegue y sin esa segunda vuelta la viñeta seguiría ahí
+ * meses después, hasta la siguiente publicación.
+ */
+const NEW_DAYS = 7;
+
+/** Cuándo deja de ser nueva la fecha más reciente de una lista. */
+function freshUntil(dates: (Date | undefined)[]): Date | null {
+  const newest = dates.filter((d): d is Date => d instanceof Date).sort((a, b) => b.getTime() - a.getTime())[0];
+  if (!newest) return null;
+  const until = new Date(newest.getTime() + NEW_DAYS * 24 * 60 * 60 * 1000);
+  return until > new Date() ? until : null;
+}
+
+const projectsNewUntil = freshUntil(projects.map((p) => p.data.date));
+const postsNewUntil = freshUntil(posts.map((p) => p.data.date));
+
 const email = 'melanymartinez667@gmail.com';
 
 // Nombres propios: no se traducen entre idiomas.
@@ -33,8 +56,24 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
     </h1>
     <p class="hero-intro prose animate-fade-up" style="animation-delay: 0.15s">{t('hero.intro')}</p>
     <div class="hero-actions animate-fade-up" style="animation-delay: 0.25s">
-      <a class="btn btn--primary" href="#proyectos">{t('hero.ctaProjects')}</a>
-      <a class="btn btn--secondary" href="#blog">{t('hero.ctaBlog')}</a>
+      <a class="btn btn--primary" href="#proyectos">
+        {t('hero.ctaProjects')}
+        {projectsNewUntil && (
+          <span class="btn-new" data-new-until={projectsNewUntil.toISOString()}>
+            <span aria-hidden="true">{t('hero.new')}</span>
+            <span class="visually-hidden">{t('hero.newSr')}</span>
+          </span>
+        )}
+      </a>
+      <a class="btn btn--secondary" href="#blog">
+        {t('hero.ctaBlog')}
+        {postsNewUntil && (
+          <span class="btn-new" data-new-until={postsNewUntil.toISOString()}>
+            <span aria-hidden="true">{t('hero.new')}</span>
+            <span class="visually-hidden">{t('hero.newSr')}</span>
+          </span>
+        )}
+      </a>
     </div>
   </div>
 </section>
@@ -83,6 +122,15 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
 </section>
 
 <script>
+  // La viñeta "New" trae escrito hasta cuándo vale. El HTML lo generó el
+  // despliegue y ahí se quedó congelado, así que si desde entonces han
+  // pasado los días, se quita aquí: si no, seguiría anunciando como nuevo
+  // algo de hace meses hasta que Melany volviera a publicar.
+  document.querySelectorAll<HTMLElement>('[data-new-until]').forEach((badge) => {
+    const until = new Date(badge.dataset.newUntil ?? '');
+    if (!(until > new Date())) badge.remove();
+  });
+
   // Tira de tecnologías: se desplaza sola sin parar, y sólo se congela
   // mientras se mantiene pulsada — de ahí que no baste con pasar el
   // cursor por encima. Mientras está pulsada, arrastrar a los lados
@@ -461,7 +509,36 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
     flex-wrap: wrap;
     justify-content: center;
     gap: var(--space-3);
-    margin-top: var(--space-6);
+    /* Sitio para que la viñeta asome por encima del botón sin comerse el
+       aire que lo separa del párrafo de arriba. */
+    margin-top: var(--space-7);
+  }
+  /* Viñeta "New" colgando de la esquina del botón. En rojo sólido con el
+     texto en negro y no al revés: sobre el acento, el negro sube el
+     contraste de 4,2 a 4,9 y sí pasa el mínimo — el mismo criterio que la
+     chapa "EN CONSTRUCCIÓN" de las tarjetas de proyecto. */
+  .btn-new {
+    position: absolute;
+    top: 0;
+    right: var(--space-3);
+    transform: translateY(-50%);
+    /* Por encima del reflejo del canto. Sin esto la línea de luz le pasa por
+       encima: el reflejo es un ::after del botón, o sea el último hijo, y
+       entre dos elementos posicionados sin z-index gana el último del DOM. */
+    z-index: 1;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    padding: 0.25rem var(--space-2);
+    border-radius: var(--radius-pill);
+    background: var(--accent);
+    color: var(--paper);
+    /* Un punto de halo para que no parezca pegada encima del botón. */
+    box-shadow: 0 0 0 var(--border-width) var(--paper), var(--glow);
+    pointer-events: none;
   }
 
   /* ── Stack ────────────────────────────────────────────────── */
@@ -636,6 +713,16 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
   .field input:focus,
   .field textarea:focus {
     border-color: var(--accent);
+  }
+  /* Anillo de foco más fino que en el resto del sitio (1px en vez de 2px):
+     aquí rodea una píldora grande y con 2px se leía como un marco. Se puede
+     bajar sin perder accesibilidad porque el campo enfocado avisa dos veces
+     —su propio borde ya se pone rojo— y el rojo sobre este fondo va muy
+     sobrado del 3:1 que pide la WCAG para un indicador. Lo que sí se pierde
+     es el mínimo de 2px del criterio AAA de apariencia del foco. */
+  .field input:focus-visible,
+  .field textarea:focus-visible {
+    outline-width: var(--border-width);
   }
   /* Estos marcadores de posición hacen de etiqueta (los <label> reales
      están sólo para lectores de pantalla), así que tienen que leerse de

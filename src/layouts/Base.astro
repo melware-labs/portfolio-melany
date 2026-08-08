@@ -73,6 +73,11 @@ const otherCanonical = Astro.site ? new URL(otherHref, Astro.site) : null;
     <Footer />
 
     <script>
+      // Tarjetas y botones reaccionan al cursor (ver scripts/pointer-light.ts).
+      // Se sale solo si la página no tiene ni unas ni otros.
+      import { initPointerLight } from '../scripts/pointer-light';
+      initPointerLight();
+
       // Scroll-fade: observa los .scroll-fade y alterna .is-visible
       // según entran o salen de la pantalla, en ambas direcciones.
       const faders = document.querySelectorAll('.scroll-fade');

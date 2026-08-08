@@ -38,6 +38,12 @@ export const ui = {
       'Estudio Ingeniería del Software en Málaga. Estoy aprendiendo a construir cosas de verdad y lo voy contando aquí: lo que sale bien y lo que no.',
     'hero.ctaProjects': 'Proyectos',
     'hero.ctaBlog': 'Blog',
+    // Viñeta sobre los botones cuando hay algo recién subido. Se deja en
+    // inglés también aquí porque así se pidió; cambiar aquí si algún día
+    // se prefiere "Nuevo". La segunda sólo la oyen los lectores de pantalla,
+    // que con un "New" suelto se quedarían igual.
+    'hero.new': 'New',
+    'hero.newSr': 'con novedades',
 
     'about.heading': 'Sobre mí',
     'about.p1':
@@ -120,6 +126,8 @@ export const ui = {
       "I'm studying software engineering in Málaga, Spain. I'm learning to build real things and writing about it here: the parts that work and the parts that don't.",
     'hero.ctaProjects': 'Projects',
     'hero.ctaBlog': 'Blog',
+    'hero.new': 'New',
+    'hero.newSr': 'with new content',
 
     'about.heading': 'About me',
     'about.p1':

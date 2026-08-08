@@ -33,6 +33,23 @@ nombre, para que la dirección también esté en inglés.
 
 Los proyectos funcionan igual, en `src/content/projects/`.
 
+## La viñeta "New"
+
+Sobre los botones del hero sale una viñeta roja que dice **New** cuando hay
+algo recién subido: la de *Proyectos* mira la fecha de los proyectos y la de
+*Blog* la de los artículos. Dura **una semana** desde lo último que subiste y
+se quita sola, sin tener que volver a publicar (ese plazo es `NEW_DAYS`, en
+`src/components/Home.astro`).
+
+En los artículos ya viene de la fecha que pones arriba. En los proyectos hay
+que añadir esa misma línea, que es opcional y no se pinta en ningún sitio:
+
+```yaml
+date: 2026-08-07
+```
+
+Sin ella el proyecto se publica igual, pero no sale la viñeta.
+
 ## Cómo está organizada
 
 ```

@@ -9,6 +9,7 @@ tech:
   - GLSL
   - WebGL
 order: 2
+date: 2026-08-07
 ---
 
 A side experiment away from the rest of the portfolio: I wanted to try
