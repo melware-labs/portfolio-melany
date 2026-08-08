@@ -50,25 +50,6 @@ body {
   background-attachment: fixed, fixed;
 }
 
-/* Rejilla técnica, apenas insinuada, que se desvanece hacia los bordes
-   — en la referencia lleva una máscara radial para que no llegue nunca
-   a las esquinas y no parezca un cuaderno cuadriculado. Va sobre <main>
-   y no sobre <body> porque los dos pseudoelementos del body ya están
-   ocupados por las dos capas de estrellas. Estática: no anima. */
-main::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image:
-    linear-gradient(color-mix(in srgb, var(--ink) 3%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--ink) 3%, transparent) 1px, transparent 1px);
-  background-size: 40px 40px;
-  -webkit-mask-image: radial-gradient(circle at 50% 45%, #000 40%, transparent 80%);
-  mask-image: radial-gradient(circle at 50% 45%, #000 40%, transparent 80%);
-}
-
 /* El foco rojo del centro, en su propia capa para poder respirar con
    transform en vez de con background-position. Se dibuja más pequeño
    que el viewport y se escala/desplaza: al ser un degradado suave, esa
@@ -77,7 +58,7 @@ main::after {
   content: '';
   position: fixed;
   inset: 0;
-  /* -2 y no -1: así queda por debajo de las estrellas y de la rejilla,
+  /* -2 y no -1: así queda por debajo de las estrellas,
      que es donde estaba cuando vivía en el fondo del body. */
   z-index: -2;
   pointer-events: none;
