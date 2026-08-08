@@ -21,7 +21,11 @@ const t = useTranslations(lang);
 const name = 'Melany Martínez';
 
 // La textura del canvas necesita una URL suelta, no el <img> de Astro.
-const photo = await getImage({ src: melanyPhoto, width: 720, format: 'webp' });
+// width se queda en la resolución nativa del archivo (672px): pedir más
+// sólo hace que Astro la agrande él primero y el canvas la vuelva a agrandar
+// después, dos pasadas de remuestreo en vez de una — más borroso, no más
+// nítido, porque no hay detalle nuevo que sacar.
+const photo = await getImage({ src: melanyPhoto, width: melanyPhoto.width, format: 'webp' });
 ---
 
 <div class="lanyard" data-lanyard data-photo={photo.src} data-name={name}>

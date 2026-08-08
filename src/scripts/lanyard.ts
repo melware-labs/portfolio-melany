@@ -43,6 +43,8 @@ const COLOR_PLATE = '#0c0c0e';
 const COLOR_INK = '#f5f2ee';
 const COLOR_INK_MUTED = '#808088';
 const COLOR_ACCENT = '#ef233c';
+/** Halo detrás del icono sobre el que está el puntero. */
+const COLOR_ICON_HOVER_BG = 'rgba(245, 242, 238, 0.1)';
 
 // ── Medidas de la escena, en "unidades de tarjeta" ────────────────────
 const CARD_W = 1.6;
@@ -163,6 +165,12 @@ function drawCover(
   const dw = img.width * scale;
   const dh = img.height * scale;
   ctx.save();
+  // La foto fuente es más pequeña que el hueco que ocupa en la tarjeta, así
+  // que este drawImage siempre amplía: con la calidad por defecto (baja en
+  // algunos navegadores) se nota. 'high' es el mejor remuestreo que da el
+  // canvas 2D sin traer una librería aparte.
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
   ctx.beginPath();
   ctx.rect(x, y, w, h);
   ctx.clip();
@@ -184,11 +192,32 @@ function canvasTexture(source: HTMLCanvasElement, anisotropy: number): THREE.Can
   return texture;
 }
 
-function faceCanvas(): { canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D } {
+/**
+ * El resto de este archivo dibuja las caras en una base de 1024×~1472: esa
+ * es la resolución "lógica" que usan las coordenadas de texto, iconos, etc.
+ * FACE_SUPERSAMPLE guarda el canvas de verdad más grande que esa base y
+ * reescala el contexto para compensarlo, así que todo lo demás no cambia.
+ * Sin este colchón la tarjeta se ve algo borrosa en pantallas grandes o
+ * retina: la textura llega casi a 1:1 contra los píxeles físicos y no le
+ * queda margen para suavizar bordes de texto e iconos.
+ */
+const FACE_BASE_W = 1024;
+const FACE_SUPERSAMPLE = 1.5;
+
+function faceCanvas(): {
+  canvas: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
+  width: number;
+  height: number;
+} {
+  const width = FACE_BASE_W;
+  const height = Math.round(FACE_BASE_W * (CARD_H / CARD_W));
   const canvas = document.createElement('canvas');
-  canvas.width = 1024;
-  canvas.height = Math.round(1024 * (CARD_H / CARD_W));
-  return { canvas, ctx: canvas.getContext('2d')! };
+  canvas.width = Math.round(width * FACE_SUPERSAMPLE);
+  canvas.height = Math.round(height * FACE_SUPERSAMPLE);
+  const ctx = canvas.getContext('2d')!;
+  ctx.scale(FACE_SUPERSAMPLE, FACE_SUPERSAMPLE);
+  return { canvas, ctx, width, height };
 }
 
 /** Zona pulsable de un icono, en píxeles del canvas de la cara frontal. */
@@ -220,15 +249,47 @@ function drawIcon(ctx: CanvasRenderingContext2D, link: SocialLink, x: number, y:
   ctx.restore();
 }
 
+/** Radio del halo que marca el icono sobre el que está el puntero. */
+const ICON_HOVER_RADIUS = ICON_SIZE * 0.72;
+
+/** Dibuja la fila entera de iconos, resaltando `hoverIndex` si no es null. */
+function drawIconsRow(
+  ctx: CanvasRenderingContext2D,
+  links: SocialLink[],
+  startX: number,
+  rowY: number,
+  hoverIndex: number | null
+) {
+  let iconX = startX;
+  for (let i = 0; i < links.length; i++) {
+    const hovered = i === hoverIndex;
+    if (hovered) {
+      ctx.beginPath();
+      ctx.arc(iconX + ICON_SIZE / 2, rowY, ICON_HOVER_RADIUS, 0, Math.PI * 2);
+      ctx.fillStyle = COLOR_ICON_HOVER_BG;
+      ctx.fill();
+    }
+    ctx.fillStyle = hovered ? COLOR_ACCENT : COLOR_INK_MUTED;
+    ctx.strokeStyle = ctx.fillStyle;
+    drawIcon(ctx, links[i], iconX, rowY - ICON_SIZE / 2);
+    iconX += ICON_SIZE + ICON_GAP;
+  }
+}
+
 /** Cara frontal: la foto arriba, el nombre y los enlaces en la placa de abajo. */
 function makeFrontCanvas(
   photo: HTMLImageElement,
   name: string,
   links: SocialLink[]
-): { canvas: HTMLCanvasElement; regions: LinkRegion[] } {
-  const { canvas, ctx } = faceCanvas();
-  const W = canvas.width;
-  const H = canvas.height;
+): {
+  canvas: HTMLCanvasElement;
+  width: number;
+  height: number;
+  regions: LinkRegion[];
+  /** Repinta sólo la franja de iconos; úsalo para reflejar el hover del puntero. */
+  setHover: (index: number | null) => void;
+} {
+  const { canvas, ctx, width: W, height: H } = faceCanvas();
 
   ctx.fillStyle = COLOR_SURFACE;
   ctx.fillRect(0, 0, W, H);
@@ -250,31 +311,31 @@ function makeFrontCanvas(
 
   const rowWidth = links.length * ICON_SIZE + (links.length - 1) * ICON_GAP;
   const rowY = photoH + plateH * 0.72;
-  let iconX = (W - rowWidth) / 2;
+  const startX = (W - rowWidth) / 2;
 
-  const regions: LinkRegion[] = [];
-  ctx.fillStyle = COLOR_INK_MUTED;
-  ctx.strokeStyle = COLOR_INK_MUTED;
-  for (const link of links) {
-    drawIcon(ctx, link, iconX, rowY - ICON_SIZE / 2);
-    regions.push({
-      href: link.href,
-      label: link.label,
-      x: iconX + ICON_SIZE / 2,
-      y: rowY,
-      size: ICON_HIT_SIZE,
-    });
-    iconX += ICON_SIZE + ICON_GAP;
+  const regions: LinkRegion[] = links.map((link, i) => ({
+    href: link.href,
+    label: link.label,
+    x: startX + i * (ICON_SIZE + ICON_GAP) + ICON_SIZE / 2,
+    y: rowY,
+    size: ICON_HIT_SIZE,
+  }));
+
+  drawIconsRow(ctx, links, startX, rowY, null);
+
+  function setHover(hoverIndex: number | null) {
+    const bandHalf = ICON_HOVER_RADIUS + 6;
+    ctx.fillStyle = COLOR_PLATE;
+    ctx.fillRect(0, rowY - bandHalf, W, bandHalf * 2);
+    drawIconsRow(ctx, links, startX, rowY, hoverIndex);
   }
 
-  return { canvas, regions };
+  return { canvas, width: W, height: H, regions, setHover };
 }
 
 /** Cara trasera: sólo la marca, para que no sea la foto del revés. */
 function makeBackCanvas(text: string): HTMLCanvasElement {
-  const { canvas, ctx } = faceCanvas();
-  const W = canvas.width;
-  const H = canvas.height;
+  const { canvas, ctx, width: W, height: H } = faceCanvas();
 
   ctx.fillStyle = COLOR_PLATE;
   ctx.fillRect(0, 0, W, H);
@@ -567,6 +628,8 @@ export async function createLanyard(options: LanyardOptions): Promise<LanyardHan
   let dragging = false;
   let dragPointerId: number | null = null;
   let firstDragPending = typeof options.onFirstDrag === 'function';
+  /** Índice del icono bajo el puntero, para no repintar si no ha cambiado. */
+  let hoveredIndex: number | null = null;
   /** Para distinguir un clic en un icono de un arrastre de la tarjeta. */
   let pressX = 0;
   let pressY = 0;
@@ -589,8 +652,8 @@ export async function createLanyard(options: LanyardOptions): Promise<LanyardHan
     const hit = raycaster.intersectObject(front, false)[0];
     if (!hit?.uv) return null;
 
-    const x = (hit.uv.x / CARD_W + 0.5) * frontFace.canvas.width;
-    const y = (0.5 - hit.uv.y / CARD_H) * frontFace.canvas.height;
+    const x = (hit.uv.x / CARD_W + 0.5) * frontFace.width;
+    const y = (0.5 - hit.uv.y / CARD_H) * frontFace.height;
     for (const region of frontFace.regions) {
       if (Math.abs(x - region.x) <= region.size / 2 && Math.abs(y - region.y) <= region.size / 2) {
         return region;
@@ -630,10 +693,24 @@ export async function createLanyard(options: LanyardOptions): Promise<LanyardHan
     }
   }
 
+  /** Refleja en la textura qué icono (si alguno) tiene el puntero encima. */
+  function setHoveredIndex(index: number | null) {
+    if (index === hoveredIndex) return;
+    hoveredIndex = index;
+    frontFace.setHover(hoveredIndex);
+    frontTexture.needsUpdate = true;
+  }
+
   function handlePointerMove(event: PointerEvent) {
     if (!dragging || event.pointerId !== dragPointerId) {
       if (!dragging) {
-        canvas.style.cursor = linkAt(event) ? 'pointer' : pointerHitsCard(event) ? 'grab' : '';
+        const region = linkAt(event);
+        canvas.style.cursor = region ? 'pointer' : pointerHitsCard(event) ? 'grab' : '';
+        // El resaltado es un efecto de "ratón encima": en touch no hay hover
+        // real y se quedaría marcado el icono del último toque.
+        if (event.pointerType !== 'touch') {
+          setHoveredIndex(region ? frontFace.regions.indexOf(region) : null);
+        }
       }
       return;
     }
@@ -666,12 +743,24 @@ export async function createLanyard(options: LanyardOptions): Promise<LanyardHan
       const region = linkAt(event);
       if (region) window.open(region.href, '_blank', 'noopener,noreferrer');
     }
+
+    // El arrastre tapaba el hover: al soltar, se recalcula contra la
+    // posición final en vez de dejar marcado el icono de cuando empezó.
+    if (event.pointerType !== 'touch') {
+      const region = linkAt(event);
+      setHoveredIndex(region ? frontFace.regions.indexOf(region) : null);
+    }
+  }
+
+  function handlePointerLeave() {
+    setHoveredIndex(null);
   }
 
   canvas.addEventListener('pointerdown', handlePointerDown);
   canvas.addEventListener('pointermove', handlePointerMove);
   canvas.addEventListener('pointerup', endDrag);
   canvas.addEventListener('pointercancel', endDrag);
+  canvas.addEventListener('pointerleave', handlePointerLeave);
 
   // ── Simulación ───────────────────────────────────────────────────────
   const velocity = new THREE.Vector3();
@@ -892,6 +981,7 @@ export async function createLanyard(options: LanyardOptions): Promise<LanyardHan
     canvas.removeEventListener('pointermove', handlePointerMove);
     canvas.removeEventListener('pointerup', endDrag);
     canvas.removeEventListener('pointercancel', endDrag);
+    canvas.removeEventListener('pointerleave', handlePointerLeave);
 
     bodyGeometry.dispose();
     faceGeometry.dispose();
