@@ -428,13 +428,16 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
     letter-spacing: -0.05em;
   }
   .hero-fade {
-    /* En un span en línea, el padding vertical no empuja el texto (no
-       cuenta para la altura del renglón) pero sí agranda la caja donde
-       se pinta el fondo — y ese fondo es lo único que rellena las
-       letras aquí abajo. Sin este margen de sobra, la caja de pintado
-       terminaba justo donde marca line-height y a la cola de la "y" le
-       faltaba el trozo que quedaba fuera: no se pintaba nada ahí. */
-    padding-block: 0.1em 0.35em;
+    /* El relleno de estas letras es un degradado recortado al texto, y un
+       fondo no se pinta fuera de la caja del span. El `letter-spacing`
+       negativo del h1 le resta 0.05em al avance de la ÚLTIMA letra, así
+       que la caja cierra por dentro de su tinta: al brazo derecho de la
+       "y" de "soy" le faltaban 4px sin pintar y se veía cortado en
+       vertical, justo del lado de la "M". El relleno devuelve ese trozo a
+       la caja y el margen negativo lo descuenta de la maquetación, para
+       que el nombre siga cayendo exactamente donde caía. */
+    padding-inline-end: 0.08em;
+    margin-inline-end: -0.08em;
     background: linear-gradient(
       to bottom,
       var(--ink),

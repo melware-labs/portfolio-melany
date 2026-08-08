@@ -105,6 +105,18 @@ const rest = name.slice(1);
     opacity: 0;
     /* Se revelará con un barrido de izquierda a derecha. */
     clip-path: inset(0 100% 0 0);
+    /* El barrido termina en inset(0), o sea recortando justo al borde de
+       la caja, y la caja cierra por dentro de la tinta por dos sitios: el
+       `letter-spacing` negativo le come 0.05em a la última letra (el brazo
+       derecho de la "y" de "soy") y el renglón de `line-height: 1.12` es
+       más corto que sus descendentes. Sin estos colchones el barrido
+       dejaba la "y" cortada, igual que pasaba en el hero. Los márgenes
+       negativos los descuentan para que el saludo siga cayendo donde el
+       del hero de verdad. */
+    padding-inline-end: 0.08em;
+    margin-inline-end: -0.08em;
+    padding-bottom: 0.35em;
+    margin-bottom: -0.35em;
   }
 
   /**

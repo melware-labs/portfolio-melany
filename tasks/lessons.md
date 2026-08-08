@@ -61,3 +61,37 @@ de darla por decorativa.**
 0 fps y un frame de 14 s: la pestaña no estaba componiendo. Lo que sí se puede
 medir de forma fiable desde ahí es `document.getAnimations()` y qué propiedad
 anima cada una — eso ya dice si algo repinta o no, sin necesidad de fps.
+
+## La "y" de "soy" (2026-08-08)
+
+**El fallo: `letter-spacing` negativo + `background-clip: text` = la última
+letra se queda sin pintar por la derecha.** El h1 lleva
+`letter-spacing: -0.05em`, y ese hueco negativo se le resta al avance de *todas*
+las letras, la última incluida. La caja del span cierra entonces por dentro de
+su propia tinta (medido: caja 382,76px, tinta 386,93px) y el degradado, que sólo
+se pinta dentro de la caja, dejaba fuera 4px del brazo derecho de la "y" de
+"soy" — cortada en vertical, justo del lado de la "M". Se arregla con
+`padding-inline-end: 0.08em` (devuelve el trozo a la caja) y
+`margin-inline-end: -0.08em` (lo descuenta de la maquetación: el nombre no se
+mueve ni una décima). **Regla: con `background-clip: text` o `clip-path`, un
+`letter-spacing` negativo deja la última glifa fuera de la caja. Comprobación de
+un vistazo: `measureText(...).actualBoundingBoxRight` contra el ancho de
+`getBoundingClientRect()`.**
+
+**Perdí tres intentos por no preguntar QUÉ borde se cortaba.** Melany dijo "se
+corta la y" y yo asumí que era por abajo (los descendentes son lo típico).
+Estuve midiendo cajas verticales, moviendo `padding-block`, `line-height` y
+`display`, y hasta le cambié la tipografía —que ella no quería— dando por hecho
+que la culpa era del corte plano con el que Manrope termina la "y". Cuando
+concretó "por arriba, antes de la M", el fallo apareció en dos minutos.
+**Regla: ante un "se ve cortado", lo primero es fijar el borde y el idioma/caso
+exactos, y medir tinta contra caja en ESE eje. Y si me pilla dudando entre
+arreglar la maquetación o cambiar un elemento de diseño (tipografía, color,
+tamaño), eso último se pregunta antes, no se hace.**
+
+**El mismo fallo estaba dos veces.** El saludo se duplica en `Splash.astro`, con
+un barrido que acaba en `clip-path: inset(0)` — recorta al borde de la caja, así
+que le pasaba lo mismo por la derecha, y además por abajo, porque ahí la caja
+mide un renglón (`line-height: 1.12`) y los descendentes sobresalen. Lleva los
+dos colchones. **Regla: si un texto está duplicado (splash, og:image, 404…),
+comprobar cada copia por separado.**
