@@ -79,6 +79,80 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
   </div>
 </section>
 
+<script>
+  // Tira de tecnologías: se desplaza sola sin parar, y sólo se congela
+  // mientras se mantiene pulsada — de ahí que no baste con pasar el
+  // cursor por encima. Mientras está pulsada, arrastrar a los lados
+  // adelanta o retrasa la tira a mano, como si fuera una cinta física.
+  const marquee = document.querySelector<HTMLElement>('.stack-marquee');
+  const track = document.querySelector<HTMLElement>('.stack-track');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (marquee && track && !reducedMotion) {
+    // Debe coincidir con la duración de @keyframes stack-scroll de abajo:
+    // es lo que traduce un desplazamiento en píxeles a tiempo de animación.
+    const DURATION_MS = 26000;
+
+    let dragging = false;
+    let pointerId: number | null = null;
+    let startX = 0;
+    let startTime = 0;
+    /** Píxeles que recorre la tira por milisegundo de animación. */
+    let pxPerMs = 0;
+
+    function measureSpeed() {
+      const group = track!.firstElementChild as HTMLElement | null;
+      const groupWidth = group?.getBoundingClientRect().width || 1;
+      // La animación recorre exactamente el ancho de una copia (ver el
+      // comentario junto a stack-scroll), así que la velocidad sale directa.
+      pxPerMs = groupWidth / DURATION_MS;
+    }
+    measureSpeed();
+    window.addEventListener('resize', measureSpeed);
+
+    function handlePointerDown(event: PointerEvent) {
+      const [animation] = track!.getAnimations();
+      if (!animation) return;
+
+      dragging = true;
+      pointerId = event.pointerId;
+      startX = event.clientX;
+      startTime = Number(animation.currentTime) || 0;
+      animation.pause();
+      marquee!.classList.add('is-dragging');
+      marquee!.setPointerCapture(event.pointerId);
+    }
+
+    function handlePointerMove(event: PointerEvent) {
+      if (!dragging || event.pointerId !== pointerId || pxPerMs === 0) return;
+      const [animation] = track!.getAnimations();
+      if (!animation) return;
+
+      // Arrastrar hacia la izquierda adelanta la tira (igual que su
+      // dirección normal); hacia la derecha, la retrasa.
+      const dx = event.clientX - startX;
+      animation.currentTime = startTime - dx / pxPerMs;
+    }
+
+    function endDrag(event: PointerEvent) {
+      if (!dragging || event.pointerId !== pointerId) return;
+      dragging = false;
+      pointerId = null;
+      marquee!.classList.remove('is-dragging');
+      if (marquee!.hasPointerCapture(event.pointerId)) {
+        marquee!.releasePointerCapture(event.pointerId);
+      }
+      const [animation] = track!.getAnimations();
+      animation?.play();
+    }
+
+    marquee.addEventListener('pointerdown', handlePointerDown);
+    marquee.addEventListener('pointermove', handlePointerMove);
+    marquee.addEventListener('pointerup', endDrag);
+    marquee.addEventListener('pointercancel', endDrag);
+  }
+</script>
+
 <!-- ── Proyectos ────────────────────────────────────────────── -->
 <section id="proyectos" class="section scroll-fade">
   <div class="container">
@@ -413,6 +487,7 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
   }
   .stack-marquee {
     overflow: hidden;
+    cursor: grab;
     mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
     -webkit-mask-image: linear-gradient(
       to right,
@@ -422,14 +497,16 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
       transparent
     );
   }
+  /* El cursor sólo avisa de que se puede arrastrar; el hover ya no para la
+     tira (se paraba solo con pasar por encima, sin llegar a tocarla). Ahora
+     el freno es mantener pulsado — ver el <script> de más abajo. */
+  .stack-marquee.is-dragging {
+    cursor: grabbing;
+  }
   .stack-track {
     display: flex;
     width: max-content;
     animation: stack-scroll 26s linear infinite;
-  }
-  .stack-marquee:hover .stack-track,
-  .stack-marquee:focus-within .stack-track {
-    animation-play-state: paused;
   }
   .stack-group {
     display: flex;
