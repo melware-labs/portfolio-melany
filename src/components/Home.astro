@@ -439,22 +439,19 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
     display: inline-block;
     color: var(--accent);
   }
-  /* Trazo a mano alzada bajo el nombre — es el remate que la referencia
-     le pone a la palabra en acento. Va con máscara en vez de meter el
-     color dentro del SVG, para que siga saliendo de --accent y no se
-     quede descolgado si algún día cambia el rojo. */
+  /* Línea recta bajo el nombre — es el remate que la referencia le pone
+     a la palabra en acento. Baja lo bastante (-0.32em) para no meterse
+     en la cola de la "y": con la curva anterior y sólo -0.1em de
+     margen, el trazo le cruzaba justo por encima. */
   .hero-name::after {
     content: '';
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -0.1em;
-    height: 0.13em;
+    bottom: -0.32em;
+    height: 0.16em;
     background: var(--accent);
     opacity: 0.55;
-    --stroke: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M0 5 Q 50 10 100 5' stroke='%23000' stroke-width='2' fill='none'/%3E%3C/svg%3E");
-    -webkit-mask: var(--stroke) no-repeat center / 100% 100%;
-    mask: var(--stroke) no-repeat center / 100% 100%;
   }
   .hero-intro {
     margin-top: var(--space-4);
