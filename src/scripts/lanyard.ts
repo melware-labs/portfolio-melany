@@ -897,7 +897,13 @@ export async function createLanyard(options: LanyardOptions): Promise<LanyardHan
     const height = canvas.clientHeight || 1;
     const aspect = width / height;
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, aspect < 0.8 ? 1.5 : 2));
+    // Antes el tope bajaba a 1.5 en encuadres estrechos (aspect < 0.8, o
+    // sea, móvil en vertical) para ahorrar fill-rate — pero el móvil es
+    // justo donde más densidad de píxeles hay (2x-3x), así que ese recorte
+    // dejaba el framebuffer por debajo de la pantalla real y el navegador
+    // lo reescalaba: la tarjeta se veía borrosa exactamente donde más se
+    // usa. Tope único, igual que en escritorio.
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(width, height, false);
 
     const halfFov = THREE.MathUtils.degToRad(camera.fov) / 2;
