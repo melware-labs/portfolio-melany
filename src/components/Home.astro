@@ -425,6 +425,13 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
     letter-spacing: -0.05em;
   }
   .hero-fade {
+    /* En un span en línea, el padding vertical no empuja el texto (no
+       cuenta para la altura del renglón) pero sí agranda la caja donde
+       se pinta el fondo — y ese fondo es lo único que rellena las
+       letras aquí abajo. Sin este margen de sobra, la caja de pintado
+       terminaba justo donde marca line-height y a la cola de la "y" le
+       faltaba el trozo que quedaba fuera: no se pintaba nada ahí. */
+    padding-block: 0.1em 0.35em;
     background: linear-gradient(
       to bottom,
       var(--ink),
@@ -435,23 +442,7 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
     color: transparent;
   }
   .hero-name {
-    position: relative;
-    display: inline-block;
     color: var(--accent);
-  }
-  /* Línea recta bajo el nombre — es el remate que la referencia le pone
-     a la palabra en acento. Baja lo bastante (-0.32em) para no meterse
-     en la cola de la "y": con la curva anterior y sólo -0.1em de
-     margen, el trazo le cruzaba justo por encima. */
-  .hero-name::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -0.32em;
-    height: 0.16em;
-    background: var(--accent);
-    opacity: 0.55;
   }
   .hero-intro {
     margin-top: var(--space-4);
