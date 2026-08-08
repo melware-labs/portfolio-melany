@@ -1,0 +1,274 @@
+---
+/**
+ * Splash de bienvenida del inicio: el logo "<M" de la marca se convierte
+ * en la cabecera "Hola, soy Melany" del hero.
+ *
+ * En vez de medir en píxeles dónde cae el "Melany" de verdad (frágil:
+ * cambia con el scroll, el resize y la carga de la fuente), esta capa
+ * reconstruye la misma cabecera con las mismas reglas de CSS que la real
+ * — mismo .container, mismo clamp() de tamaño, mismo letter-spacing y
+ * centrado — así que aterriza en el mismo sitio sin JS de por medio. Al
+ * acabar, la capa entera se desvanece y debajo ya está la cabecera real.
+ *
+ * El texto sale de las mismas claves de i18n que el hero, para que no se
+ * puedan desincronizar: la "M" es sólo el primer carácter separado del
+ * resto para poder animarla aparte.
+ */
+import { getLangFromUrl, useTranslations } from '../i18n/ui';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const greeting = t('hero.greeting');
+const name = t('hero.name');
+const initial = name.slice(0, 1);
+const rest = name.slice(1);
+---
+
+<!-- aria-hidden: es decoración, y duplica un texto que el hero real ya
+     ofrece a los lectores de pantalla sin esperar la animación. -->
+<div class="splash" data-splash aria-hidden="true">
+  <div class="container splash-inner">
+    <p class="splash-line">
+      <span class="splash-greeting">{greeting}</span>
+      <span class="splash-name">
+        <span class="splash-mark">&lt;</span><span class="splash-initial">{initial}</span
+        ><span class="splash-rest">{rest}</span>
+      </span>
+    </p>
+  </div>
+</div>
+
+<noscript>
+  <style>
+    /* Sin JS nadie retiraría la capa: mejor no mostrarla nunca que
+       dejarla tapando la web para siempre. */
+    [data-splash] {
+      display: none !important;
+    }
+  </style>
+</noscript>
+
+<style>
+  .splash {
+    position: fixed;
+    inset: 0;
+    /* Por encima de todo lo demás: el máximo del resto de la web es el
+       300 del .skip-link. */
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    background: var(--paper);
+  }
+  .splash[hidden] {
+    display: none;
+  }
+
+  .splash-inner {
+    text-align: center;
+  }
+
+  /* Mismas medidas que .hero-copy h1 (ver Home.astro): es lo que hace
+     que el texto caiga donde el del hero de verdad. */
+  .splash-line {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2.8rem, 1.8rem + 6vw, 6rem);
+    line-height: 1.12;
+    letter-spacing: -0.05em;
+    color: var(--ink);
+  }
+
+  .splash-name {
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  /* ── Estado de reposo (antes de arrancar) ─────────────────────
+     El logo está montado y centrado; el saludo y el resto del nombre
+     todavía no existen en pantalla. Sin .is-playing se queda así, que
+     es también el fotograma del que parte todo. */
+  .splash-greeting {
+    display: inline-block;
+    opacity: 0;
+    /* Se revelará con un barrido de izquierda a derecha. */
+    clip-path: inset(0 100% 0 0);
+  }
+  .splash-mark {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    /* 1ch es el avance del glifo "0", y en monoespaciada todos los
+       glifos avanzan igual: es exactamente el ancho natural del "<" en
+       cualquier fuente de la pila, sin tener que medirlo. Hace falta
+       fijarlo para poder cerrarlo a 0 al final: desvanecerlo con sólo
+       opacity dejaba su hueco ocupado y el nombre acababa 24px a la
+       derecha de donde cae el del hero de verdad. */
+    width: 1ch;
+    overflow: hidden;
+  }
+  .splash-initial {
+    display: inline-block;
+    /* Arranca en tamaño de logo y en color de tinta, como el favicon; al
+       final acaba en tamaño de texto y en el rojo del acento. */
+    color: var(--ink);
+    transform: scale(1.6);
+  }
+  .splash-rest {
+    display: inline-block;
+    opacity: 0;
+  }
+
+  /* ── Coreografía ──────────────────────────────────────────────
+     Todo con transform/opacity/color/clip-path, nada que toque el
+     layout: así el navegador lo compone en la GPU y no repinta. Los
+     tiempos van por animation-delay, no por JS. */
+  .splash.is-playing .splash-name {
+    animation: splash-logo-in 0.5s ease-out both;
+  }
+  .splash.is-playing .splash-initial {
+    animation: splash-initial-settle 0.8s cubic-bezier(0.22, 1, 0.36, 1) 1.1s both;
+  }
+  .splash.is-playing .splash-rest {
+    animation: splash-rest-in 0.6s ease-out 1.25s both;
+  }
+  .splash.is-playing .splash-mark {
+    animation: splash-mark-out 0.5s ease-in 1.7s both;
+  }
+  .splash.is-playing .splash-greeting {
+    animation: splash-greeting-in 0.6s ease-out 1.75s both;
+  }
+  .splash.is-playing {
+    animation: splash-fade-out 0.4s ease-in 2.7s both;
+  }
+
+  @keyframes splash-logo-in {
+    from {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  @keyframes splash-initial-settle {
+    from {
+      transform: scale(1.6);
+      color: var(--ink);
+    }
+    to {
+      transform: scale(1);
+      color: var(--accent);
+    }
+  }
+  @keyframes splash-rest-in {
+    from {
+      opacity: 0;
+      transform: translateX(-0.12em);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  /* El "<" se va justo cuando el saludo empieza a salir de su sitio: es
+     lo que lee como "el texto se despliega desde el <". Cierra también
+     su ancho, para que el nombre quede exactamente donde el del hero. */
+  @keyframes splash-mark-out {
+    from {
+      opacity: 1;
+      width: 1ch;
+    }
+    to {
+      opacity: 0;
+      width: 0;
+    }
+  }
+  @keyframes splash-greeting-in {
+    from {
+      opacity: 0;
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+    }
+  }
+  @keyframes splash-fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  const splash = document.querySelector<HTMLElement>('[data-splash]');
+
+  if (splash) {
+    const SEEN_KEY = 'splash-seen';
+    // sessionStorage puede lanzar (modo privado con almacenamiento
+    // bloqueado): si no se puede leer ni escribir, se anima y punto.
+    function seen(): boolean {
+      try {
+        return sessionStorage.getItem(SEEN_KEY) !== null;
+      } catch {
+        return false;
+      }
+    }
+    function markSeen() {
+      try {
+        sessionStorage.setItem(SEEN_KEY, '1');
+      } catch {
+        // Sin memoria de sesión se repetirá; no es motivo para fallar.
+      }
+    }
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    /**
+     * Con un ancla en la URL (los enlaces del menú apuntan a /#sobre-mi y
+     * compañía desde el resto de páginas) no hay splash: quien pide una
+     * sección concreta no está entrando por la puerta principal, y el
+     * bloqueo del scroll se comía justamente ese salto a la sección.
+     */
+    const deepLink = window.location.hash.length > 1;
+
+    /** Retira la capa del todo. Es el único camino de salida. */
+    function dismiss() {
+      splash!.classList.remove('is-playing');
+      splash!.hidden = true;
+      document.documentElement.style.overflow = '';
+      window.removeEventListener('pointerdown', dismiss);
+      window.removeEventListener('keydown', dismiss);
+    }
+
+    if (seen() || reducedMotion || deepLink) {
+      // Ya vista en esta sesión, movimiento reducido, o se ha pedido una
+      // sección concreta: la web aparece montada, sin animación ninguna.
+      dismiss();
+      markSeen();
+    } else {
+      markSeen();
+      // Mientras se reproduce no se puede hacer scroll: la capa tapa la
+      // página entera, así que scrollear a ciegas sólo desorienta.
+      document.documentElement.style.overflow = 'hidden';
+      splash.classList.add('is-playing');
+
+      // El último paso de la coreografía es el fade de la capa entera;
+      // cuando acaba, se retira. Se comprueba el target porque las
+      // animaciones de los hijos también burbujean hasta aquí.
+      splash.addEventListener('animationend', (event) => {
+        if (event.target === splash && event.animationName === 'splash-fade-out') {
+          dismiss();
+        }
+      });
+
+      // Cualquier clic, toque o tecla la salta.
+      window.addEventListener('pointerdown', dismiss);
+      window.addEventListener('keydown', dismiss);
+    }
+  }
+</script>

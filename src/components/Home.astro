@@ -4,6 +4,7 @@ import { getLangFromUrl, useTranslations } from '../i18n/ui';
 import ProjectCard from './ProjectCard.astro';
 import PostCard from './PostCard.astro';
 import LanyardCard from './LanyardCard.astro';
+import Splash from './Splash.astro';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -21,6 +22,8 @@ const email = 'melanymartinez667@gmail.com';
 // Nombres propios: no se traducen entre idiomas.
 const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
 ---
+
+<Splash />
 
 <!-- ── Portada ──────────────────────────────────────────────── -->
 <section class="hero">
