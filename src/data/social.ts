@@ -1,10 +1,10 @@
 /**
  * Enlaces a redes sociales — único sitio que hay que tocar cuando cambien.
  *
- * Los iconos van como datos de trazado en vez de como marcado SVG porque se
- * pintan en dos sitios: el <svg> de SocialLinks.astro y el canvas 2D que sirve
- * de textura al gafete 3D (src/scripts/lanyard.ts), donde hacen falta como
- * Path2D. Todos están dibujados sobre un viewBox de 24×24.
+ * Los iconos van como datos de trazado (fill/stroke + `d`) y no como marcado
+ * SVG suelto para que SocialLinks.astro los pinte todos igual, sin copiar el
+ * mismo <path> en cada sitio donde se usan. Todos están dibujados sobre un
+ * viewBox de 24×24.
  */
 
 export interface SocialIconPath {
