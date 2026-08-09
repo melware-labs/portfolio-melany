@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import { getLangFromUrl, useTranslations } from '../i18n/ui';
 import ProjectCard from './ProjectCard.astro';
 import PostCard from './PostCard.astro';
-import LanyardCard from './LanyardCard.astro';
+import AboutCard from './AboutCard.astro';
 import Splash from './Splash.astro';
 
 const lang = getLangFromUrl(Astro.url);
@@ -89,7 +89,7 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
         <p>{t('about.p3')}</p>
       </div>
       <div class="about-aside">
-        <LanyardCard />
+        <AboutCard />
       </div>
     </div>
   </div>
@@ -622,15 +622,24 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
     display: grid;
     gap: var(--space-5);
   }
+  /* En una columna (móvil) la tarjeta va detrás del texto, con aire de sobra
+     por delante: apretada contra el último párrafo se leía pegada a la
+     frase. El `gap` de la rejilla ya separa un poco; esto lo remata. */
   .about-aside {
-    /* Arranca más arriba que el texto para que la correa tenga sitio y no
-       parezca que el gafete cuelga desde el mismo renglón. */
-    margin-top: -3rem;
+    margin-top: var(--space-6);
   }
   @media (min-width: 48rem) {
     .about-grid {
       grid-template-columns: 1fr 24rem;
       align-items: start;
+    }
+    /* A dos columnas sube hasta quedar a la altura del "Sobre mí": descuenta
+       el margen superior de la rejilla y el alto del propio encabezado, que
+       es lo que hay entre el título y donde arranca por defecto la columna
+       de al lado. La tarjeta es un <div> normal — a diferencia del gafete
+       3D que hubo aquí antes, no hay hueco muerto dentro que compensar. */
+    .about-aside {
+      margin-top: calc(-1 * (var(--space-6) + var(--step-3) * 1.12));
     }
   }
 

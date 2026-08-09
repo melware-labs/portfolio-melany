@@ -53,7 +53,6 @@ export const ui = {
     'about.p3':
       'Fuera de eso: me encantan los videojuegos arcade y tengo una obsesión con la evolución del mundo tech década a década, sobre todo el salto de los 90 a los 2000.',
     'about.photoAlt': 'Foto de Melany.',
-    'about.lanyardHint': 'arrástrala ↔',
 
     'projects.heading': 'Melware Labs',
     'projects.intro':
@@ -137,7 +136,6 @@ export const ui = {
     'about.p3':
       "Outside of that: I love arcade games, and I'm obsessed with the evolution of the tech world from one decade to the next, especially the jump from the 90s to the 2000s.",
     'about.photoAlt': 'Photo of Melany.',
-    'about.lanyardHint': 'drag it ↔',
 
     'projects.heading': 'Melware Labs',
     'projects.intro':
