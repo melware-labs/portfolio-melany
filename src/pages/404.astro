@@ -6,7 +6,10 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<Base title={`404 | ${t('404.heading')}`}>
+{/* Sólo se genera un 404 (en la raíz), así que "esta misma página en el otro
+    idioma" no existe: el selector manda a la portada del otro idioma en vez
+    de a /en/404/, que era una URL muerta. */}
+<Base title={`404 | ${t('404.heading')}`} alternate={localizedPath('/', lang === 'es' ? 'en' : 'es')}>
   <section class="section notfound">
     <div class="container">
       <p class="eyebrow">Error 404</p>

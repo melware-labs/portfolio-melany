@@ -1,12 +1,22 @@
 ---
 import { getLangFromUrl, useTranslations, localizedPath, alternatePath, languages } from '../i18n/ui';
 
+interface Props {
+  /**
+   * Esta misma página en el otro idioma. La pasa Base.astro, que es quien
+   * sabe si la ruta cambia entre idiomas (los artículos del blog llevan el
+   * slug traducido). Sin ella se cae al cálculo por prefijo de siempre.
+   */
+  alternate?: string;
+}
+const { alternate } = Astro.props;
+
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const home = localizedPath('/', lang);
 const otherLang = lang === 'es' ? 'en' : 'es';
-const otherHref = alternatePath(Astro.url, lang);
+const otherHref = alternate ?? alternatePath(Astro.url, lang);
 
 const links = [
   { href: `${home}#sobre-mi`, label: t('nav.about') },
@@ -51,7 +61,7 @@ const flagSrc: Record<string, string> = {
         <div class="lang-menu" id="lang-menu" role="menu" hidden>
           <a
             class:list={['lang-option', { 'is-active': lang === 'es' }]}
-            href={lang === 'es' ? '#' : alternatePath(Astro.url, 'en')}
+            href={lang === 'es' ? '#' : otherHref}
             role="menuitem"
             lang="es"
             hreflang="es"
@@ -62,7 +72,7 @@ const flagSrc: Record<string, string> = {
           </a>
           <a
             class:list={['lang-option', { 'is-active': lang === 'en' }]}
-            href={lang === 'en' ? '#' : alternatePath(Astro.url, 'es')}
+            href={lang === 'en' ? '#' : otherHref}
             role="menuitem"
             lang="en"
             hreflang="en"

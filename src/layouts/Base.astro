@@ -9,15 +9,25 @@ import { getLangFromUrl, useTranslations, alternatePath } from '../i18n/ui';
 interface Props {
   title?: string;
   description?: string;
+  /**
+   * Esta misma página en el otro idioma. Sólo hace falta pasarla donde la
+   * ruta cambia de un idioma a otro (los artículos del blog, con el slug
+   * traducido); en el resto, cambiar el prefijo /en basta y se calcula sola.
+   */
+  alternate?: string;
 }
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-const { title = t('site.title'), description = t('site.description') } = Astro.props;
+const {
+  title = t('site.title'),
+  description = t('site.description'),
+  alternate,
+} = Astro.props;
 
 const otherLang = lang === 'es' ? 'en' : 'es';
-const otherHref = alternatePath(Astro.url, lang);
+const otherHref = alternate ?? alternatePath(Astro.url, lang);
 
 // Astro.site sale de astro.config.mjs. Sin él las URLs absolutas no se
 // pueden construir, así que canonical y hreflang se omiten en local.
@@ -66,7 +76,7 @@ const otherCanonical = Astro.site ? new URL(otherHref, Astro.site) : null;
 
   <body>
     <a class="skip-link" href="#main">{t('nav.skip')}</a>
-    <Header />
+    <Header alternate={otherHref} />
     <main id="main">
       <slot />
     </main>

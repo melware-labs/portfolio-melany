@@ -212,7 +212,16 @@ export function localizedPath(path: string, lang: Lang): string {
   return clean === '/' ? '/en/' : `/en${clean}`;
 }
 
-/** La misma página en el otro idioma, para el selector de la cabecera. */
+/**
+ * La misma página en el otro idioma, para el selector de la cabecera.
+ *
+ * Sólo vale donde la ruta es igual en ambos idiomas (la portada). Las páginas
+ * con slug traducido — los artículos del blog — tienen que calcular su pareja
+ * y pasarla a mano al layout: ver la prop `alternate` de Base.astro. Aquí no se
+ * puede hacer, porque esto es una función pura sobre la URL y no tiene forma de
+ * saber que "como-monte-mi-portfolio" e "how-i-built-my-portfolio" son el mismo
+ * artículo.
+ */
 export function alternatePath(url: URL, lang: Lang): string {
   const path = url.pathname.replace(/^\/en(?=\/|$)/, '') || '/';
   return lang === 'es' ? localizedPath(path, 'en') : localizedPath(path, 'es');
