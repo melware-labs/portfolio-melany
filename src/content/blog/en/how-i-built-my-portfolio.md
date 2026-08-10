@@ -3,6 +3,7 @@ title: How I vibe coded my portfolio
 description: I started out wanting it to look good and ended up learning that was never the problem. What happened along the way and what I took from it.
 date: 2026-07-31
 lang: en
+translationKey: portfolio-vibe-coding
 tags:
   - learning
   - web

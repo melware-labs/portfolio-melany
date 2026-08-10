@@ -9,6 +9,10 @@ title: Título del artículo
 description: Un resumen de una o dos frases. Es lo que se ve en la lista del blog y en Google.
 date: 2026-07-31
 lang: es
+# Si traduces el artículo, pon este mismo valor en la versión inglesa: es lo
+# que hace que el selector de idioma salte al artículo equivalente en vez de
+# a la portada. Puede ser cualquier texto corto, mientras coincida en los dos.
+# translationKey: mi-primer-post
 tags:
   - aprendiendo
 draft: true

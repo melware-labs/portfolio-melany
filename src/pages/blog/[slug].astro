@@ -14,9 +14,26 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+/**
+ * El artículo equivalente en inglés, para el selector de idioma. El slug está
+ * traducido, así que la pareja se busca por `translationKey`; si el artículo
+ * todavía no está traducido, se cae a la portada inglesa en vez de mandar a
+ * una URL que no existe.
+ */
+const twin = post.data.translationKey
+  ? (await getCollection('blog', (p) => p.data.lang === 'en' && !p.data.draft)).find(
+      (p) => p.data.translationKey === post.data.translationKey
+    )
+  : undefined;
+const alternate = twin ? `/en/blog/${twin.id.split('/').pop()}/` : '/en/';
 ---
 
-<Base title={`${post.data.title} | Melany Martínez`} description={post.data.description}>
+<Base
+  title={`${post.data.title} | Melany Martínez`}
+  description={post.data.description}
+  alternate={alternate}
+>
   <PostBody post={post}>
     <Content />
   </PostBody>
