@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
 import BlogListing from '../../../components/blog/BlogListing.astro';
-import { useTranslations, type UIKey } from '../../../i18n/ui';
+import { useTranslations, localizedPath, type UIKey } from '../../../i18n/ui';
 import { CATEGORY_ORDER, CATEGORY_LABEL_KEY, type BlogCategory } from '../../../data/blog-categories';
 
 // Sólo se generan páginas para categorías con al menos un post publicado en
@@ -20,9 +20,24 @@ export async function getStaticPaths() {
 const { categoria } = Astro.props as { categoria: BlogCategory };
 const t = useTranslations('es');
 const label = t(`blog.category.${CATEGORY_LABEL_KEY[categoria]}` as UIKey);
+
+/**
+ * Esta misma categoría en inglés sólo existe si allí hay algún post suyo:
+ * las rutas se generan por idioma (ver getStaticPaths). En cuanto las
+ * categorías no coincidan entre idiomas, cambiar de idioma llevaría a una
+ * URL que no se ha generado, así que sin pareja se va al listado inglés.
+ */
+const enPosts = await getCollection('blog', (p) => p.data.lang === 'en' && !p.data.draft);
+const alternate = enPosts.some((p) => p.data.category === categoria)
+  ? localizedPath(`/blog/categoria/${categoria}`, 'en')
+  : localizedPath('/blog', 'en');
 ---
 
-<Base title={`${label} — ${t('blog.heading')} | Melany Martínez`} description={t('blog.intro')}>
+<Base
+  title={`${label} — ${t('blog.heading')} | Melany Martínez`}
+  description={t('blog.intro')}
+  alternate={alternate}
+>
   <section class="section">
     <div class="container">
       <h1>{t('blog.heading')} — {label}</h1>
