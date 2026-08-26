@@ -1,6 +1,6 @@
 # Portfolio de Melany Martinez
 
-Software Engineer @ UMA | MTV 80s Synthwave aesthetic. Hecha desde cero con [Astro](https://astro.build), en español e inglés.
+Estudiante de Ingeniería del Software en la UMA (Málaga). Hecha desde cero con [Astro](https://astro.build), en español e inglés.
 
 ## Cómo levantarla
 
