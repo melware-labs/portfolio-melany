@@ -119,6 +119,14 @@ const categoryLabel = (cat: BlogCategory) => t(`blog.category.${CATEGORY_LABEL_K
     list-style: none;
     display: grid;
     gap: var(--space-4);
+    /* Las cards no crecen más allá de este ancho ni aunque estén solas en
+       su columna — así entran dos por fila sin apretar, en vez de que cada
+       una intente ocupar todo el hueco que le deje la grid. */
+    justify-items: start;
+  }
+  .card-list > li {
+    width: 100%;
+    max-width: 24rem;
   }
   @media (min-width: 48rem) {
     .card-list:has(> li + li) {

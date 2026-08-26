@@ -37,16 +37,28 @@ const namedCovers: Record<string, AstroComponentFactory> = {
   'vibe-coding': CoverVibeCoding,
 };
 
+// De estos, cuáles son fotos reales en vez de iconos SVG: una foto necesita
+// más alto que la franja fina de los iconos para no recortar lo importante
+// (ver la regla `.post-cover--photo` más abajo), así que el panel cambia de
+// forma según lo que va dentro.
+const PHOTO_COVERS = new Set(['vibe-coding']);
+const isPhoto = cover ? PHOTO_COVERS.has(cover) : false;
+
 const Icon = (cover && namedCovers[cover]) || categoryIcons[category];
 ---
 
-<div class:list={['post-cover', className]} aria-hidden="true">
+<div
+  class:list={['post-cover', { 'post-cover--photo': isPhoto }, className]}
+  aria-hidden="true"
+>
   <Icon />
 </div>
 
 <style>
   .post-cover {
-    aspect-ratio: 16 / 9;
+    /* Franja baja, no un panel cuadrado: la ilustración es apoyo, no la
+       protagonista de la card — antes con 16/9 se comía media tarjeta. */
+    aspect-ratio: 3 / 1;
     display: grid;
     place-items: center;
     overflow: hidden;
@@ -61,8 +73,25 @@ const Icon = (cover && namedCovers[cover]) || categoryIcons[category];
       var(--surface);
   }
   .post-cover :global(svg) {
-    width: 38%;
-    height: 38%;
+    width: 22%;
+    height: 22%;
     color: var(--ink-soft);
+  }
+  /* Una foto necesita más alto que la franja de 3/1 de los iconos: ahí
+     recortaba tanto que se perdían el gato y la pantalla a la vez. 4/3
+     deja ver ambos sin estirar nada. */
+  .post-cover--photo {
+    aspect-ratio: 4 / 3;
+  }
+  /* Las fotos (a diferencia de los iconos SVG) van a sangre: rellenan todo
+     el panel y se recortan al recuadro, en vez de quedar centradas a un
+     tamaño pequeño. object-position sube el foco hacia el tercio superior,
+     que es donde están la cara del gato y la pantalla en la foto original;
+     lo que se recorta es la parte de abajo (teclado), la menos importante. */
+  .post-cover :global(.post-cover-photo) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 20%;
   }
 </style>
