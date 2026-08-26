@@ -18,6 +18,10 @@ Luego abrir <http://localhost:4321>.
 | `npm run dev`     | Servidor de desarrollo, recarga sola al guardar     |
 | `npm run build`   | Genera la web lista para publicar en `dist/`        |
 | `npm run preview` | Muestra el resultado del build, tal como se verá    |
+| `npx astro check` | Revisa tipos y plantillas en busca de errores       |
+
+Cada `push` a `main` y cada pull request comprueban automáticamente que el
+build sigue funcionando (`.github/workflows/build.yml`).
 
 ## Cómo escribir un artículo
 
@@ -54,21 +58,26 @@ Sin ella el proyecto se publica igual, pero no sale la viñeta.
 
 ```
 src/
-├── content/           Los artículos y proyectos, en markdown
+├── content/                Los artículos y proyectos, en markdown
 │   ├── blog/
-│   │   ├── es/        Artículos en español  →  /blog/…
-│   │   └── en/        Artículos en inglés   →  /en/blog/…
-│   └── projects/      Misma estructura: es/ y en/
-├── components/        Las piezas reutilizables (cabecera, tarjetas…)
-├── layouts/           El esqueleto común de todas las páginas
-├── pages/             Cada archivo aquí es una página de la web
-│   ├── index.astro    Inicio en español  →  /
+│   │   ├── es/             Artículos en español  →  /blog/…
+│   │   └── en/             Artículos en inglés   →  /en/blog/…
+│   └── projects/           Misma estructura: es/ y en/
+├── components/             Las piezas reutilizables (cabecera, tarjetas…)
+├── layouts/                El esqueleto común de todas las páginas
+├── pages/                  Cada archivo aquí es una página de la web
+│   ├── index.astro         Inicio en español  →  /
 │   ├── blog/
-│   └── en/            Todo lo anterior en inglés  →  /en/
-├── i18n/ui.ts         Todos los textos de la interfaz, en los dos idiomas
+│   ├── experimentos/       Piezas aparte del sitio principal (Tormenta)
+│   └── en/                 Todo lo anterior en inglés  →  /en/
+├── i18n/ui.ts              Todos los textos de la interfaz, en los dos idiomas
+├── data/social.ts          Enlaces a redes sociales, en un único sitio
+├── scripts/pointer-light.ts  Efecto de luz que sigue al cursor en tarjetas y botones
+├── assets/                 Imágenes propias (foto de "Sobre mí")
 └── styles/
-    ├── tokens.css     Colores, tipografías y espaciados
-    └── base.css       Estilos comunes
+    ├── tokens.css           Colores, tipografías y espaciados
+    ├── base.css             Estilos comunes
+    └── theme-flourishes.css Animaciones del fondo (estrellas, resplandores)
 ```
 
 ## Decisiones
@@ -85,8 +94,5 @@ src/
 
 ## Pendiente
 
-- [ ] Publicarla (falta elegir dónde y poner `site` en `astro.config.mjs`,
-      que hace falta para las URLs canónicas y las etiquetas de idioma)
-- [ ] Escribir el primer artículo
-- [ ] Avatar ilustrado
-- [ ] Formulario de contacto de verdad (ahora es un enlace de correo)
+- [ ] Confirmar el aspecto en un móvil real a 390px
+- [ ] Usuarios/URLs reales de más redes, si se añaden nuevas
