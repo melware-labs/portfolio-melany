@@ -241,7 +241,7 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
     {
       posts.length > 0 ? (
         <>
-          <ul class="card-list">
+          <ul class="card-list posts-grid">
             {posts.map((post) => (
               <li>
                 <PostCard post={post} />
@@ -667,6 +667,18 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
     list-style: none;
     display: grid;
     gap: var(--space-4);
+  }
+
+  /* Sólo el grid del blog: las cards de posts no crecen más allá de este
+     ancho ni aunque estén solas en su columna, así entran dos por fila
+     sin apretar. Los proyectos no llevan este tope — su "bento" ya reparte
+     el ancho a propósito entre las dos tarjetas. */
+  .posts-grid {
+    justify-items: start;
+  }
+  .posts-grid > li {
+    width: 100%;
+    max-width: 24rem;
   }
 
   @media (min-width: 48rem) {

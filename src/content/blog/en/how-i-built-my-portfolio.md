@@ -1,6 +1,6 @@
 ---
-title: 'Vibe coding a portfolio: what you gain and what it costs'
-description: I used AI to build most of this site. Here's what I think actually pays off, what doesn't, and what I'd watch for if I did it again.
+title: 'Vibe coding a portfolio: the pros and the cons'
+description: Before you build your portfolio out of prompts, here's what actually pays off — and what doesn't.
 date: 2026-07-31
 lang: en
 translationKey: portfolio-vibe-coding
@@ -12,76 +12,69 @@ cover: vibe-coding
 draft: false
 ---
 
-The question I get most about this site isn't "what do you study" or "what's
-your blog about". It's "did you actually build this?". Short answer: yes,
-with AI next to me the whole time, writing most of the code while I decided
-what to ask for and what to throw out.
+Vibe coding — describing what you want in plain language and letting a
+model write the code instead of typing it yourself — has slipped into how a
+lot of people start their first projects. If you're putting together a
+portfolio, the temptation is huge: in a couple of afternoons you can have
+something to show, instead of weeks fighting CSS. But like any shortcut,
+it's worth weighing what you gain against what you lose before betting
+everything on it.
 
-That's vibe coding: describing what you want in plain language and letting a
-model write the code, instead of typing it line by line. I've spent the last
-few weeks doing that to build this site, and I have mixed feelings about it.
-So instead of telling the build story again, here's what I think it actually
-gains you, and what it costs.
+## Pros
 
-## What you gain
+**Prototyping stops hurting.** Trying a completely different look — from
+eighties neon to something minimal, from a synthwave grid to a flat design
+— stops costing a full afternoon of hand-written CSS and starts costing a
+round of prompts. That means you can throw out an idea that isn't working
+without feeling like you're throwing out hours of work, and get to the
+version that actually fits sooner.
 
-**Prototyping stops hurting.** Before landing on the look the site has now,
-I tried an eighties synthwave thing with neon and grids, then glitch
-effects, then a spinning 3D object, then a high school locker corridor,
-then an entire bedroom, lava lamp included. Without AI, each of those would
-have cost me a full afternoon of hand-written CSS. With vibe coding, each
-one cost a round of prompts. I could throw out six entire directions
-without feeling like I was throwing out six afternoons of work.
-
-**It lowers the barrier to actually starting.** I've spent my whole degree
-with the feeling that I know how to pass exams but not how to build
-anything real. Sitting down in front of a blank editor with that feeling is
-paralysing. Sitting down in front of a chat and typing "I want a site that
-looks like this" isn't. I started, which is more than I'd managed in
-months.
+**It lowers the barrier to actually starting.** Sitting down in front of a
+blank editor with no idea where to begin is one of the biggest things that
+stalls someone who's still learning. Sitting down in front of a chat and
+describing what you want to build isn't. For a portfolio — which often
+gets stuck at "I'll do it once I know more" — that difference is what
+decides whether the project actually starts or just stays in your head.
 
 **It makes you practise a different skill.** Not writing every line, but
-reading what someone else wrote and deciding if it holds up. That's a skill
-you rarely exercise when you learn to code alone, and it flips the usual
-question: it's no longer "can I write this" but "can I tell whether this is
-written well".
+reading what someone else wrote and deciding whether it holds up. That's a
+skill you rarely train when you learn to code alone, and it flips the usual
+question: it's no longer "can I write this" but "can I tell whether this
+is written well".
 
-## What it costs
+## Cons
 
-**It can hand you code you don't understand, if you don't ask.** The model
-doesn't flag when something is delicate. This site's mobile menu, for
-example, had to close on the Escape key, return focus to the button, and
-stop Tab from escaping to the links behind it. The first version it
-generated did none of that — it just worked, technically. I had to already
-know what was missing to go ask for it, and the model doesn't hand you that
-on its own.
+**It can hand you code you don't understand, if you don't ask.** A model
+doesn't flag when something is delicate. Things like a mobile menu closing
+on the Escape key, returning focus to whoever opened it, or making sure Tab
+doesn't escape to hidden links rarely happen well on the first try unless
+they're explicitly requested — and if you don't know they're missing,
+nobody asks. Vibe coding doesn't replace knowing what to ask for.
 
 **Changing your mind gets dangerously cheap.** When trying a new look costs
 one prompt instead of one afternoon, it's very easy to spend weeks
-decorating something that's still empty inside. That happened to me: while
-I kept trying more elaborate backgrounds, the projects the site showed off
-were made up. Four fake projects, complete with descriptions and tech
-stacks, while I kept polishing background pixels. Easy visual iteration
-doesn't come with equally easy content — that part is still exactly as much
-yours as it always was.
+tweaking the look of something that's still empty inside: background after
+background, font after font, while the actual content — the projects, what
+you can really do — never gets written. Easy visual iteration doesn't come
+with equally easy content; that part still costs exactly what it always
+did.
 
-**The question of who actually did the work matters more on a portfolio.**
-A portfolio isn't just any project — it's the proof you're showing that you
-can build something. If someone in an interview asks why I picked a
-specific contrast ratio, or how the menu works, I need to be able to
-actually answer, not repeat whatever the model put in a comment.
+**The question of who actually did the work matters more on a portfolio
+than on almost any other project.** A portfolio is the proof you're
+showing that you can build something. If someone in an interview asks why
+you picked a specific contrast ratio or how an animation works, you need
+to be able to actually answer — not repeat whatever the model put in a
+comment.
 
-## Where I landed
+## Where I land
 
-I'm not fully for or against it. For exploring fast, and for starting when
-the blank page feels too heavy, vibe coding has worked great for me. As a
-substitute for understanding what's underneath, it's a disaster — and the
-line between the two is thinner than it looks at first.
+Not fully for it or against it. For exploring fast, and for starting when
+the blank page feels too heavy, vibe coding works great. As a substitute
+for understanding what's underneath, it's a disaster — and the line
+between the two is thinner than it looks at first.
 
-If I started over, I'd still use it. But I'd read every change before
-accepting it, ask "why" more than I did at the start, and hold myself to
-being able to explain any line of this site as if I'd written it alone —
-because as far as who's accountable for it, I did.
-
-If you're building your portfolio this way too: use it, but don't let it be
-the only one who understands your own site.
+If you're building your portfolio this way, my advice is simple: read
+every change before accepting it, ask "why" more often than you feel like
+you need to, and don't settle until you can explain any line as if you'd
+written it yourself. Because when it comes to who answers for that project
+in an interview, that's you.

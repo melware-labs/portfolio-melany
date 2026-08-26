@@ -1,15 +1,19 @@
-{/*
-  Ilustración específica del post de vibe coding, no genérica de categoría:
-  una ventana de editor con una línea de "prompt" y una chispa en acento
-  encima, como si la IA acabara de soltar el código en la pantalla.
-*/}
-<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="8" y="14" width="48" height="36" rx="3" stroke="currentColor" stroke-width="1.5" />
-  <line x1="8" y1="22" x2="56" y2="22" stroke="currentColor" stroke-width="1.5" />
-  <circle cx="14" cy="18" r="1.3" fill="currentColor" />
-  <circle cx="19" cy="18" r="1.3" fill="currentColor" />
-  <circle cx="24" cy="18" r="1.3" fill="currentColor" />
-  <path d="M16 30 21 35 16 40" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-  <line x1="25" y1="40" x2="36" y2="40" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-  <path d="M46 27 48 32 53 34 48 36 46 41 44 36 39 34 44 32Z" fill="var(--accent)" />
-</svg>
+---
+/**
+ * Portada específica del post de vibe coding: la foto real que puso Melany
+ * (un gato flipando delante de la pantalla), no un icono genérico — por eso
+ * vive fuera del switch de categorías de PostCover.astro. La clase
+ * "post-cover-photo" es la que le dice a PostCover.astro que la trate como
+ * foto (a sangre, recortada) y no como icono centrado.
+ */
+import { Image } from 'astro:assets';
+import vibeCodingCat from '../../../assets/blog/vibecoding-cat.jpg';
+---
+
+<Image
+  class="post-cover-photo"
+  src={vibeCodingCat}
+  alt=""
+  width={800}
+  height={Math.round(800 * (vibeCodingCat.height / vibeCodingCat.width))}
+/>
