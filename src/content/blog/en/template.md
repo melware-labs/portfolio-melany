@@ -9,12 +9,19 @@ title: Post title
 description: A one or two sentence summary. This is what shows in the blog list and in Google.
 date: 2026-07-31
 lang: en
+# What it's about, decides which blog tab it shows up under. Valid values
+# live in src/data/blog-categories.ts: ai | programming | career | student-life
+category: programming
 # If you translate the post, use this same value in the Spanish version: it is
 # what makes the language switcher jump to the matching post instead of the
 # home page. Any short text works, as long as both sides match.
 # translationKey: my-first-post
 tags:
   - learning
+# Name of a specific illustration (optional). Without this, the cover falls
+# back to the generic icon for `category`. Available names are listed in
+# src/components/blog/PostCover.astro (namedCovers).
+# cover: vibe-coding
 draft: true
 ---
 

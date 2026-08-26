@@ -1,0 +1,18 @@
+---
+import Base from '../../layouts/Base.astro';
+import BlogListing from '../../components/blog/BlogListing.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/ui';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<Base title={`${t('blog.heading')} | Melany Martínez`} description={t('blog.intro')}>
+  <section class="section">
+    <div class="container">
+      <h1>{t('blog.heading')}</h1>
+      <p class="section-intro prose">{t('blog.intro')}</p>
+      <BlogListing />
+    </div>
+  </section>
+</Base>

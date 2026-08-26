@@ -1,0 +1,68 @@
+---
+/**
+ * Portada ilustrada de un post: SVG hecho a mano, no una foto. Por defecto
+ * pinta el icono genérico de la categoría; si el post trae `cover` con el
+ * nombre de una ilustración concreta (ver namedCovers más abajo), usa esa
+ * en su lugar — así el post de vibe coding puede llevar su propio dibujo
+ * en vez del icono compartido de "programación".
+ *
+ * Es decorativa (aria-hidden): el título del post ya dice de qué va, esto
+ * es sólo apoyo visual.
+ */
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+import type { BlogCategory } from '../../data/blog-categories';
+import CoverAi from './covers/CoverAi.astro';
+import CoverProgramming from './covers/CoverProgramming.astro';
+import CoverCareer from './covers/CoverCareer.astro';
+import CoverStudentLife from './covers/CoverStudentLife.astro';
+import CoverVibeCoding from './covers/CoverVibeCoding.astro';
+
+interface Props {
+  category: BlogCategory;
+  cover?: string;
+  class?: string;
+}
+const { category, cover, class: className } = Astro.props;
+
+const categoryIcons: Record<BlogCategory, AstroComponentFactory> = {
+  ai: CoverAi,
+  programming: CoverProgramming,
+  career: CoverCareer,
+  'student-life': CoverStudentLife,
+};
+
+// Ilustraciones con nombre propio, ligadas a un post concreto y no a una
+// categoría entera. Añadir una nueva: un caso aquí + su componente en covers/.
+const namedCovers: Record<string, AstroComponentFactory> = {
+  'vibe-coding': CoverVibeCoding,
+};
+
+const Icon = (cover && namedCovers[cover]) || categoryIcons[category];
+---
+
+<div class:list={['post-cover', className]} aria-hidden="true">
+  <Icon />
+</div>
+
+<style>
+  .post-cover {
+    aspect-ratio: 16 / 9;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: var(--radius);
+    border: var(--border-width) solid var(--line);
+    background:
+      radial-gradient(
+        ellipse 70% 70% at 28% 20%,
+        color-mix(in srgb, var(--accent) 10%, transparent),
+        transparent 70%
+      ),
+      var(--surface);
+  }
+  .post-cover :global(svg) {
+    width: 38%;
+    height: 38%;
+    color: var(--ink-soft);
+  }
+</style>

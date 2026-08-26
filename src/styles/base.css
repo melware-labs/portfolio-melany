@@ -189,6 +189,15 @@ a:hover {
   margin-bottom: var(--space-2);
 }
 
+/* Párrafo de presentación justo debajo de un <h1>/<h2> de sección. Global
+   porque lo usan tanto las secciones de Home.astro como las páginas del
+   blog (/blog, /blog/categoria/*) — un mismo look para "lo que viene
+   debajo del título" en todo el sitio. */
+.section-intro {
+  margin-top: var(--space-3);
+  color: var(--ink-soft);
+}
+
 /* ── Botones ──────────────────────────────────────────────────── */
 
 .btn {
