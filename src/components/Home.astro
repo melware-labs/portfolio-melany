@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { getLangFromUrl, useTranslations } from '../i18n/ui';
+import { getLangFromUrl, useTranslations, localizedPath } from '../i18n/ui';
 import ProjectCard from './ProjectCard.astro';
 import PostCard from './PostCard.astro';
 import AboutCard from './AboutCard.astro';
@@ -13,9 +13,13 @@ const projects = (await getCollection('projects', (p) => p.data.lang === lang)).
   (a, b) => a.data.order - b.data.order
 );
 
-const posts = (await getCollection('blog', (p) => p.data.lang === lang && !p.data.draft)).sort(
+const allPosts = (await getCollection('blog', (p) => p.data.lang === lang && !p.data.draft)).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime()
 );
+// La portada sólo adelanta los más recientes; el blog completo — con sus
+// categorías — vive en /blog.
+const BLOG_PREVIEW_COUNT = 3;
+const posts = allPosts.slice(0, BLOG_PREVIEW_COUNT);
 
 /**
  * Días que una novedad sigue siendo novedad: una semana por publicación.
@@ -236,13 +240,18 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
 
     {
       posts.length > 0 ? (
-        <ul class="card-list">
-          {posts.map((post) => (
-            <li>
-              <PostCard post={post} />
-            </li>
-          ))}
-        </ul>
+        <>
+          <ul class="card-list">
+            {posts.map((post) => (
+              <li>
+                <PostCard post={post} />
+              </li>
+            ))}
+          </ul>
+          <a class="btn btn--secondary blog-view-all" href={localizedPath('/blog', lang)}>
+            {t('blog.viewAll')} &rarr;
+          </a>
+        </>
       ) : (
         <div class="empty">
           <p>{t('blog.empty')}</p>
@@ -643,11 +652,9 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
     }
   }
 
-  .section-intro {
-    margin-top: var(--space-3);
-    color: var(--ink-soft);
-  }
-
+  /* El color/margen base de .section-intro vive en base.css (utilidad
+     global); aquí sólo queda el ajuste específico de esta página: el
+     espacio extra cuando justo debajo va una grid, un vacío o un botón. */
   .section-intro + .card-list,
   .section-intro + .empty,
   .section-intro + .btn {
@@ -673,6 +680,12 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
     .projects-grid:has(> li + li) {
       grid-template-columns: 1.4fr 1fr;
     }
+  }
+
+  /* Botón "Ver todo" del adelanto de blog: lleva a /blog, donde está el
+     listado completo con sus categorías. */
+  .blog-view-all {
+    margin-top: var(--space-6);
   }
 
   /* ── Formulario de contacto ─────────────────────────────────── */

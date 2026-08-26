@@ -21,7 +21,9 @@ const otherHref = alternate ?? alternatePath(Astro.url, lang);
 const links = [
   { href: `${home}#sobre-mi`, label: t('nav.about') },
   { href: `${home}#proyectos`, label: t('nav.projects') },
-  { href: `${home}#blog`, label: t('nav.blog') },
+  // A diferencia de los otros tres, este no es un ancla de la portada: /blog
+  // es su propia página, con el listado completo y las categorías.
+  { href: localizedPath('/blog', lang), label: t('nav.blog') },
   { href: `${home}#contacto`, label: t('nav.contact') },
 ];
 

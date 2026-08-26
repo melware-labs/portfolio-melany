@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { getLangFromUrl, localizedPath, useTranslations } from '../i18n/ui';
+import PostCover from './blog/PostCover.astro';
 
 interface Props {
   post: CollectionEntry<'blog'>;
@@ -22,6 +23,7 @@ const formattedDate = post.data.date.toLocaleDateString(lang === 'es' ? 'es-ES' 
 ---
 
 <article class="card post">
+  <PostCover category={post.data.category} cover={post.data.cover} />
   <p class="post-meta">
     <time datetime={post.data.date.toISOString()}>{formattedDate}</time>
   </p>

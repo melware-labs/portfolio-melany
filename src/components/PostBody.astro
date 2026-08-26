@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { getLangFromUrl, useTranslations, localizedPath } from '../i18n/ui';
+import PostCover from './blog/PostCover.astro';
 
 interface Props {
   post: CollectionEntry<'blog'>;
@@ -19,7 +20,9 @@ const formattedDate = post.data.date.toLocaleDateString(lang === 'es' ? 'es-ES' 
 
 <article class="section">
   <div class="container">
-    <a class="back" href={`${localizedPath('/', lang)}#blog`}>&larr; {t('blog.backToList')}</a>
+    <a class="back" href={localizedPath('/blog', lang)}>&larr; {t('blog.backToList')}</a>
+
+    <PostCover category={post.data.category} cover={post.data.cover} class="post-header-cover" />
 
     <header class="post-header">
       <p class="eyebrow">
@@ -44,7 +47,16 @@ const formattedDate = post.data.date.toLocaleDateString(lang === 'es' ? 'es-ES' 
     font-size: var(--step--1);
   }
 
+  /* Cabecera ilustrada del artículo: la misma PostCover que la card, aquí
+     más ancha y con su propio hueco arriba/abajo en vez del gap ajustado
+     de la card. */
+  :global(.post-header-cover) {
+    margin-top: var(--space-5);
+    max-width: 40rem;
+  }
+
   .post-header {
+    margin-top: var(--space-6);
     max-width: var(--measure);
     padding-bottom: var(--space-5);
     border-bottom: var(--border-width) solid var(--line);

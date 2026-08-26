@@ -1,0 +1,128 @@
+---
+/**
+ * El listado completo del blog: pestañas de categoría + grid de posts.
+ * La usan tanto /blog (todas las categorías) como /blog/categoria/[x]
+ * (una sola) — así la lógica de "qué pestañas mostrar" y "qué posts
+ * pintar" vive en un único sitio en vez de duplicarse por página.
+ *
+ * Las pestañas son enlaces reales a páginas estáticas, no un filtro por
+ * JavaScript: cada categoría tiene su propia URL, indexable y que
+ * funciona sin JS.
+ */
+import { getCollection } from 'astro:content';
+import { getLangFromUrl, useTranslations, localizedPath, type UIKey } from '../../i18n/ui';
+import { CATEGORY_ORDER, CATEGORY_LABEL_KEY, type BlogCategory } from '../../data/blog-categories';
+import PostCard from '../PostCard.astro';
+
+interface Props {
+  activeCategory?: BlogCategory;
+}
+const { activeCategory } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const allPosts = (await getCollection('blog', (p) => p.data.lang === lang && !p.data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+
+// Sólo se enseña una pestaña de categoría si tiene al menos un post
+// publicado — con dos o tres artículos en total, mostrar las cuatro
+// categorías de fábrica dejaría la mayoría vacías.
+const categoriesWithPosts = CATEGORY_ORDER.filter((cat) =>
+  allPosts.some((p) => p.data.category === cat)
+);
+
+const posts = activeCategory ? allPosts.filter((p) => p.data.category === activeCategory) : allPosts;
+
+const allHref = localizedPath('/blog', lang);
+const categoryHref = (cat: BlogCategory) => localizedPath(`/blog/categoria/${cat}`, lang);
+const categoryLabel = (cat: BlogCategory) => t(`blog.category.${CATEGORY_LABEL_KEY[cat]}` as UIKey);
+---
+
+{
+  categoriesWithPosts.length > 0 && (
+    <nav class="category-tabs" aria-label={t('blog.filterLabel')}>
+      <a
+        href={allHref}
+        class:list={['tab', { 'is-active': !activeCategory }]}
+        aria-current={!activeCategory ? 'page' : undefined}
+      >
+        {t('blog.viewAll')}
+      </a>
+      {categoriesWithPosts.map((cat) => (
+        <a
+          href={categoryHref(cat)}
+          class:list={['tab', { 'is-active': activeCategory === cat }]}
+          aria-current={activeCategory === cat ? 'page' : undefined}
+        >
+          {categoryLabel(cat)}
+        </a>
+      ))}
+    </nav>
+  )
+}
+
+{
+  posts.length > 0 ? (
+    <ul class="card-list">
+      {posts.map((post) => (
+        <li>
+          <PostCard post={post} />
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <div class="empty">
+      <p>{t('blog.empty')}</p>
+      <p>{t('blog.emptyHint')}</p>
+    </div>
+  )
+}
+
+<style>
+  .category-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+  .tab {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    color: var(--ink-soft);
+    padding: var(--space-2) var(--space-4);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-pill);
+    background: var(--surface-2);
+    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+  }
+  .tab:hover {
+    color: var(--ink);
+    border-color: var(--line-strong);
+  }
+  .tab.is-active {
+    color: var(--paper);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  /* Mismo margen tanto si va debajo de las pestañas como si no las hay
+     todavía (categoriesWithPosts vacío) y queda pegado a la intro. */
+  .card-list,
+  .empty {
+    margin-top: var(--space-6);
+  }
+
+  .card-list {
+    list-style: none;
+    display: grid;
+    gap: var(--space-4);
+  }
+  @media (min-width: 48rem) {
+    .card-list:has(> li + li) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

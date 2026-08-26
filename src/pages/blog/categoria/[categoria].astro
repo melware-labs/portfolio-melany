@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import BlogListing from '../../../components/blog/BlogListing.astro';
+import { useTranslations, type UIKey } from '../../../i18n/ui';
+import { CATEGORY_ORDER, CATEGORY_LABEL_KEY, type BlogCategory } from '../../../data/blog-categories';
+
+// Sólo se generan páginas para categorías con al menos un post publicado en
+// español — nada de rutas vacías por las que nadie puede llegar a nada.
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', (p) => p.data.lang === 'es' && !p.data.draft);
+  const categoriesWithPosts = CATEGORY_ORDER.filter((cat) => posts.some((p) => p.data.category === cat));
+
+  return categoriesWithPosts.map((categoria) => ({
+    params: { categoria },
+    props: { categoria },
+  }));
+}
+
+const { categoria } = Astro.props as { categoria: BlogCategory };
+const t = useTranslations('es');
+const label = t(`blog.category.${CATEGORY_LABEL_KEY[categoria]}` as UIKey);
+---
+
+<Base title={`${label} — ${t('blog.heading')} | Melany Martínez`} description={t('blog.intro')}>
+  <section class="section">
+    <div class="container">
+      <h1>{t('blog.heading')} — {label}</h1>
+      <p class="section-intro prose">{t('blog.intro')}</p>
+      <BlogListing activeCategory={categoria} />
+    </div>
+  </section>
+</Base>

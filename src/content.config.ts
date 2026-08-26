@@ -1,5 +1,6 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { CATEGORY_ORDER } from './data/blog-categories';
 
 /**
  * El contenido son archivos markdown en src/content/.
@@ -16,7 +17,17 @@ const blog = defineCollection({
     description: z.string(),
     date: z.coerce.date(),
     lang: z.enum(['es', 'en']),
+    // De qué trata: decide en qué pestaña del listado del blog sale y qué
+    // icono de portada le toca por defecto si no hay `cover`. Los valores
+    // posibles viven en src/data/blog-categories.ts.
+    category: z.enum(CATEGORY_ORDER),
+    // Etiquetas libres, más finas que la categoría. Todavía no se pintan
+    // en ningún sitio, pero el campo ya está listo para cuando haga falta.
     tags: z.array(z.string()).default([]),
+    // Nombre de una ilustración concreta (ver src/components/blog/PostCover.astro).
+    // Sin esto, la portada usa el icono genérico de la categoría — la
+    // mayoría de artículos no necesita rellenarlo.
+    cover: z.string().optional(),
     // Los borradores no se publican
     draft: z.boolean().default(false),
     // Une las dos versiones del mismo artículo: el mismo valor en el .md

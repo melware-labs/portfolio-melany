@@ -1,95 +1,87 @@
 ---
-title: How I vibe coded my portfolio
-description: I started out wanting it to look good and ended up learning that was never the problem. What happened along the way and what I took from it.
+title: 'Vibe coding a portfolio: what you gain and what it costs'
+description: I used AI to build most of this site. Here's what I think actually pays off, what doesn't, and what I'd watch for if I did it again.
 date: 2026-07-31
 lang: en
 translationKey: portfolio-vibe-coding
+category: programming
 tags:
   - learning
   - web
+cover: vibe-coding
 draft: false
 ---
 
-I'm a software engineering student, and for a while now I've had this
-uncomfortable feeling: I pass the exams, but I can't actually build
-anything. If someone sat me in front of a real project tomorrow, I would
-not know where to start.
+The question I get most about this site isn't "what do you study" or "what's
+your blog about". It's "did you actually build this?". Short answer: yes,
+with AI next to me the whole time, writing most of the code while I decided
+what to ask for and what to throw out.
 
-So I decided to do the only thing I could think of: start on my own and
-build myself a website. This one.
+That's vibe coding: describing what you want in plain language and letting a
+model write the code, instead of typing it line by line. I've spent the last
+few weeks doing that to build this site, and I have mixed feelings about it.
+So instead of telling the build story again, here's what I think it actually
+gains you, and what it costs.
 
-## The first thing I did was the wrong thing
+## What you gain
 
-I spent an enormous amount of time on how it looked.
+**Prototyping stops hurting.** Before landing on the look the site has now,
+I tried an eighties synthwave thing with neon and grids, then glitch
+effects, then a spinning 3D object, then a high school locker corridor,
+then an entire bedroom, lava lamp included. Without AI, each of those would
+have cost me a full afternoon of hand-written CSS. With vibe coding, each
+one cost a round of prompts. I could throw out six entire directions
+without feeling like I was throwing out six afternoons of work.
 
-I'm not exaggerating. I started with an eighties thing — neon, grids, one
-of those synthwave suns. Then I added glitch effects. Then a rotating 3D
-object. Then I threw it all out and went for a flat nineties cartoon look.
-Then I thought a high school locker corridor would be nice. Then an entire
-bedroom, with a window, a lava lamp and an old TV, drawn piece by piece.
+**It lowers the barrier to actually starting.** I've spent my whole degree
+with the feeling that I know how to pass exams but not how to build
+anything real. Sitting down in front of a blank editor with that feeling is
+paralysing. Sitting down in front of a chat and typing "I want a site that
+looks like this" isn't. I started, which is more than I'd managed in
+months.
 
-None of it convinced me and I couldn't work out why.
+**It makes you practise a different skill.** Not writing every line, but
+reading what someone else wrote and deciding if it holds up. That's a skill
+you rarely exercise when you learn to code alone, and it flips the usual
+question: it's no longer "can I write this" but "can I tell whether this is
+written well".
 
-## The moment it clicked
+## What it costs
 
-The clue had been in front of me the whole time: the background was so busy
-that the text on the homepage wasn't readable. I'd had to put an opaque card
-behind the words just to make them out.
+**It can hand you code you don't understand, if you don't ask.** The model
+doesn't flag when something is delicate. This site's mobile menu, for
+example, had to close on the Escape key, return focus to the button, and
+stop Tab from escaping to the links behind it. The first version it
+generated did none of that — it just worked, technically. I had to already
+know what was missing to go ask for it, and the model doesn't hand you that
+on its own.
 
-That's when it landed. If you have to cover the background to read what it
-says, the text isn't the problem. The background is.
+**Changing your mind gets dangerously cheap.** When trying a new look costs
+one prompt instead of one afternoon, it's very easy to spend weeks
+decorating something that's still empty inside. That happened to me: while
+I kept trying more elaborate backgrounds, the projects the site showed off
+were made up. Four fake projects, complete with descriptions and tech
+stacks, while I kept polishing background pixels. Easy visual iteration
+doesn't come with equally easy content — that part is still exactly as much
+yours as it always was.
 
-I'd spent weeks **decorating** instead of **building**. And I was decorating
-something empty: the projects listed on the site were made up, placeholders
-sitting there until I got round to adding real ones. Four projects that did
-not exist, complete with descriptions and tech stacks, as if it were nothing.
+**The question of who actually did the work matters more on a portfolio.**
+A portfolio isn't just any project — it's the proof you're showing that you
+can build something. If someone in an interview asks why I picked a
+specific contrast ratio, or how the menu works, I need to be able to
+actually answer, not repeat whatever the model put in a comment.
 
-I pictured someone in an interview asking me about one of them, and cringed.
-So I deleted everything and started again.
+## Where I landed
 
-## The new idea: tell the truth
+I'm not fully for or against it. For exploring fast, and for starting when
+the blank page feels too heavy, vibe coding has worked great for me. As a
+substitute for understanding what's underneath, it's a disaster — and the
+line between the two is thinner than it looks at first.
 
-The instinct when you build a portfolio as a student is to look like you
-know more than you do. A long list of technologies, projects that sound
-important, "passionate about creating innovative solutions".
+If I started over, I'd still use it. But I'd read every change before
+accepting it, ask "why" more than I did at the start, and hold myself to
+being able to explain any line of this site as if I'd written it alone —
+because as far as who's accountable for it, I did.
 
-I decided to do the opposite: say exactly where I am, and use the site to
-show how I'm moving. If I'm just starting, let that show — but let it also
-show that I'm not standing still.
-
-That solved the content problem in one go. I don't need six impressive
-projects. I need to start, and to make the progress visible.
-
-## What I learned building it
-
-Things I didn't know a few weeks ago:
-
-**A website barely needs any JavaScript.** This entire site is under 50 KB,
-and the only code that runs in your browser is the mobile menu. Everything
-else is HTML that already exists. It's fast because there's almost nothing
-to load.
-
-**A mobile menu has far more to it than it looks.** Opening and closing
-isn't enough. It has to close on the Escape key, and return focus to the
-button when it does. It has to stop the page behind it from scrolling while
-it's open. And if you navigate by keyboard, Tab must not escape to the links
-underneath. None of that is visible — but without it, the site is broken for
-the people who need it.
-
-**Colour contrast is something you can measure.** There's a formula for
-whether text is readable against a background. The first colour I picked for
-buttons scored 4.4 against a recommended minimum of 4.5. Barely off, but
-off. I darkened it slightly and it came out at 5.5. Now it's readable, and
-it doesn't depend on whether it looks fine to me.
-
-**Separating content from code changes everything.** This post is a text
-file. Publishing it didn't require touching a single component. If
-publishing is hard work, you don't publish.
-
-## What's next
-
-Write more, build small things and break them. Get the site properly online.
-And keep writing about it here.
-
-If you're somewhere similar: the problem probably isn't that you don't know
-enough. It's that you're waiting to know enough before starting.
+If you're building your portfolio this way too: use it, but don't let it be
+the only one who understands your own site.

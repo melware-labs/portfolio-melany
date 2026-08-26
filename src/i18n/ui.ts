@@ -18,7 +18,7 @@ export const ui = {
   es: {
     'site.title': 'Melany Martínez | Melware Labs',
     'site.description':
-      'Portfolio de Melany Martínez | Software Engineer',
+      'Portfolio de Melany Martínez | Estudiante de Ingeniería del Software',
 
     'nav.skip': 'Saltar al contenido',
     'nav.home': 'Inicio',
@@ -64,13 +64,19 @@ export const ui = {
 
     'blog.heading': 'Blog',
     'blog.intro':
-      'Vibe coding, IA y muchas pruebas: aquí cuento cómo construyo cosas rápido, qué herramientas uso y lo que aprendo en el camino.',
+      'No sólo IA: aquí escribo sobre programación, cosas de la carrera y lo que voy viviendo como estudiante. Vibe coding, pruebas, aciertos y errores por el camino.',
     'blog.readMore': 'Seguir leyendo',
     'blog.empty': 'Aún no he publicado nada. Estoy en ello, prometido.',
-    'blog.emptyHint': 'El primero va a ser sobre cómo construí esta web haciendo vibe coding con IA.',
+    'blog.emptyHint': 'El primero va sobre las ventajas y los riesgos de hacer vibe coding con IA.',
     'blog.readingTime': 'min de lectura',
     'blog.backToList': 'Volver al blog',
     'blog.publishedOn': 'Publicado el',
+    'blog.viewAll': 'Ver todo',
+    'blog.filterLabel': 'Filtrar por categoría',
+    'blog.category.ai': 'IA',
+    'blog.category.programming': 'Programación',
+    'blog.category.career': 'Carrera',
+    'blog.category.studentLife': 'Vida de estudiante',
 
     'contact.heading': 'Contacto',
     'contact.intro':
@@ -105,7 +111,7 @@ export const ui = {
   en: {
     'site.title': 'Melany Martínez | Melware Labs',
     'site.description':
-      'Portfolio de Melany Martínez | Software Engineer',
+      'Portfolio by Melany Martínez | Software Engineering Student',
 
     'nav.skip': 'Skip to content',
     'nav.home': 'Home',
@@ -147,13 +153,19 @@ export const ui = {
 
     'blog.heading': 'Blog',
     'blog.intro':
-      'Vibe coding, AI tools and lots of trial and error: I write about how I build things fast, what tools I use and what I learn along the way.',
+      "Not just AI: I also write about programming, coursework and what it's actually like being a student. Vibe coding, trial and error, what works and what doesn't.",
     'blog.readMore': 'Read more',
     'blog.empty': "I haven't published anything yet. Working on it, I promise.",
-    'blog.emptyHint': 'The first one will be about how I vibe-coded this entire site with AI.',
+    'blog.emptyHint': 'The first one is about the upsides and the risks of vibe-coding with AI.',
     'blog.readingTime': 'min read',
     'blog.backToList': 'Back to the blog',
     'blog.publishedOn': 'Published on',
+    'blog.viewAll': 'View all',
+    'blog.filterLabel': 'Filter by category',
+    'blog.category.ai': 'AI',
+    'blog.category.programming': 'Programming',
+    'blog.category.career': 'Coursework',
+    'blog.category.studentLife': 'Student life',
 
     'contact.heading': 'Contact',
     'contact.intro':
