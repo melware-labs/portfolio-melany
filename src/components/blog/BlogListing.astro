@@ -130,7 +130,11 @@ const categoryLabel = (cat: BlogCategory) => t(`blog.category.${CATEGORY_LABEL_K
   }
   @media (min-width: 48rem) {
     .card-list:has(> li + li) {
-      grid-template-columns: repeat(2, 1fr);
+      /* minmax(0, 24rem) en vez de 1fr: las columnas no se estiran más
+         allá del ancho real de la card (ya topada a max-width arriba), si
+         no queda un hueco muerto entre una card y la siguiente además del
+         gap — que es justo lo que se veía como "muy separadas". */
+      grid-template-columns: repeat(2, minmax(0, 24rem));
     }
   }
 </style>
