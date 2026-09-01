@@ -38,7 +38,7 @@ proyecto arranca o se queda sólo en la cabeza.
 
 **Te obliga a practicar una habilidad distinta.** No la de escribir cada
 línea, sino la de leer lo que ha escrito otro y decidir si tiene sentido.
-Es una habilidad que casi nunca se entrena aprendiendo a programar sola, y
+Es una habilidad que casi nunca se entrena aprendiendo a programar en solitario, y
 le da la vuelta a la pregunta de siempre: ya no es «¿sé escribir esto?»
 sino «¿sé si esto está bien escrito?».
 
@@ -75,5 +75,5 @@ y la línea entre las dos cosas es más fina de lo que parece al principio.
 Si vas a construir tu portfolio así, mi consejo es sencillo: léete cada
 cambio antes de aceptarlo, pregunta «por qué» más de lo que te apetece, y
 no te conformes hasta poder explicar cualquier línea como si la hubieras
-escrito tú sola. Porque a efectos de quién responde por ese proyecto en una
+escrito tú. Porque a efectos de quién responde por ese proyecto en una
 entrevista, la responsable eres tú.
