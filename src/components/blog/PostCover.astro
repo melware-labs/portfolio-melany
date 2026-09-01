@@ -16,6 +16,7 @@ import CoverProgramming from './covers/CoverProgramming.astro';
 import CoverCareer from './covers/CoverCareer.astro';
 import CoverStudentLife from './covers/CoverStudentLife.astro';
 import CoverVibeCoding from './covers/CoverVibeCoding.astro';
+import CoverLogicaSemana from './covers/CoverLogicaSemana.astro';
 
 interface Props {
   category: BlogCategory;
@@ -35,13 +36,14 @@ const categoryIcons: Record<BlogCategory, AstroComponentFactory> = {
 // categoría entera. Añadir una nueva: un caso aquí + su componente en covers/.
 const namedCovers: Record<string, AstroComponentFactory> = {
   'vibe-coding': CoverVibeCoding,
+  'logica-semana': CoverLogicaSemana,
 };
 
 // De estos, cuáles son fotos reales en vez de iconos SVG: una foto necesita
 // más alto que la franja fina de los iconos para no recortar lo importante
 // (ver la regla `.post-cover--photo` más abajo), así que el panel cambia de
 // forma según lo que va dentro.
-const PHOTO_COVERS = new Set(['vibe-coding']);
+const PHOTO_COVERS = new Set(['vibe-coding', 'logica-semana']);
 const isPhoto = cover ? PHOTO_COVERS.has(cover) : false;
 
 const Icon = (cover && namedCovers[cover]) || categoryIcons[category];

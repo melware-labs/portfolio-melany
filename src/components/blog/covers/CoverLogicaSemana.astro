@@ -1,0 +1,24 @@
+---
+/**
+ * Portada específica del post de organizar la semana con lógica: el mismo
+ * gato del post de vibe coding, ahora en pose pensativa — por eso vive
+ * fuera del switch de categorías de PostCover.astro, igual que
+ * CoverVibeCoding. La clase "post-cover-photo" es la que le dice a
+ * PostCover.astro que la trate como foto (a sangre, recortada) y no como
+ * icono centrado. El object-position en línea pisa el 50%/20% por defecto
+ * de PostCover.astro (pensado para la foto del gato de vibe coding, donde
+ * lo importante está arriba): en esta foto la pata en la barbilla queda
+ * más centrada, y con el recorte por defecto se perdía.
+ */
+import { Image } from 'astro:assets';
+import thinkingCat from '../../../assets/blog/thinking-cat.jpg';
+---
+
+<Image
+  class="post-cover-photo"
+  src={thinkingCat}
+  alt=""
+  width={800}
+  height={Math.round(800 * (thinkingCat.height / thinkingCat.width))}
+  style="object-position: 50% 45%"
+/>
