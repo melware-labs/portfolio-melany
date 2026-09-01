@@ -687,6 +687,14 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
     .card-list:has(> li + li) {
       grid-template-columns: repeat(2, 1fr);
     }
+    /* posts-grid concretamente: minmax(0, 24rem) en vez de 1fr, porque sus
+       cards ya están topadas a max-width arriba — con 1fr las columnas se
+       estiran más allá de ese ancho y queda un hueco muerto entre una card
+       y la siguiente, además del gap. Los proyectos no llevan este tope
+       (su "bento" reparte el ancho a propósito), así que siguen con 1fr. */
+    .posts-grid:has(> li + li) {
+      grid-template-columns: repeat(2, minmax(0, 24rem));
+    }
     /* Proyectos concretamente en "bento" — una tarjeta más ancha que
        la otra, como el grid de la referencia — en vez de dos iguales. */
     .projects-grid:has(> li + li) {
