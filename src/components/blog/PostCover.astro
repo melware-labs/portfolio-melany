@@ -64,6 +64,9 @@ const Icon = (cover && namedCovers[cover]) || categoryIcons[category];
     display: grid;
     place-items: center;
     overflow: hidden;
+    /* position:relative como referencia para .post-cover-photo (position:
+       absolute + inset). Sin esto no cambia nada para el icono SVG. */
+    position: relative;
     border-radius: var(--radius);
     border: var(--border-width) solid var(--line);
     background:
@@ -91,6 +94,15 @@ const Icon = (cover && namedCovers[cover]) || categoryIcons[category];
      que es donde están la cara del gato y la pantalla en la foto original;
      lo que se recorta es la parte de abajo (teclado), la menos importante. */
   .post-cover :global(.post-cover-photo) {
+    /* position:absolute + inset:0 en vez de width/height:100%: dentro de
+       un grid centrado (place-items: center) cuya altura viene de
+       aspect-ratio, el height:100% del hijo no se resolvía bien en
+       pantallas estrechas (se veía la mitad de la foto y hueco vacío
+       encima) — bug real reproducido, no sólo en Safari. inset:0 fija el
+       tamaño contra los bordes del contenedor directamente, sin pasar por
+       ese cálculo de porcentaje. */
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
