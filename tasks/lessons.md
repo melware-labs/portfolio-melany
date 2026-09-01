@@ -95,3 +95,27 @@ que le pasaba lo mismo por la derecha, y además por abajo, porque ahí la caja
 mide un renglón (`line-height: 1.12`) y los descendentes sobresalen. Lleva los
 dos colchones. **Regla: si un texto está duplicado (splash, og:image, 404…),
 comprobar cada copia por separado.**
+
+## Portada de post en móvil (2026-09-01)
+
+**`height: 100%` en un hijo de un grid centrado cuya altura sale de
+`aspect-ratio` no se resolvía bien en pantallas estrechas.** `.post-cover` es
+`display: grid; place-items: center` con la altura fijada por
+`aspect-ratio` (no un `height` explícito). El `<img class="post-cover-photo">`
+llevaba `width: 100%; height: 100%; object-fit: cover` — el ancho sí llenaba
+el contenedor, pero el alto se calculaba por el ratio intrínseco de la
+imagen en vez de por el 100%: se veía media foto con un hueco vacío encima,
+reproducible en Chrome, no sólo Safari. Arreglado con
+`position: absolute; inset: 0` en vez de `width/height: 100%` — evita el
+cálculo de porcentaje contra una altura implícita del todo.
+**Regla: cuando un hijo tiene que "llenar" un contenedor cuyo tamaño no es un
+`width`/`height` explícito (viene de `aspect-ratio`, `grid-template`,
+contenido…), usar `position: absolute; inset: 0` en vez de `width/height:
+100%` — es más robusto entre navegadores y anchos de viewport.**
+
+**Verificar en desktop no basta para nada que dependa de un ancho concreto.**
+Dos veces seguidas (el hueco entre cards del grid, y esta) verifiqué en
+desktop, di el fix por bueno, y el problema real sólo se veía en móvil o en
+un ancho de card distinto. **Regla: cualquier fix de layout de cards/grid
+hay que probarlo también con `resize_window` a móvil antes de darlo por
+cerrado — no basta con la captura de escritorio.**
