@@ -1,8 +1,8 @@
 # Portfolio de Melany Martinez
 
-Estudiante de Ingeniería del Software en la UMA (Málaga). Hecha desde cero con [Astro](https://astro.build), en español e inglés.
+Soy una estudiante de Ingeniería del Software en la UMA (Málaga). He hecho una web desde cero con [Astro](https://astro.build), en español e inglés, el cual es mi portfolio de proyectos generales.
 
-## Cómo levantarla
+## ¿Cómo hacerla?
 
 Hace falta tener [Node.js](https://nodejs.org) 22.12 o superior.
 
