@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import { getLangFromUrl, useTranslations, localizedPath } from '../i18n/ui';
 import ProjectCard from './ProjectCard.astro';
 import PostCard from './PostCard.astro';
+import CourseCard from './CourseCard.astro';
 import AboutCard from './AboutCard.astro';
 import Splash from './Splash.astro';
 
@@ -43,6 +44,10 @@ function freshUntil(dates: (Date | undefined)[]): Date | null {
 
 const projectsNewUntil = freshUntil(projects.map((p) => p.data.date));
 const postsNewUntil = freshUntil(posts.map((p) => p.data.date));
+
+// Para añadir un curso: sumar su id aquí y sus textos course.<id>.title,
+// .desc y .topics en ui.ts (es y en). `soon` pinta la etiqueta "Próximamente".
+const courses = [{ id: 'java', soon: true }];
 
 const email = 'melanymartinez667@gmail.com';
 
@@ -229,6 +234,28 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
         </div>
       )
     }
+  </div>
+</section>
+
+<!-- ── Cursos ───────────────────────────────────────────────── -->
+<section id="cursos" class="section scroll-fade">
+  <div class="container">
+    <h2>{t('courses.heading')}</h2>
+    <p class="section-intro prose">{t('courses.intro')}</p>
+    <ul class="card-list courses-grid">
+      {
+        courses.map((course) => (
+          <li>
+            <CourseCard
+              title={t(`course.${course.id}.title`)}
+              description={t(`course.${course.id}.desc`)}
+              topics={t(`course.${course.id}.topics`) as unknown as string[]}
+              soon={course.soon}
+            />
+          </li>
+        ))
+      }
+    </ul>
   </div>
 </section>
 
