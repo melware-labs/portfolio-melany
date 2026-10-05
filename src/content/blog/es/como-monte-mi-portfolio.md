@@ -12,68 +12,63 @@ cover: vibe-coding
 draft: false
 ---
 
-El vibe coding —describir lo que quieres en lenguaje normal y dejar que un
-modelo escriba el código, en vez de teclearlo tú— se ha colado en cómo mucha
-gente arranca sus primeros proyectos. Con un portfolio la tentación es
-enorme: en un par de tardes ya tienes algo que enseñar, en vez de pasarte
-semanas peleándote con CSS, y eso cuesta ignorarlo. Pero como con cualquier
-atajo, conviene mirar con calma qué se gana y qué se pierde antes de apostarlo
-todo a esa carta.
+El vibe coding (describir lo que quieres con palabras normales y dejar que un
+modelo escriba el código en vez de teclearlo tú) se ha metido en cómo mucha
+gente empieza sus primeros proyectos. Con un portfolio la tentación es grande:
+en un par de tardes ya tienes algo que enseñar, en vez de pasarte semanas
+peleando con CSS. Pero como con cualquier atajo, conviene pensar qué ganas y
+qué pierdes antes de jugártelo todo a eso.
 
 ## Ventajas
 
-**Prototipar deja de doler.** Probar una estética completamente distinta
-—del neón ochentero a algo minimalista, de una rejilla synthwave a un diseño
-plano— ya no se come una tarde entera de CSS a mano; se resuelve en un rato
-de prompts. Y eso cambia algo más de fondo: puedes tirar una idea que no
-convence sin sentir que tiras horas de trabajo, y llegas antes a la versión
+**Probar cosas deja de doler.** Probar una estética totalmente distinta (del
+neón ochentero a algo minimalista, de una rejilla synthwave a un diseño plano)
+ya no se come una tarde entera de CSS a mano, se resuelve en un rato de
+prompts. Y eso cambia más cosas de las que parece: puedes tirar una idea que no
+te convence sin sentir que tiras horas de trabajo, y llegas antes a la versión
 que sí encaja.
 
-**Bajar la barrera para empezar.** Sentarse frente a un editor en blanco, sin
-saber ni por dónde arrancar, es de lo que más frena a quien está aprendiendo.
-Sentarse frente a un chat y contar qué quieres construir, no tanto. Y en un
-portfolio, que muchas veces se queda en un «ya lo haré cuando sepa más», esa
-diferencia decide si el proyecto arranca o se queda para siempre en la
-cabeza.
+**Es más fácil empezar.** Sentarte delante de un editor en blanco sin saber ni
+por dónde arrancar es de lo que más frena a quien está aprendiendo. Sentarte
+delante de un chat y contar qué quieres hacer, no tanto. Y un portfolio muchas
+veces se queda en un "ya lo haré cuando sepa más", así que esa diferencia
+decide si el proyecto arranca o se queda para siempre en la cabeza.
 
-**Practicas otra habilidad.** No la de escribir cada línea, sino la de leer
-lo que ha escrito otro y decidir si tiene sentido. Aprendiendo a programar en
-solitario casi nunca se entrena, y de paso le da la vuelta a la pregunta de
-siempre: ya no es «¿sé escribir esto?», sino «¿sé si esto está bien
-escrito?». Incómoda, la verdad.
+**Practicas otra cosa.** No escribir cada línea, sino leer lo que ha escrito
+otro y decidir si tiene sentido. Aprendiendo a programar en solitario casi
+nunca se practica, y además cambia la pregunta de siempre: ya no es "¿sé
+escribir esto?", sino "¿sé si esto está bien escrito?". Es una pregunta
+incómoda, la verdad.
 
 ## Desventajas
 
 **Te puede dar código que no entiendes, si no preguntas.** Un modelo no avisa
-cuando algo es delicado. Que un menú móvil se cierre con la tecla Escape, que
-devuelva el foco a quien lo abrió, que el tabulador no se escape a enlaces
-ocultos: nada de eso suele salir bien a la primera si no se pide de forma
-explícita. Y sin saber que faltan, nadie lo pide. El vibe coding no sustituye
-el criterio de saber qué preguntar.
+cuando algo es delicado. Que el menú del móvil se cierre con la tecla Escape,
+que devuelva el foco a quien lo abrió, que el tabulador no se escape a enlaces
+ocultos: nada de eso suele salir bien a la primera si no lo pides. Y si no
+sabes que falta, no lo pides. El vibe coding no sustituye saber qué preguntar.
 
-**Cambiar de idea sale peligrosamente barato.** Cuando probar una estética
-nueva cuesta un prompt y no una tarde, es facilísimo pasarte semanas dándole
-vueltas al aspecto de algo que sigue vacío por dentro: un fondo tras otro, una
-tipografía tras otra, mientras el contenido real —los proyectos, lo que de
-verdad sabes hacer— sigue sin escribirse. Iterar en lo visual se volvió fácil.
-Con el contenido no pasa lo mismo: ese cuesta exactamente lo que ha costado
-siempre.
+**Cambiar de idea sale demasiado barato.** Cuando probar una estética nueva
+cuesta un prompt y no una tarde, es muy fácil pasarte semanas dándole vueltas
+al aspecto de algo que sigue vacío por dentro: un fondo tras otro, una
+tipografía tras otra, mientras lo importante, que son los proyectos y lo que de
+verdad sabes hacer, sigue sin escribirse. Cambiar lo visual se volvió fácil.
+Escribir el contenido cuesta lo mismo que siempre.
 
 **La duda de quién hizo el trabajo pesa más en un portfolio que en cualquier
 otro proyecto.** Un portfolio es la prueba que enseñas de que sabes construir
-algo. Si en una entrevista te preguntan por qué elegiste un contraste de color
-concreto o cómo funciona una animación, tienes que poder contestar de verdad,
-no repetir lo que el modelo dejó escrito en un comentario.
+algo. Si en una entrevista te preguntan por qué elegiste un color concreto o
+cómo funciona una animación, tienes que poder contestar de verdad, no repetir
+lo que el modelo dejó escrito en un comentario.
 
 ## Dónde me quedo
 
-Ni a favor ni en contra, sin más. Para explorar rápido, y para arrancar cuando
-la hoja en blanco pesa demasiado, el vibe coding funciona de maravilla. Como
-sustituto de entender lo que hay debajo es un desastre, y la línea entre una
-cosa y la otra es más fina de lo que parece al principio.
+Ni a favor ni en contra, sin más. Para probar cosas rápido, y para empezar
+cuando la hoja en blanco da demasiado miedo, el vibe coding funciona de
+maravilla. Como sustituto de entender lo que hay debajo es un desastre, y la
+línea entre una cosa y la otra es más fina de lo que parece al principio.
 
-Si vas a construir tu portfolio así, mi consejo es sencillo. Léete cada cambio
-antes de aceptarlo. Pregunta «por qué» más de lo que te apetezca. Y no te
+Si vas a hacer tu portfolio así, mi consejo es sencillo. Léete cada cambio
+antes de aceptarlo. Pregunta "por qué" más de lo que te apetezca. Y no te
 conformes hasta poder explicar cualquier línea como si la hubieras escrito tú,
-porque a la hora de la verdad, en una entrevista, quien responde por ese
-proyecto eres tú.
+porque en una entrevista quien responde por ese proyecto eres tú.
