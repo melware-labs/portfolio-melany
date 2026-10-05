@@ -19,7 +19,7 @@ y la sensación de que se me escapaba algo importante entre las clases, la
 carrera y los ratos que quiero dedicarle a Melware Labs. Hasta que un día,
 mientras intentaba (otra vez) decidir qué hacer primero, me di cuenta de una
 cosa: llevaba semanas resolviendo a mano un problema que llevo un buen tiempo
-aprendiendo a resolverle a una computadora, y nunca se me había ocurrido usar
+aprendiendo a resolver con código, y nunca se me había ocurrido usar
 esa misma lógica conmigo.
 
 ## El problema, sin lógica de por medio
@@ -70,7 +70,7 @@ otro mundo: ordenar una lista de tareas según esas dos variables.
 const tareas = [
   { nombre: 'Entregar proyecto', urgente: true, importante: true },
   { nombre: 'Avanzar Melware Labs', urgente: false, importante: true },
-  { nombre: 'Responder mensaje random', urgente: true, importante: false },
+  { nombre: 'Responder un mensaje cualquiera', urgente: true, importante: false },
   { nombre: 'Ver ese video que me mandaron', urgente: false, importante: false },
 ];
 
@@ -92,7 +92,7 @@ es urgente".
 ## Lo que me llevo
 
 Lo curioso es que llevaba tiempo aprendiendo a pensar así para resolverle
-problemas a una computadora y no había probado a usarlo conmigo. La lógica no se
+problemas con código y no había probado a usarlo conmigo. La lógica no se
 queda encerrada en el editor de código. Sirve para mirar cualquier lío y
 preguntarte qué partes son de verdad distintas, qué se repite y qué regla
 sencilla resuelve el 90% de los casos sin tener que decidirlo todo desde cero
