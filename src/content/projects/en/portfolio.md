@@ -13,14 +13,8 @@ repo: https://github.com/melware-labs/portfolio-melany
 url: /
 ---
 
-The first Melware Labs project is the site you are looking at.
+The first Melware Labs project is the site you're looking at.
 
-I built it from scratch, with no template, so I would actually learn how a website works instead of copying something I did not understand.
+I built it from scratch, with no template, to really learn how a website works on the inside instead of just copying and pasting something I didn't understand. It's slower, sure, but you understand what's going on.
 
-**What is under the hood:**
-
-- It ships in Spanish and English, with proper routing and language tags.
-- The whole site is keyboard navigable and focus is always visible.
-- It is designed for mobile first, then scaled up to larger screens.
-- There is little JavaScript, and what there is stays focused: the mobile menu, the contact form and the cursor light effects.
-- Posts and projects are plain text files, so publishing something new needs no code changes.
+It's in Spanish and English, with the routes and language tags set up properly. You can get around the whole site with the keyboard, and the focus is always visible. I designed it first for small screens and then scaled it up to large ones. It has little JavaScript, and what's there stays focused: the navigation menu, the contact form and the light effects that follow the cursor. Articles and projects are text files, so publishing something new doesn't mean touching code.

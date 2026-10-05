@@ -12,15 +12,15 @@ order: 2
 date: 2026-08-07
 ---
 
-A side experiment away from the rest of the portfolio: I wanted to try
+A side experiment, apart from the rest of the portfolio. I wanted to try
 writing real shaders by hand, not copied from anywhere.
 
-It's a point cloud sampled uniformly over a sphere (the Marsaglia method,
-a classic algorithm), with a vertex shader that makes every point breathe
-and spin at its own pace, and a fragment shader that paints a three-colour
-gradient based on distance from the centre. The cursor moves the camera
-and scrolling pushes the viewpoint in.
+The base is a point cloud spread evenly over a sphere (the Marsaglia method, a
+classic algorithm). On top of that is a vertex shader that makes every point
+breathe and spin at its own pace, and a fragment shader that paints a
+three-color gradient based on distance from the center. The cursor moves the
+camera and scrolling pulls the viewpoint closer.
 
-It lives on its own page because the effect needs the full viewport and
-is heavier than the rest of the site — I didn't want something like this
-to affect the main site's performance.
+It lives on its own page, and there's a reason. The effect needs the full
+viewport and is quite a bit heavier than the rest of the site, so I didn't want
+it affecting the main site's performance.
