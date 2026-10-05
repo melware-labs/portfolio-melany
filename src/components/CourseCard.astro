@@ -1,0 +1,93 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/ui';
+
+interface Props {
+  title: string;
+  description: string;
+  topics: string[];
+  soon?: boolean;
+}
+
+const { title, description, topics, soon = false } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<article class="card course">
+  <header class="course-head">
+    <h3>{title}</h3>
+    {soon && <span class="badge">{t('courses.soon')}</span>}
+  </header>
+
+  <p class="course-desc">{description}</p>
+
+  <div class="course-footer">
+    <h4>{t('courses.topicsLabel')}</h4>
+    <ul class="topics">
+      {topics.map((topic) => <li>{topic}</li>)}
+    </ul>
+  </div>
+</article>
+
+<style>
+  .course {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .course-head {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+  .course-head h3 {
+    flex: 1 1 auto;
+  }
+
+  .badge {
+    flex: 0 0 auto;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    padding: 0.2rem var(--space-3);
+    border-radius: var(--radius-pill);
+    background: var(--accent);
+    color: var(--paper);
+  }
+
+  .course-desc {
+    color: var(--ink-soft);
+  }
+
+  .course-footer {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .course-footer h4 {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+
+  .topics {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .topics li {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+    background: var(--surface-2);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius);
+    padding: 0.1rem var(--space-2);
+  }
+</style>

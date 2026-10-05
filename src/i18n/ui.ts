@@ -62,6 +62,24 @@ export const ui = {
     'projects.viewLive': 'Verlo en vivo',
     'projects.inProgress': 'En construcción',
 
+    'courses.heading': 'Cursos',
+    'courses.intro': 'Guías prácticas que escribo mientras aprendo, con ejercicios para practicar.',
+    'courses.topicsLabel': 'Temario',
+    'courses.soon': 'Próximamente',
+    'course.java.title': 'Curso de Java',
+    'course.java.desc':
+      'Java desde cero, explicado paso a paso con ejercicios prácticos: desde el primer programa hasta bucles, métodos, arrays y listas.',
+    'course.java.topics': [
+      'Estructura de un programa y el método main',
+      'Variables, tipos de datos y casting',
+      'Operadores y condicionales (if/else y switch)',
+      'Entrada de datos por teclado',
+      'Bucles: for, while y do-while',
+      'Métodos, ámbito y paso por valor',
+      'Arrays, for each y ArrayList',
+      'Bucles anidados y sobrecarga de métodos',
+    ],
+
     'blog.heading': 'Blog',
     'blog.intro':
       'No sólo IA: aquí escribo sobre programación, cosas de la carrera y lo que voy viviendo como estudiante. Vibe coding, pruebas, aciertos y errores por el camino.',
@@ -150,6 +168,24 @@ export const ui = {
     'projects.viewCode': 'View code',
     'projects.viewLive': 'View live',
     'projects.inProgress': 'Work in progress',
+
+    'courses.heading': 'Courses',
+    'courses.intro': "Hands-on guides I write while I learn, with exercises to practice.",
+    'courses.topicsLabel': 'Syllabus',
+    'courses.soon': 'Coming soon',
+    'course.java.title': 'Java course',
+    'course.java.desc':
+      'Java from scratch, explained step by step with hands-on exercises: from your first program to loops, methods, arrays and lists.',
+    'course.java.topics': [
+      'Program structure and the main method',
+      'Variables, data types and casting',
+      'Operators and conditionals (if/else and switch)',
+      'Reading input from the keyboard',
+      'Loops: for, while and do-while',
+      'Methods, scope and pass by value',
+      'Arrays, for each and ArrayList',
+      'Nested loops and method overloading',
+    ],
 
     'blog.heading': 'Blog',
     'blog.intro':
