@@ -481,3 +481,27 @@ Melany la pidió para que se note cuando sube un proyecto o publica un artículo
       queda en 2px). Se puede bajar sin perder el nivel AA porque el campo
       avisa dos veces —su borde ya se pone rojo— y el rojo va sobradísimo del
       3:1 que se pide; lo que se pierde es el mínimo de 2px del criterio AAA
+
+## Pasada con humanizar-texto-es sobre el contenido existente (2026-10-05)
+
+Melany pidió pasar por la skill todo el contenido ya publicado, en la web y en el repo.
+
+- [x] Reescritos en español: los dos posts (`como-monte-mi-portfolio`,
+      `como-organizo-mi-semana-con-logica`) y las dos fichas de proyecto
+      (`portfolio`, `tormenta`). Mismas ideas y mismos hechos, otro ritmo.
+- [x] Dejados como estaban, a propósito: `ui.ts` (textos cortos y ya en su voz),
+      el README (lo editó ella a mano el 18/09), plantillas, comentarios de
+      código, `tasks/`, y todo el inglés (la skill es sólo para español).
+- [x] Corregidos de paso dos femeninos genéricos dirigidos a quien lee que se
+      me habían escapado: "tranquila" y "la responsable eres tú".
+- [x] Corregido un dato falso en `projects/portfolio` (ES y EN): decía que la
+      web sólo llevaba JavaScript para el menú del móvil; hoy lleva también el
+      formulario y los efectos de luz del cursor.
+- [x] Quitado de las dos versiones del post de la semana "dos años" y que
+      llegó a la matriz de Eisenhower sin haberla leído: eran datos suyos que
+      puse yo sin que me los diera.
+- [ ] Pendiente de que Melany confirme qué es real en el post de la semana
+      (el cuaderno de los lunes, la lista mental): lo escribí yo sobre una
+      premisa suya, no con anécdotas que ella contara.
+- Verificado: `npm run build` limpio (13 páginas). `astro check` da 4 errores,
+  todos de su trabajo sin commitear de la sección Cursos (`Home.astro`, `ui.ts`).
