@@ -15,9 +15,9 @@ draft: false
 El vibe coding (describir lo que quieres con palabras normales y dejar que un
 modelo escriba el código en vez de teclearlo tú) se ha metido en cómo mucha
 gente empieza sus primeros proyectos. Con un portfolio la tentación es grande:
-en un par de tardes ya tienes algo que enseñar, en vez de pasarte semanas
+en un par de tardes ya tienes algo que mostrar, en vez de pasarte semanas
 peleando con CSS. Pero como con cualquier atajo, conviene pensar qué ganas y
-qué pierdes antes de jugártelo todo a eso.
+qué pierdes antes de apostarlo todo a eso.
 
 ## Ventajas
 
@@ -43,7 +43,7 @@ incómoda, la verdad.
 ## Desventajas
 
 **Te puede dar código que no entiendes, si no preguntas.** Un modelo no avisa
-cuando algo es delicado. Que el menú del móvil se cierre con la tecla Escape,
+cuando algo es delicado. Que el menú de navegación se cierre con la tecla Escape,
 que devuelva el foco a quien lo abrió, que el tabulador no se escape a enlaces
 ocultos: nada de eso suele salir bien a la primera si no lo pides. Y si no
 sabes que falta, no lo pides. El vibe coding no sustituye saber qué preguntar.
@@ -68,7 +68,7 @@ cuando la hoja en blanco da demasiado miedo, el vibe coding funciona de
 maravilla. Como sustituto de entender lo que hay debajo es un desastre, y la
 línea entre una cosa y la otra es más fina de lo que parece al principio.
 
-Si vas a hacer tu portfolio así, mi consejo es sencillo. Léete cada cambio
-antes de aceptarlo. Pregunta "por qué" más de lo que te apetezca. Y no te
+Si vas a hacer tu portfolio así, mi consejo es sencillo. Lee cada cambio
+antes de aceptarlo. Pregunta "por qué" más de lo que creas necesario. Y no te
 conformes hasta poder explicar cualquier línea como si la hubieras escrito tú,
 porque en una entrevista quien responde por ese proyecto eres tú.
