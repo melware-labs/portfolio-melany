@@ -242,25 +242,65 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
     <p class="section-intro prose">{t('course.intro')}</p>
 
     <article class="card course">
-      <span class="course-badge">{t('course.status')}</span>
-      <h3>{t('course.cardTitle')}</h3>
-      <p class="course-text">{t('course.cardText')}</p>
-      <ul class="course-topics">
-        {courseTopics.map((topic) => <li>{topic}</li>)}
-      </ul>
-      <a class="btn btn--primary course-cta" href={COURSE_REPO} target="_blank" rel="noopener noreferrer">
-        {t('course.cta')} &rarr;
-      </a>
+      <svg class="course-logo" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+        <!-- Vapor -->
+        <path class="steam" d="M48 6c-9 10 9 16 0 28M68 2c-11 12 11 20 0 36" stroke="var(--accent)" stroke-width="5" stroke-linecap="round" />
+        <!-- Taza -->
+        <path d="M24 46h64v22a26 26 0 0 1-26 26H50a26 26 0 0 1-26-26V46Z" fill="var(--ink)" />
+        <!-- Asa -->
+        <path d="M88 52h6a12 12 0 0 1 0 24h-9" stroke="var(--ink)" stroke-width="6" stroke-linecap="round" />
+        <!-- Brillo rojo del café -->
+        <path d="M24 46h64v8H24z" fill="var(--accent)" />
+        <!-- Plato -->
+        <path d="M14 104c10 8 62 8 72 0" stroke="var(--ink-soft)" stroke-width="6" stroke-linecap="round" />
+      </svg>
+      <div class="course-body">
+        <span class="course-badge">{t('course.status')}</span>
+        <h3>{t('course.cardTitle')}</h3>
+        <p class="course-text">{t('course.cardText')}</p>
+        <ul class="course-topics">
+          {courseTopics.map((topic) => <li>{topic}</li>)}
+        </ul>
+        <a class="btn btn--primary course-cta" href={COURSE_REPO} target="_blank" rel="noopener noreferrer">
+          {t('course.cta')} &rarr;
+        </a>
+      </div>
     </article>
   </div>
 </section>
 
 <style>
   .course {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    margin-top: var(--space-6);
+    align-items: center;
+    gap: var(--space-6);
+  }
+  .course-body {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-3);
+  }
+  .course-logo {
+    width: clamp(6rem, 18vw, 9rem);
+    height: auto;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .steam {
+      animation: steam-rise 3.2s ease-in-out infinite;
+    }
+    @keyframes steam-rise {
+      0%, 100% { transform: translateY(0); opacity: 1; }
+      50% { transform: translateY(-4px); opacity: 0.55; }
+    }
+  }
+  @media (max-width: 40rem) {
+    .course {
+      grid-template-columns: 1fr;
+      justify-items: start;
+    }
   }
   .course-badge {
     font-family: var(--font-mono);
