@@ -120,6 +120,8 @@ export const ui = {
     'footer.rights': 'Melany Martínez',
     'footer.social': 'También ando por aquí',
 
+    'announce.text': 'Nuevo · Curso de Java en construcción',
+
     '404.heading': 'Aquí no hay nada',
     '404.text': 'Esta página no existe, o la he roto yo. Las dos son posibles.',
     '404.back': 'Volver al inicio',
@@ -225,6 +227,8 @@ export const ui = {
 
     'footer.rights': 'Melany Martínez',
     'footer.social': 'Also around here',
+
+    'announce.text': 'New · Java course in progress',
 
     '404.heading': 'Nothing here',
     '404.text': "This page doesn't exist, or I broke it. Both are plausible.",

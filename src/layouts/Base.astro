@@ -2,6 +2,7 @@
 import '../styles/tokens.css';
 import '../styles/base.css';
 import '../styles/theme-flourishes.css';
+import Announcement from '../components/Announcement.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { getLangFromUrl, useTranslations, alternatePath } from '../i18n/ui';
@@ -76,6 +77,7 @@ const otherCanonical = Astro.site ? new URL(otherHref, Astro.site) : null;
 
   <body>
     <a class="skip-link" href="#main">{t('nav.skip')}</a>
+    <Announcement />
     <Header alternate={otherHref} />
     <main id="main">
       <slot />
