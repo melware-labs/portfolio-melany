@@ -3,8 +3,7 @@ import { getCollection } from 'astro:content';
 import { getLangFromUrl, useTranslations, localizedPath } from '../i18n/ui';
 import ProjectCard from './ProjectCard.astro';
 import PostCard from './PostCard.astro';
-import CourseCard from './CourseCard.astro';
-import AboutCard from './AboutCard.astro';
+import CourseCard from './CourseCard.astro';import AboutCard from './AboutCard.astro';
 import Splash from './Splash.astro';
 
 const lang = getLangFromUrl(Astro.url);
@@ -47,7 +46,8 @@ const postsNewUntil = freshUntil(posts.map((p) => p.data.date));
 
 // Para añadir un curso: sumar su id aquí y sus textos course.<id>.title,
 // .desc y .topics en ui.ts (es y en). `soon` pinta la etiqueta "Próximamente".
-const courses = [{ id: 'java', soon: true }];
+// `repo` es el enlace del botón "Ver": el repositorio del curso en GitHub.
+const courses = [{ id: 'java', soon: true, repo: 'https://github.com/melware-labs/JAVA' }];
 
 const email = 'melanymartinez667@gmail.com';
 
@@ -240,7 +240,10 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
 <!-- ── Cursos ───────────────────────────────────────────────── -->
 <section id="cursos" class="section scroll-fade">
   <div class="container">
-    <h2>{t('courses.heading')}</h2>
+    <div class="heading-row">
+      <h2>{t('courses.heading')}</h2>
+      {courses.some((course) => course.soon) && <span class="badge">{t('courses.soon')}</span>}
+    </div>
     <p class="section-intro prose">{t('courses.intro')}</p>
     <ul class="card-list courses-grid">
       {
@@ -250,7 +253,8 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
               title={t(`course.${course.id}.title`)}
               description={t(`course.${course.id}.desc`)}
               topics={t(`course.${course.id}.topics`) as unknown as string[]}
-              soon={course.soon}
+              id={course.id}
+              repo={course.repo}
             />
           </li>
         ))
@@ -688,6 +692,31 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
     margin-top: var(--space-6);
   }
 
+  /* Título de sección con la chapa "Próximamente" al lado. */
+  .heading-row {
+    display: flex;
+    flex-wrap: wrap;
+    /* Sobre la línea base del título, no centrada en su caja: así el texto
+       de la chapa queda a la altura de "Cursos" y no flotando arriba. */
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+  .badge {
+    /* Un pelo por encima de la línea base para que quede entre la base y el
+       centro del título. */
+    position: relative;
+    top: -0.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    padding: 0.2rem var(--space-3);
+    border-radius: var(--radius-pill);
+    background: var(--accent);
+    color: var(--paper);
+  }
+
   /* Lista sin viñetas: son tarjetas, pero semánticamente sigue
      siendo una lista para quien use lector de pantalla. */
   .card-list {
@@ -700,10 +729,12 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
      ancho ni aunque estén solas en su columna, así entran dos por fila
      sin apretar. Los proyectos no llevan este tope — su "bento" ya reparte
      el ancho a propósito entre las dos tarjetas. */
-  .posts-grid {
+  .posts-grid,
+  .courses-grid {
     justify-items: start;
   }
-  .posts-grid > li {
+  .posts-grid > li,
+  .courses-grid > li {
     width: 100%;
     max-width: 24rem;
   }
@@ -719,7 +750,8 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
        estiran más allá de ese ancho y queda un hueco muerto entre una card
        y la siguiente, además del gap. Los proyectos no llevan este tope
        (su "bento" reparte el ancho a propósito), así que siguen con 1fr. */
-    .posts-grid:has(> li + li) {
+    .posts-grid:has(> li + li),
+    .courses-grid:has(> li + li) {
       grid-template-columns: repeat(2, minmax(0, 24rem));
     }
     /* Proyectos concretamente en "bento" — una tarjeta más ancha que
