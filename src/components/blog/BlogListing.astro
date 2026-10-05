@@ -10,7 +10,7 @@
  * funciona sin JS.
  */
 import { getCollection } from 'astro:content';
-import { getLangFromUrl, useTranslations, localizedPath, type UIKey } from '../../i18n/ui';
+import { getLangFromUrl, useTranslations, localizedPath, type TextKey } from '../../i18n/ui';
 import { CATEGORY_ORDER, CATEGORY_LABEL_KEY, type BlogCategory } from '../../data/blog-categories';
 import PostCard from '../PostCard.astro';
 
@@ -37,7 +37,7 @@ const posts = activeCategory ? allPosts.filter((p) => p.data.category === active
 
 const allHref = localizedPath('/blog', lang);
 const categoryHref = (cat: BlogCategory) => localizedPath(`/blog/categoria/${cat}`, lang);
-const categoryLabel = (cat: BlogCategory) => t(`blog.category.${CATEGORY_LABEL_KEY[cat]}` as UIKey);
+const categoryLabel = (cat: BlogCategory) => t(`blog.category.${CATEGORY_LABEL_KEY[cat]}` as TextKey);
 ---
 
 {

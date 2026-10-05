@@ -1,25 +1,18 @@
 ---
 /**
- * Splash de bienvenida del inicio: el logo "<M" de la marca se convierte
- * en la cabecera "Hola, soy Melany" del hero.
+ * Splash de bienvenida del inicio: aparece el nombre "<Melany" centrado y
+ * se reduce a "<M", el logo de la marca, antes de desvanecerse y dejar a la
+ * vista la web.
  *
- * En vez de medir en píxeles dónde cae el "Melany" de verdad (frágil:
- * cambia con el scroll, el resize y la carga de la fuente), esta capa
- * reconstruye la misma cabecera con las mismas reglas de CSS que la real
- * — mismo .container, mismo clamp() de tamaño, mismo letter-spacing y
- * centrado — así que aterriza en el mismo sitio sin JS de por medio. Al
- * acabar, la capa entera se desvanece y debajo ya está la cabecera real.
- *
- * El texto sale de las mismas claves de i18n que el hero, para que no se
- * puedan desincronizar: la "M" es sólo el primer carácter separado del
- * resto para poder animarla aparte.
+ * El texto sale de la misma clave de i18n que el hero (hero.name), para que
+ * no se pueda desincronizar: la "M" es sólo el primer carácter, separado del
+ * resto para poder animar el resto aparte.
  */
 import { getLangFromUrl, useTranslations } from '../i18n/ui';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-const greeting = t('hero.greeting');
 const name = t('hero.name');
 const initial = name.slice(0, 1);
 const rest = name.slice(1);
@@ -28,17 +21,10 @@ const rest = name.slice(1);
 <!-- aria-hidden: es decoración, y duplica un texto que el hero real ya
      ofrece a los lectores de pantalla sin esperar la animación. -->
 <div class="splash" data-splash aria-hidden="true">
-  <div class="container splash-inner">
-    <p class="splash-line">
-      <span class="splash-greeting">{greeting}</span>
-      <span class="splash-name"
-        ><span class="splash-logo"
-          ><span class="splash-mark">&lt;</span><span class="splash-initial">{initial}</span
-          ></span
-        ><span class="splash-rest">{rest}</span></span
-      >
-    </p>
-  </div>
+  <p class="splash-line">
+    <span class="splash-mark">&lt;</span><span class="splash-initial">{initial}</span
+    ><span class="splash-rest"><span class="splash-rest-text">{rest}</span></span>
+  </p>
 </div>
 
 <noscript>
@@ -66,12 +52,7 @@ const rest = name.slice(1);
     display: none;
   }
 
-  .splash-inner {
-    text-align: center;
-  }
-
-  /* Mismas medidas que .hero-copy h1 (ver Home.astro): es lo que hace
-     que el texto caiga donde el del hero de verdad. */
+  /* Mismo tamaño y tipografía que el titular del hero. */
   .splash-line {
     font-family: var(--font-display);
     font-weight: 600;
@@ -79,174 +60,78 @@ const rest = name.slice(1);
     line-height: 1.12;
     letter-spacing: -0.05em;
     color: var(--ink);
-    /* Cuánto hay que desplazar el logo para que entre centrado en
-       pantalla. Lo mide el script (es la mitad del ancho del saludo, que
-       en la frase final empuja el nombre a la derecha del centro). Si el
-       script no llega, 0: el logo escala en su sitio y sigue funcionando. */
-    --splash-shift: 0px;
-    /* En reposo no se pinta nada: si no, el logo asomaría a tamaño y
-       posición finales antes de arrancar y daría un salto al empezar. */
+    white-space: nowrap;
+    /* En reposo no se pinta nada: si no, el nombre asomaría antes de
+       arrancar y daría un salto al empezar. */
     opacity: 0;
   }
   .splash.is-playing .splash-line {
-    opacity: 1;
+    animation: splash-in 0.5s ease-out both;
   }
 
-  .splash-name {
-    color: var(--accent);
-    white-space: nowrap;
-  }
-
-  /* ── Estado de reposo (antes de arrancar) ─────────────────────
-     El saludo y el resto del nombre todavía no existen en pantalla;
-     el logo es lo único que se verá al arrancar. */
-  .splash-greeting {
-    display: inline-block;
-    opacity: 0;
-    /* Se revelará con un barrido de izquierda a derecha. */
-    clip-path: inset(0 100% 0 0);
-    /* El barrido termina en inset(0), o sea recortando justo al borde de
-       la caja, y la caja cierra por dentro de la tinta por dos sitios: el
-       `letter-spacing` negativo le come 0.05em a la última letra (el brazo
-       derecho de la "y" de "soy") y el renglón de `line-height: 1.12` es
-       más corto que sus descendentes. Sin estos colchones el barrido
-       dejaba la "y" cortada, igual que pasaba en el hero. Los márgenes
-       negativos los descuentan para que el saludo siga cayendo donde el
-       del hero de verdad. */
-    padding-inline-end: 0.08em;
-    margin-inline-end: -0.08em;
-    padding-bottom: 0.35em;
-    margin-bottom: -0.35em;
-  }
-
-  /**
-   * El "<" y la "M" escalan JUNTOS, como un solo bloque: es lo que los
-   * mantiene en la proporción del favicon. Escalando sólo la "M" (como
-   * estaba antes) el "<" se quedaba a tamaño de texto, un 38% más bajo
-   * que ella, y como la "M" crece desde su propio centro acababa
-   * flotando arriba y descolocado en vez de leerse como el logo.
-   */
-  .splash-logo {
-    display: inline-block;
-  }
-  /**
-   * Queda como inline normal, sin ancho ni overflow propios: así se
-   * apoya en la misma línea base que la "M". Con `overflow: hidden`
-   * (que es lo que hacía falta para recortarlo al cerrar su ancho) la
-   * línea base de un inline-block pasa a ser su borde inferior, y el
-   * "<" se iba 37px hacia arriba — de ahí que se viera descolocado y
-   * pegado al borde superior de la "M".
-   */
+  /* El "<" y la "M" son el logo: mismos colores que el favicon y la marca
+     de la cabecera. */
   .splash-mark {
     font-family: var(--font-mono);
     font-weight: 700;
+    color: var(--accent);
   }
   .splash-initial {
-    /* Arranca en el color de tinta del favicon y acaba en el acento. */
     color: var(--ink);
   }
-  .splash-rest {
-    display: inline-block;
-    opacity: 0;
-  }
 
-  /* ── Coreografía ──────────────────────────────────────────────
-     Casi todo con transform/opacity/color/clip-path, que el navegador
-     compone sin repintar. Los tiempos van por animation-delay, no por
-     JS. El logo lleva una sola animación con keyframes por porcentaje
-     (entrada, pausa y aterrizaje) en vez de varias sobre el mismo
-     transform, porque dos animaciones a la vez sobre transform se
-     pisan: la última gana y la otra no se vería. */
-  .splash.is-playing .splash-logo {
-    animation: splash-logo 2s both;
+  /* El resto del nombre se pliega hasta ancho 0 con una rejilla de una
+     columna que pasa de 1fr a 0fr: así el ancho se anima de verdad y el
+     "<M" que queda sigue centrado sin medir nada con JS. `overflow: clip`
+     y no `hidden` para no cambiar la línea base del texto; el colchón de
+     abajo y de la derecha evita cortar la "y" (descendente y
+     letter-spacing negativo). */
+  .splash-rest {
+    display: inline-grid;
+    grid-template-columns: 1fr;
   }
-  .splash.is-playing .splash-initial {
-    animation: splash-initial-color 0.8s ease-out 1.2s both;
+  .splash-rest-text {
+    min-width: 0;
+    overflow: clip;
+    padding-inline-end: 0.08em;
+    padding-bottom: 0.35em;
+    margin-bottom: -0.35em;
   }
   .splash.is-playing .splash-rest {
-    animation: splash-rest-in 0.6s ease-out 1.4s both;
+    animation: splash-collapse 0.7s cubic-bezier(0.65, 0, 0.35, 1) 1.5s both;
   }
-  .splash.is-playing .splash-mark {
-    animation: splash-mark-out 0.55s ease-in 2s both;
+  .splash.is-playing .splash-rest-text {
+    animation: splash-rest-out 0.5s ease-in 1.5s both;
   }
-  .splash.is-playing .splash-greeting {
-    animation: splash-greeting-in 0.6s ease-out 2.05s both;
-  }
+  /* El último paso es el fade de la capa entera. */
   .splash.is-playing {
-    animation: splash-fade-out 0.45s ease-in 3s both;
+    animation: splash-fade-out 0.45s ease-in 2.7s both;
   }
 
-  @keyframes splash-logo {
-    /* 0 → 0.55s: entra grande y centrado en pantalla. */
-    0% {
-      opacity: 0;
-      transform: translateX(var(--splash-shift)) scale(2.05);
-      animation-timing-function: ease-out;
-    }
-    27% {
-      opacity: 1;
-      transform: translateX(var(--splash-shift)) scale(2.2);
-      animation-timing-function: linear;
-    }
-    /* 0.55 → 1.2s: se queda quieto, para que se lea como logo. */
-    60% {
-      opacity: 1;
-      transform: translateX(var(--splash-shift)) scale(2.2);
-      animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    /* 1.2 → 2s: aterriza en el tamaño y el sitio del texto real. */
-    100% {
-      opacity: 1;
-      transform: translateX(0) scale(1);
-    }
-  }
-  @keyframes splash-initial-color {
-    from {
-      color: var(--ink);
-    }
-    to {
-      color: var(--accent);
-    }
-  }
-  @keyframes splash-rest-in {
+  @keyframes splash-in {
     from {
       opacity: 0;
-      transform: translateX(-0.12em);
+      transform: scale(0.96);
     }
     to {
       opacity: 1;
-      transform: translateX(0);
+      transform: scale(1);
     }
   }
-  /**
-   * El "<" se va justo cuando el saludo empieza a salir de su sitio: es
-   * lo que lee como "el texto se despliega desde el <".
-   *
-   * El hueco se cierra con margen negativo, no recortando el ancho: en
-   * monoespaciada 1ch es justo el avance del glifo, así que -1ch anula
-   * exactamente el sitio que ocupaba y el nombre acaba donde el del
-   * hero (desvanecerlo sólo con opacity lo dejaba 24px a la derecha).
-   * Mientras se cierra ya se está apagando, así que el solape con la
-   * "M" no llega a verse.
-   */
-  @keyframes splash-mark-out {
+  @keyframes splash-collapse {
+    from {
+      grid-template-columns: 1fr;
+    }
+    to {
+      grid-template-columns: 0fr;
+    }
+  }
+  @keyframes splash-rest-out {
     from {
       opacity: 1;
-      margin-right: 0;
     }
     to {
       opacity: 0;
-      margin-right: -1ch;
-    }
-  }
-  @keyframes splash-greeting-in {
-    from {
-      opacity: 0;
-      clip-path: inset(0 100% 0 0);
-    }
-    to {
-      opacity: 1;
-      clip-path: inset(0 0 0 0);
     }
   }
   @keyframes splash-fade-out {
@@ -326,36 +211,15 @@ const rest = name.slice(1);
       void play();
     }
 
-    /**
-     * Centra el logo en pantalla y arranca.
-     *
-     * En la frase final el nombre no queda en el centro: lo empuja a la
-     * derecha el saludo que lleva delante. Así que para que el logo entre
-     * centrado hay que desplazarlo a la izquierda la mitad de lo que mide
-     * ese saludo. Es una sola medida de un ancho de texto — no la posición
-     * absoluta de otro elemento —, y se toma con la línea en reposo, antes
-     * de aplicar ninguna transformación.
-     */
+    /** Arranca cuando la fuente está lista, para que no cambie de forma a mitad. */
     async function play() {
-      // Sin esperar a Manrope se mediría con la fuente de reserva y el
-      // logo entraría descentrado. La capa ya está tapando la página, así
-      // que esta espera no se ve como retraso.
       if (document.fonts) {
         try {
           await document.fonts.ready;
         } catch {
-          // Si falla, se mide con lo que haya cargado.
+          // Si falla, se arranca con lo que haya cargado.
         }
       }
-
-      const logo = splash!.querySelector<HTMLElement>('.splash-logo');
-      const line = splash!.querySelector<HTMLElement>('.splash-line');
-      if (logo && line) {
-        const box = logo.getBoundingClientRect();
-        const shift = window.innerWidth / 2 - (box.left + box.width / 2);
-        line.style.setProperty('--splash-shift', `${Math.round(shift)}px`);
-      }
-
       splash!.classList.add('is-playing');
     }
   }
