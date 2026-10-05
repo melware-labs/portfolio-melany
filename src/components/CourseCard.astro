@@ -1,32 +1,49 @@
 ---
 import { getLangFromUrl, useTranslations } from '../i18n/ui';
+import JavaIcon from './JavaIcon.astro';
 
 interface Props {
+  id: string;
   title: string;
   description: string;
   topics: string[];
-  soon?: boolean;
+  repo?: string;
 }
 
-const { title, description, topics, soon = false } = Astro.props;
+const { id, title, description, topics, repo } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
 <article class="card course">
+  <div class="course-cover" aria-hidden="true">
+    {id === 'java' && <JavaIcon />}
+  </div>
+
   <header class="course-head">
     <h3>{title}</h3>
-    {soon && <span class="badge">{t('courses.soon')}</span>}
   </header>
 
   <p class="course-desc">{description}</p>
 
-  <div class="course-footer">
-    <h4>{t('courses.topicsLabel')}</h4>
-    <ul class="topics">
-      {topics.map((topic) => <li>{topic}</li>)}
-    </ul>
-  </div>
+  <ul class="topics">
+    {topics.map((topic) => <li>{topic}</li>)}
+  </ul>
+
+  {repo && (
+    <a
+      href={repo}
+      class="course-repo"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={t('courses.viewRepo')}
+      title={t('courses.viewRepo')}
+    >
+      <svg width="40" height="40" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55 0-.27-.01-1-.02-1.96-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.24 3.34.95.1-.74.4-1.24.72-1.53-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.58.23 2.75.11 3.04.73.8 1.18 1.82 1.18 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.07.78 2.15 0 1.56-.01 2.81-.01 3.19 0 .3.2.66.79.55A10.52 10.52 0 0 0 23.5 12c0-6.35-5.15-11.5-11.5-11.5Z" fill="currentColor"/>
+      </svg>
+    </a>
+  )}
 </article>
 
 <style>
@@ -37,45 +54,37 @@ const t = useTranslations(lang);
     gap: var(--space-3);
   }
 
-  .course-head {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-3);
+  /* Mismo panel que la portada de los posts: recuadro con el degradado
+     rojo suave arriba a la izquierda, y el logo centrado dentro. */
+  .course-cover {
+    aspect-ratio: 4 / 3;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius);
+    border: var(--border-width) solid var(--line);
+    background:
+      radial-gradient(
+        ellipse 70% 70% at 28% 20%,
+        color-mix(in srgb, var(--accent) 10%, transparent),
+        transparent 70%
+      ),
+      var(--surface);
   }
-  .course-head h3 {
-    flex: 1 1 auto;
+  .course-cover :global(svg) {
+    height: 62%;
+    width: auto;
   }
 
-  .badge {
-    flex: 0 0 auto;
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    padding: 0.2rem var(--space-3);
-    border-radius: var(--radius-pill);
-    background: var(--accent);
-    color: var(--paper);
+  .course-head h3 {
+    text-align: center;
   }
 
   .course-desc {
     color: var(--ink-soft);
   }
 
-  .course-footer {
-    margin-top: auto;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-  .course-footer h4 {
-    font-family: var(--font-mono);
-    font-size: var(--step--1);
-    color: var(--ink-soft);
-  }
-
   .topics {
+    margin-top: auto;
     list-style: none;
     display: flex;
     flex-wrap: wrap;
@@ -89,5 +98,23 @@ const t = useTranslations(lang);
     border: var(--border-width) solid var(--line);
     border-radius: var(--radius);
     padding: 0.1rem var(--space-2);
+  }
+
+  /* Solo el icono de GitHub, sin botón, pegado a la derecha de la card. El
+     texto "Ver" queda en aria-label/title para lectores de pantalla. */
+  .course-repo {
+    align-self: flex-end;
+    display: flex;
+    border-radius: 50%;
+    color: var(--ink);
+    transition:
+      color 0.15s ease,
+      background 0.15s ease;
+  }
+  /* Inversión con la paleta del sitio: de icono blanco a disco rojo de
+     acento con el dibujo oscuro (el mismo par que la chapa roja). */
+  .course-repo:hover {
+    color: var(--paper);
+    background: var(--accent);
   }
 </style>
