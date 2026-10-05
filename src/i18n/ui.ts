@@ -81,7 +81,7 @@ export const ui = {
 
     'blog.heading': 'Blog',
     'blog.intro':
-      'No sólo IA: aquí escribo sobre programación, cosas de la carrera y lo que voy viviendo como estudiante. Vibe coding, pruebas, aciertos y errores por el camino.',
+      'Aquí escribo sobre programación, cosas de la carrera y lo que voy viviendo como estudiante: vida universitaria, cosas de estudiantes, aciertos y errores por el camino.',
     'blog.readMore': 'Seguir leyendo',
     'blog.empty': 'Aún no he publicado nada. Estoy en ello, prometido.',
     'blog.emptyHint': 'El primero va sobre las ventajas y los riesgos de hacer vibe coding con IA.',
@@ -189,7 +189,7 @@ export const ui = {
 
     'blog.heading': 'Blog',
     'blog.intro':
-      "Not just AI: I also write about programming, coursework and what it's actually like being a student. Vibe coding, trial and error, what works and what doesn't.",
+      "Here I write about programming, coursework and what it's actually like being a student: university life, student stuff, trial and error, what works and what doesn't.",
     'blog.readMore': 'Read more',
     'blog.empty': "I haven't published anything yet. Working on it, I promise.",
     'blog.emptyHint': 'The first one is about the upsides and the risks of vibe-coding with AI.',
