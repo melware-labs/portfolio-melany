@@ -44,6 +44,9 @@ function freshUntil(dates: (Date | undefined)[]): Date | null {
 const projectsNewUntil = freshUntil(projects.map((p) => p.data.date));
 const postsNewUntil = freshUntil(posts.map((p) => p.data.date));
 
+const COURSE_REPO = 'https://github.com/melware-labs/JAVA';
+const courseTopics = t('course.topics').split('|');
+
 const email = 'melanymartinez667@gmail.com';
 
 // Nombres propios: no se traducen entre idiomas.
@@ -231,6 +234,67 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
     }
   </div>
 </section>
+
+<!-- ── Curso ────────────────────────────────────────────────── -->
+<section id="curso" class="section scroll-fade">
+  <div class="container">
+    <h2>{t('course.heading')}</h2>
+    <p class="section-intro prose">{t('course.intro')}</p>
+
+    <article class="card course">
+      <span class="course-badge">{t('course.status')}</span>
+      <h3>{t('course.cardTitle')}</h3>
+      <p class="course-text">{t('course.cardText')}</p>
+      <ul class="course-topics">
+        {courseTopics.map((topic) => <li>{topic}</li>)}
+      </ul>
+      <a class="btn btn--primary course-cta" href={COURSE_REPO} target="_blank" rel="noopener noreferrer">
+        {t('course.cta')} &rarr;
+      </a>
+    </article>
+  </div>
+</section>
+
+<style>
+  .course {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+  .course-badge {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    padding: 0.2rem var(--space-3);
+    border-radius: var(--radius-pill);
+    background: var(--accent);
+    color: var(--paper);
+  }
+  .course-text {
+    color: var(--ink-soft);
+  }
+  .course-topics {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .course-topics li {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+    background: var(--surface-2);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius);
+    padding: 0.1rem var(--space-2);
+  }
+  .course-cta {
+    margin-top: var(--space-2);
+  }
+</style>
 
 <!-- ── Blog ─────────────────────────────────────────────────── -->
 <section id="blog" class="section scroll-fade">

@@ -24,6 +24,7 @@ export const ui = {
     'nav.home': 'Inicio',
     'nav.about': 'Sobre mí',
     'nav.projects': 'Melware Labs',
+    'nav.course': 'Curso',
     'nav.blog': 'Blog',
     'nav.contact': 'Contacto',
     'nav.menu': 'Menú',
@@ -61,6 +62,16 @@ export const ui = {
     'projects.viewCode': 'Ver el código',
     'projects.viewLive': 'Verlo en vivo',
     'projects.inProgress': 'En construcción',
+
+    'course.heading': 'Curso de Java',
+    'course.intro':
+      'Voy a impartir un curso de Java desde cero, y todo el material vive en un repositorio abierto: apuntes, ejercicios y ejemplos para ir siguiéndolo a tu ritmo.',
+    'course.status': 'Próximamente',
+    'course.cardTitle': 'Java desde cero',
+    'course.cardText':
+      'Del primer «Hola, mundo» a programar con objetos. Cada tema trae teoría corta y ejercicios para practicar.',
+    'course.topics': 'Sintaxis básica|Control de flujo|Programación orientada a objetos|Colecciones|Ejercicios prácticos',
+    'course.cta': 'Ver el repositorio',
 
     'blog.heading': 'Blog',
     'blog.intro':
@@ -117,6 +128,7 @@ export const ui = {
     'nav.home': 'Home',
     'nav.about': 'About',
     'nav.projects': 'Melware Labs',
+    'nav.course': 'Course',
     'nav.blog': 'Blog',
     'nav.contact': 'Contact',
     'nav.menu': 'Menu',
@@ -150,6 +162,16 @@ export const ui = {
     'projects.viewCode': 'View code',
     'projects.viewLive': 'View live',
     'projects.inProgress': 'Work in progress',
+
+    'course.heading': 'Java course',
+    'course.intro':
+      "I'm going to teach a Java course from scratch, and all the material lives in an open repository: notes, exercises and examples you can follow at your own pace.",
+    'course.status': 'Coming soon',
+    'course.cardTitle': 'Java from scratch',
+    'course.cardText':
+      'From your first "Hello, world" to programming with objects. Each topic comes with short theory and exercises to practise.',
+    'course.topics': 'Basic syntax|Control flow|Object-oriented programming|Collections|Hands-on exercises',
+    'course.cta': 'View the repository',
 
     'blog.heading': 'Blog',
     'blog.intro':
