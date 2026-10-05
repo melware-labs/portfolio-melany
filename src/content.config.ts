@@ -33,7 +33,7 @@ const blog = defineCollection({
     // Une las dos versiones del mismo artículo: el mismo valor en el .md
     // español y en el inglés. Es lo que permite que el selector de idioma
     // salte al artículo equivalente — los slugs no sirven, porque están
-    // traducidos ("como-monte-mi-portfolio" / "how-i-built-my-portfolio").
+    // traducidos ("como-hice-mi-portfolio" / "how-i-built-my-portfolio").
     // Sin él, cambiar de idioma lleva a la portada del otro idioma.
     translationKey: z.string().optional(),
   }),

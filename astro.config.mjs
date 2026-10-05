@@ -9,6 +9,12 @@ export default defineConfig({
   // llegaban a salir nunca. Si algún día hay dominio propio, se cambia aquí.
   site: 'https://melany-martinez.vercel.app',
 
+  // El post de vibe coding cambió de dirección; la vieja redirige para que
+  // los enlaces ya compartidos sigan funcionando.
+  redirects: {
+    '/blog/como-monte-mi-portfolio': '/blog/como-hice-mi-portfolio',
+  },
+
   // El español vive en la raíz (/) y el inglés en /en/.
   // prefixDefaultLocale: false evita que existan /es/ y / a la vez,
   // que duplicaría contenido y penalizaría el SEO.
