@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { getLangFromUrl, useTranslations, localizedPath } from '../i18n/ui';
+import { getLangFromUrl, useTranslations, localizedPath, courseText } from '../i18n/ui';
 import ProjectCard from './ProjectCard.astro';
 import PostCard from './PostCard.astro';
 import CourseCard from './CourseCard.astro';import AboutCard from './AboutCard.astro';
@@ -250,9 +250,7 @@ const stack = ['Astro', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Three.js'];
         courses.map((course) => (
           <li>
             <CourseCard
-              title={t(`course.${course.id}.title`)}
-              description={t(`course.${course.id}.desc`)}
-              topics={t(`course.${course.id}.topics`) as unknown as string[]}
+              {...courseText(lang, course.id)}
               id={course.id}
               repo={course.repo}
             />

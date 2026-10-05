@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
 import BlogListing from '../../../components/blog/BlogListing.astro';
-import { useTranslations, localizedPath, type UIKey } from '../../../i18n/ui';
+import { useTranslations, localizedPath, type TextKey } from '../../../i18n/ui';
 import { CATEGORY_ORDER, CATEGORY_LABEL_KEY, type BlogCategory } from '../../../data/blog-categories';
 
 // Sólo se generan páginas para categorías con al menos un post publicado en
@@ -19,7 +19,7 @@ export async function getStaticPaths() {
 
 const { categoria } = Astro.props as { categoria: BlogCategory };
 const t = useTranslations('es');
-const label = t(`blog.category.${CATEGORY_LABEL_KEY[categoria]}` as UIKey);
+const label = t(`blog.category.${CATEGORY_LABEL_KEY[categoria]}` as TextKey);
 
 /**
  * Esta misma categoría en inglés sólo existe si allí hay algún post suyo:

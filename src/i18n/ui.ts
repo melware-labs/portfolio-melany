@@ -238,6 +238,11 @@ export const ui = {
 
 export type UIKey = keyof (typeof ui)[typeof defaultLang];
 
+/** Las claves cuyo valor es un texto (el temario de un curso es una lista). */
+export type TextKey = {
+  [K in UIKey]: (typeof ui)[typeof defaultLang][K] extends string ? K : never;
+}[UIKey];
+
 /** Saca el idioma de la URL: /en/... es inglés, cualquier otra cosa español. */
 export function getLangFromUrl(url: URL): Lang {
   const [, maybeLang] = url.pathname.split('/');
@@ -247,8 +252,18 @@ export function getLangFromUrl(url: URL): Lang {
 
 /** Devuelve una función t() que busca textos en el idioma dado. */
 export function useTranslations(lang: Lang) {
-  return function t(key: UIKey): string {
-    return ui[lang][key] ?? ui[defaultLang][key];
+  return function t(key: TextKey): string {
+    return (ui[lang][key] ?? ui[defaultLang][key]) as string;
+  };
+}
+
+/** Título, descripción y temario de un curso (ver course.<id>.* arriba). */
+export function courseText(lang: Lang, id: string) {
+  const texts = ui[lang] as Record<string, unknown>;
+  return {
+    title: texts[`course.${id}.title`] as string,
+    description: texts[`course.${id}.desc`] as string,
+    topics: [...(texts[`course.${id}.topics`] as readonly string[])],
   };
 }
 
