@@ -19,7 +19,7 @@ Wednesday, and the constant feeling that something important was slipping
 through the cracks between classes, my degree, and whatever time I could
 squeeze in for Melware Labs. One day, while trying (again) to decide what
 to do first, it hit me: I'd spent weeks solving by hand a problem I've
-spent two years learning how to solve for a computer — and it had never
+spent a good while learning how to solve for a computer — and it had never
 once occurred to me to use the same logic on myself.
 
 ## The problem, with no logic involved
@@ -58,9 +58,9 @@ order.
 **Algorithm.** With those two data points, the order stops being a
 decision and becomes a rule: urgent-and-important goes first,
 important-without-urgency gets scheduled before it turns urgent, and
-urgent-without-importance gets delegated or knocked out quickly. It's,
-literally, the Eisenhower matrix — but I arrived at it by thinking the way
-I think when I code, not because I'd read about it somewhere first.
+urgent-without-importance gets delegated or knocked out quickly. Turns out
+this has a name, the Eisenhower matrix, though laid out like this it looks
+more like an algorithm than a productivity technique.
 
 ## From logic to code
 
@@ -92,7 +92,7 @@ tell "this feels urgent" apart from "this is urgent".
 
 ## What I'm taking from this
 
-The funny part is I'd spent two years learning to think this way to solve
+The funny part is I'd spent a good while learning to think this way to solve
 problems for a computer, and had never once tried using it to solve
 problems for myself. Logic isn't something that stays locked inside a code
 editor — it's a way of looking at any mess and asking yourself which parts

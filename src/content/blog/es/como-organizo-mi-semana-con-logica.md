@@ -13,59 +13,56 @@ draft: false
 ---
 
 Durante mucho tiempo mi sistema para organizar la semana fue, literalmente,
-ningún sistema: una lista mental que se reescribía sola cada cinco minutos,
-un cuaderno que abría los lunes con muchas ganas y dejaba de abrir los
-miércoles, y la sensación constante de que se me estaba escapando algo
-importante entre las clases, la carrera y los ratos que le quiero meter a
-Melware Labs. Un día, mientras intentaba (otra vez) decidir qué hacer
-primero, me di cuenta de que llevaba semanas resolviendo a mano un problema
-que llevo dos años aprendiendo a resolverle a una computadora — y que nunca
-se me había ocurrido usar la misma lógica conmigo misma.
+ninguno. Tenía una lista mental que se reescribía sola cada cinco minutos, un
+cuaderno que abría los lunes con muchas ganas y dejaba de abrir los miércoles,
+y esa sensación constante de que se me escapaba algo importante entre las
+clases, la carrera y los ratos que quiero dedicarle a Melware Labs. Hasta que
+un día, intentando (otra vez) decidir qué hacer primero, caí en algo. Llevaba
+semanas resolviendo a mano un problema que llevo un buen tiempo aprendiendo a
+resolverle a una computadora. Y nunca se me había ocurrido aplicarme la misma
+lógica a mí.
 
 ## El problema, sin lógica de por medio
 
-Así de mal se veía mi "sistema": todo entraba a la misma lista, sin importar
-si era "entregar un proyecto el viernes" o "responder un mensaje". Todo
-pesaba lo mismo hasta que dejaba de pesar y se convertía en urgencia. Y como
-no había ningún criterio para decidir qué iba primero, ganaba lo que más
-ansiedad me daba en ese momento, no lo que de verdad tocaba primero. No es
-que me faltara disciplina — es que le estaba pidiendo a mi cabeza que
-hiciera, de memoria y bajo estrés, el trabajo que se supone que hace un
-algoritmo.
+Así de mal se veía mi «sistema»: todo caía en la misma lista, daba igual si
+era «entregar un proyecto el viernes» o «responder un mensaje». Todo pesaba lo
+mismo hasta que dejaba de pesar y se volvía urgencia. Sin ningún criterio para
+decidir qué iba primero, ganaba lo que más ansiedad me daba en ese momento, que
+casi nunca era lo que tocaba hacer primero. No era falta de disciplina, o no
+solo. Le estaba pidiendo a mi cabeza que hiciera, de memoria y bajo estrés, el
+trabajo que debería hacer un algoritmo.
 
 ## Pensar en lógica antes de pensar en código
 
-Lo que cambió no fue una app nueva ni un método de productividad de
-internet — fue tratar el problema como lo trataría si fuera un ejercicio de
-la carrera, antes de tocar una sola línea de código.
+Lo que cambió no fue una app nueva ni un método de productividad sacado de
+internet. Fue tratar el problema como trataría un ejercicio de la carrera,
+antes de escribir una sola línea de código.
 
-**Descomposición.** "Organizar mi semana" no es una tarea, es como quince
-tareas distintas con nombres distintos: clases con horario fijo, entregas
-con fecha límite, cosas de Melware Labs sin fecha pero que sí importan, y
-vida normal (comer, dormir, no desconectarme de la gente). Mezclarlas todas
-en una sola lista era el primer error.
+Lo primero fue descomponerlo. «Organizar mi semana» no es una tarea, son como
+quince tareas distintas con el mismo nombre: clases con horario fijo, entregas
+con fecha límite, cosas de Melware Labs sin fecha pero que sí importan, y la
+vida normal (comer, dormir, no desaparecer de la gente). Meterlo todo en una
+sola lista fue el primer error.
 
-**Reconocimiento de patrones.** Casi todo lo que anotaba se repetía cada
-semana con una forma parecida: algo con fecha límite dura, algo importante
-pero sin fecha, algo urgente pero sin importancia real. Tres categorías, no
-quince tareas sueltas.
+Luego, al mirar con calma, casi todo lo que apuntaba se repetía cada semana
+con una forma parecida: algo con fecha límite dura, algo importante pero sin
+fecha, algo urgente que en el fondo no importaba tanto. Tres tipos de cosas,
+no quince sueltas. En programación a eso le llaman reconocer un patrón.
 
-**Abstracción.** No necesitaba llevar el detalle exacto de cada tarea en la
-cabeza a la vez — necesitaba dos datos por tarea: qué tan urgente es y qué
-tan importante es. Todo lo demás es ruido a la hora de decidir el orden.
+Tampoco hacía falta cargar con el detalle de cada tarea. Me bastaban dos datos
+por cada una: qué tan urgente es y qué tan importante. Lo demás es ruido a la
+hora de decidir el orden, y quitar el ruido es justo lo que se llama abstraer.
 
-**Algoritmo.** Con esos dos datos, el orden deja de ser una decisión y se
-convierte en una regla: lo urgente-e-importante va primero, lo
-importante-sin-urgencia se agenda antes de que se vuelva urgente, y lo
-urgente-sin-importancia se delega o se hace rápido y ya. Es, literalmente,
-la matriz de Eisenhower — pero llegué a ella pensando como pienso cuando
-programo, no porque la hubiera leído en algún lado antes.
+Con esos dos datos, el orden deja de ser una decisión y se vuelve una regla.
+Lo urgente e importante va primero. Lo importante sin urgencia se agenda antes
+de que se vuelva urgente. Lo urgente sin importancia se delega, o se despacha
+rápido y ya. Resulta que esto tiene nombre, la matriz de Eisenhower, aunque
+visto así parece más un algoritmo que una técnica de productividad.
 
 ## De la lógica al código
 
-Una vez que el problema estaba descompuesto así, escribirlo fue lo de
-menos. Nada del otro mundo, sólo ordenar una lista de tareas con esas dos
-variables:
+Con el problema descompuesto de esa forma, escribirlo fue lo de menos. Nada
+del otro mundo: ordenar una lista de tareas por esas dos variables.
 
 ```js
 const tareas = [
@@ -85,20 +82,20 @@ function prioridad(t) {
 const ordenSemana = [...tareas].sort((a, b) => prioridad(a) - prioridad(b));
 ```
 
-No lo corro de verdad cada lunes, tranquila — no he llegado a ese nivel de
-nerd todavía (aunque no lo descarto). Pero tener el algoritmo escrito,
-aunque sea sólo en la cabeza, es lo que hace que ahora sí distinga entre
-"esto se siente urgente" y "esto es urgente".
+No lo corro cada lunes, eso sí; no he llegado a ese nivel de nerd todavía
+(aunque tampoco lo descarto). Pero tener el algoritmo escrito, aunque sea solo
+en la cabeza, me sirve para distinguir entre «esto se siente urgente» y «esto
+es urgente».
 
 ## Lo que me llevo
 
-Lo curioso es que llevaba dos años aprendiendo a pensar así para
-resolverle problemas a una computadora, y nunca había probado a usarlo para
-resolverme problemas a mí. La lógica no es algo que se queda encerrado en
-el editor de código — es una forma de mirar cualquier lío y preguntarte qué
-partes son de verdad distintas, qué se repite, y qué regla simple resuelve
-el 90% de los casos sin que tengas que decidir todo desde cero cada vez.
+Lo curioso es que llevaba tiempo aprendiendo a pensar así para resolverle
+problemas a una computadora y no había probado a usarlo conmigo. La lógica no
+se queda encerrada en el editor de código. Es una forma de mirar cualquier lío
+y preguntarse qué partes son de verdad distintas, qué se repite y qué regla
+simple resuelve el 90% de los casos sin tener que decidirlo todo desde cero
+cada vez.
 
-No hace falta escribir una línea de código para pensar como quien
-programa. Pero cuando el problema es tuyo y no tienes ganas de resolverlo a
-mano otra vez, ayuda saber que sí puedes.
+No hace falta escribir una línea de código para pensar como quien programa.
+Pero cuando el problema es tuyo y no te quedan ganas de resolverlo a mano otra
+vez, ayuda saber que puedes.

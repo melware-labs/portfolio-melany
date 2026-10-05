@@ -22,5 +22,5 @@ I built it from scratch, with no template, so I would actually learn how a websi
 - It ships in Spanish and English, with proper routing and language tags.
 - The whole site is keyboard navigable and focus is always visible.
 - It is designed for mobile first, then scaled up to larger screens.
-- There is almost no JavaScript — only the mobile menu.
+- There is little JavaScript, and what there is stays focused: the mobile menu, the contact form and the cursor light effects.
 - Posts and projects are plain text files, so publishing something new needs no code changes.
