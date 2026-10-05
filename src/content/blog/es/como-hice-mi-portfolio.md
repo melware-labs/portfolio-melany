@@ -1,6 +1,6 @@
 ---
 title: 'Vibe coding para un portfolio: ventajas y desventajas'
-description: Antes de montar tu portfolio a base de prompts, esto es lo que compensa y lo que no.
+description: Antes de hacer tu portfolio a base de prompts, esto es lo que compensa y lo que no.
 date: 2026-07-31
 lang: es
 translationKey: portfolio-vibe-coding
