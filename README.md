@@ -92,7 +92,3 @@ src/
   siempre se ve, los colores cumplen el contraste AA y se respeta la
   preferencia de reducir el movimiento.
 
-## Pendiente
-
-- [ ] Confirmar el aspecto en un móvil real a 390px
-- [ ] Usuarios/URLs reales de más redes, si se añaden nuevas
