@@ -92,3 +92,4 @@ src/
   siempre se ve, los colores cumplen el contraste AA y se respeta la
   preferencia de reducir el movimiento.
 
+
