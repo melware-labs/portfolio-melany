@@ -30,9 +30,5 @@ desktop.ini
 .idea/
 .vscode/
 
-# Claude
-.claude/
-CLAUDE.md
-
 .vercel
 .env*
